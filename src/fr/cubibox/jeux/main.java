@@ -1,9 +1,14 @@
 package fr.cubibox.jeux;
 
+import fr.cubibox.jeux.engine.Engine;
+import fr.cubibox.jeux.engine.Ray;
+import fr.cubibox.jeux.game.Map;
+import fr.cubibox.jeux.game.Player;
+import fr.cubibox.jeux.io.GraphicSwg;
+import fr.cubibox.jeux.io.GraphicSwg2D;
+
 import javax.swing.*;
 import java.io.File;
-import java.lang.management.GarbageCollectorMXBean;
-import java.util.ArrayList;
 
 public class main {
     public final static String RESOURCE_PATH = "src/resources";
@@ -14,7 +19,7 @@ public class main {
         engine = new Engine(
                 map,
                 new Player(2f,2f, 90f),
-                320,
+                1600,
                 45
             );
         engine.getPlayer().setAngle(0);

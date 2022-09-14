@@ -1,4 +1,7 @@
-package fr.cubibox.jeux;
+package fr.cubibox.jeux.engine;
+
+import fr.cubibox.jeux.game.Map;
+import fr.cubibox.jeux.game.Player;
 
 import java.awt.*;
 import java.util.ArrayList;

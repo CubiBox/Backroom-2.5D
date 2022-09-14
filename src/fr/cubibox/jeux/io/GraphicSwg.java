@@ -1,4 +1,9 @@
-package fr.cubibox.jeux;
+package fr.cubibox.jeux.io;
+
+import fr.cubibox.jeux.game.Player;
+import fr.cubibox.jeux.engine.Engine;
+import fr.cubibox.jeux.engine.Ray;
+import fr.cubibox.jeux.main;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,67 +22,23 @@ public class GraphicSwg extends JFrame{
         };
 
         addWindowListener(l);
-        setSize(Engine.WIDTH*5,Engine.HEIGHT*20);
+        setSize(Engine.WIDTH,Engine.HEIGHT*20);
         ImageIcon image = new ImageIcon("icon.gif");
         setIconImage(image.getImage());
         setVisible(true);
 
+        //invisible Cursor
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                 cursorImg, new Point(0, 0), "blank cursor");
         getContentPane().setCursor(blankCursor);
-
         setCursor(Cursor.getDefaultCursor());
+
+        //
         add(new ScreenComponents());
 
-        addMouseMotionListener(new MouseAdapter() {
-            public void mouseMoved(MouseEvent e) {
-                int x = (e.getComponent().getX() + e.getX());
-                if (x < 800){
-                    main.getEngine().getPlayer().setAngle(main.getEngine().getPlayer().getAngle() - (800 - e.getX())*0.2f);
-                }
-                if (x > 800){
-                    main.getEngine().getPlayer().setAngle(main.getEngine().getPlayer().getAngle() + (e.getX()-800)*0.2f);
-                }
-
-                Robot r = null;
-                try {r = new Robot();}
-                catch (AWTException ex) {throw new RuntimeException(ex);}
-                r.mouseMove(e.getComponent().getX() + Engine.WIDTH*5/2,e.getComponent().getY() + Engine.HEIGHT*20/2);
-
-                try {
-                    Thread.sleep(16l);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
-        addKeyListener(new KeyAdapter() {
-            public void keyTyped(KeyEvent e){
-
-                // avancer
-                if (e.getKeyChar() == 'z' ){
-                    System.out.println("avancer");
-                    main.getEngine().getPlayer().Avancer(0.1f);
-                }
-
-                //gauche
-                else if (e.getKeyCode() == 81){
-
-                }
-
-                //reculer
-                else if (e.getKeyCode() == 83){
-
-                }
-
-                //droite
-                else if (e.getKeyCode() == 68 ){
-
-                }
-            }
-        });
+        addMouseMotionListener(new Mouse());
+        addKeyListener(new Keyboard());
     }
     public void paint(Graphics g) {
         super.paint(g);
@@ -96,12 +57,12 @@ public class GraphicSwg extends JFrame{
     }
     private void drawRect(Graphics g){
         g.setColor(Color.darkGray);
-        g.fillRect(0, 0, Engine.WIDTH*5, Engine.WIDTH*20);
+        g.fillRect(0, 0, Engine.WIDTH, Engine.HEIGHT*20);
         g.setColor(Color.white);
         int n = 0;
         for (Ray r : main.getEngine().getRays()){
             if (r.getdRay() > 1)
-                g.fillRect(n*(Engine.WIDTH/64), ((Engine.HEIGHT*10)-(int)(500/r.getdRay())), Engine.WIDTH/64, (int)(1000/r.getdRay()));
+                g.fillRect(n*(main.getEngine().getRays().size()/Engine.WIDTH), ((Engine.HEIGHT*10)-(int)(500/r.getdRay())), 1, (int)(1000/r.getdRay()));
                 //g.fillRect(n*(Engine.WIDTH/4), ((Engine.HEIGHT*10)-(int)-(20*(1+r.getdRay()))), Engine.WIDTH/4, (int)-(40*(1+r.getdRay())));
             n++;
         }

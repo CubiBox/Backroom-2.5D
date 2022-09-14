@@ -1,4 +1,4 @@
-package fr.cubibox.jeux;
+package fr.cubibox.jeux.game;
 
 import java.awt.*;
 

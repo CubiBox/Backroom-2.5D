@@ -1,4 +1,9 @@
-package fr.cubibox.jeux;
+package fr.cubibox.jeux.io;
+
+import fr.cubibox.jeux.game.Player;
+import fr.cubibox.jeux.engine.Engine;
+import fr.cubibox.jeux.engine.Ray;
+import fr.cubibox.jeux.main;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package fr.cubibox.jeux;
+package fr.cubibox.jeux.engine;
 
 public class Points {
     private float x;
