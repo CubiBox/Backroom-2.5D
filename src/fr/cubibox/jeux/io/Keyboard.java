@@ -14,7 +14,6 @@ public class Keyboard implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e){
-
         // avancer
         if (e.getKeyChar() == 'z' ){
             System.out.println("avancer");

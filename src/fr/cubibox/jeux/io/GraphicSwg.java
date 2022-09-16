@@ -12,15 +12,17 @@ import javax.swing.*;
 
 
 public class GraphicSwg extends JFrame{
+    private int frame;
+    private long time;
 
     public GraphicSwg() {
-        super("DOOM");
+        super("Backroom");
         WindowListener l = new WindowAdapter() {
             public void windowClosing(WindowEvent e){
                 System.exit(0);
             }
         };
-
+        setTitle("Backroom \t" + frame);
         addWindowListener(l);
         setSize(Engine.WIDTH,Engine.HEIGHT*20);
         ImageIcon image = new ImageIcon("icon.gif");
@@ -46,24 +48,31 @@ public class GraphicSwg extends JFrame{
 
     class ScreenComponents extends JPanel {
         public ScreenComponents() {
-
-            setBorder(BorderFactory.createLineBorder(Color.black));
-
         }
         protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                drawRect(g);
-            }
+            drawRect(g);
+            actuFps();
+        }
     }
+
+    private void actuFps() {
+        frame ++;
+        if(System.currentTimeMillis() > time + 1000){
+            this.setTitle("Backroom - FPS: " + frame);
+            frame = 0;
+            time = System.currentTimeMillis();
+        }
+    }
+
     private void drawRect(Graphics g){
         g.setColor(Color.darkGray);
         g.fillRect(0, 0, Engine.WIDTH, Engine.HEIGHT*20);
         g.setColor(Color.white);
+        int refX = (main.getEngine().getRays().size()/Engine.WIDTH);
+
         int n = 0;
         for (Ray r : main.getEngine().getRays()){
-            if (r.getdRay() > 1)
-                g.fillRect(n*(main.getEngine().getRays().size()/Engine.WIDTH), ((Engine.HEIGHT*10)-(int)(500/r.getdRay())), 1, (int)(1000/r.getdRay()));
-                //g.fillRect(n*(Engine.WIDTH/4), ((Engine.HEIGHT*10)-(int)-(20*(1+r.getdRay()))), Engine.WIDTH/4, (int)-(40*(1+r.getdRay())));
+            g.fillRect(n*refX, ((Engine.HEIGHT*10)-(int)(500/r.getdRay())), (main.getEngine().getRays().size()/Engine.WIDTH), (int)(1000/r.getdRay()));
             n++;
         }
     }
