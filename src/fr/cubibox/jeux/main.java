@@ -16,7 +16,7 @@ public class main {
 
 
     public static void main(String[] args) throws InterruptedException {
-        Map map = new Map(new File(RESOURCE_PATH + "\\map1.map"));
+        Map map = new Map(new File(RESOURCE_PATH + "/map1.map"));
         engine = new Engine(
                 map,
                 new Player(2f,2f, 90f),
@@ -26,8 +26,8 @@ public class main {
         engine.getPlayer().setAngle(0);
 
 
-        JFrame mapFrame = new GraphicSwg2D();
         JFrame frame = new GraphicSwg();
+        JFrame mapFrame = new GraphicSwg2D();
 
         //new JFrame window
         Thread view3D = new Thread(new Runnable() {
@@ -35,11 +35,12 @@ public class main {
             public void run() {
                 while (true) {
                     frame.repaint();
-                    try{Thread.sleep(100l);}
+                    try{Thread.sleep(16l);}
                     catch(Exception e){ }
                 }
             }
         });
+
         view3D.start();
 
         Thread view2D = new Thread(new Runnable() {
@@ -47,7 +48,7 @@ public class main {
             public void run() {
                 while (true) {
                     mapFrame.repaint();
-                    try{Thread.sleep(100l);}
+                    try{Thread.sleep(16l);}
                     catch(Exception e){ }
                 }
             }
@@ -56,7 +57,7 @@ public class main {
 
         while (true){
             engine.setRays(Ray.setRays(engine.getPlayer(),engine.getRoom()));
-            Thread.sleep(100l);
+            Thread.sleep(16l);
         }
 
 

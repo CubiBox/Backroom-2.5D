@@ -15,23 +15,23 @@ public class Keyboard implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e){
         // avancer
-        if (e.getKeyChar() == 'z' ){
+        if (e.getKeyCode() == KeyEvent.VK_Z){
             System.out.println("avancer");
             main.getEngine().getPlayer().Avancer(0.1f);
         }
 
         //gauche
-        else if (e.getKeyCode() == 81){
-
+        else if (e.getKeyCode() == KeyEvent.VK_Q){
         }
 
         //reculer
-        else if (e.getKeyCode() == 83){
-
+        else if (e.getKeyCode() == KeyEvent.VK_S){
+            System.out.println("avancer");
+            main.getEngine().getPlayer().Avancer(-0.1f);
         }
 
         //droite
-        else if (e.getKeyCode() == 68 ){
+        else if (e.getKeyCode() == KeyEvent.VK_D){
 
         }
     }

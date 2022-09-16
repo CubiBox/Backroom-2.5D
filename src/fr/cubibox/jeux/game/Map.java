@@ -29,14 +29,20 @@ public class Map {
 //                }
                 if ((char)r == '1') {
                     map[y][x] = 1;
-                    x++;
+                    if (x < map[y].length - 1) {
+                        x++;
+                    }
                 }
                 else if ((char)r == '0') {
                     map[y][x] = 0;
-                    x++;
+                    if (x < map[y].length - 1) {
+                        x++;
+                    }
                 }
                 else if (r == 13){
-                    y++;
+                    if (y < map.length - 1) {
+                        y++;
+                    }
                     x=0;
                 }
             }

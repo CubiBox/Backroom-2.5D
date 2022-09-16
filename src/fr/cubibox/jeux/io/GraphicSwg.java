@@ -72,6 +72,14 @@ public class GraphicSwg extends JFrame{
 
         int n = 0;
         for (Ray r : main.getEngine().getRays()){
+            float dist = r.getdRay();
+            float mul = (dist % 255) / 12.0f;
+            //float mul = 255.0f / dist;
+
+            int colorInt = (int) (255.0f - 255.0f * mul);
+
+            g.setColor(new Color(colorInt, colorInt, colorInt));
+
             g.fillRect(n*refX, ((Engine.HEIGHT*10)-(int)(500/r.getdRay())), (main.getEngine().getRays().size()/Engine.WIDTH), (int)(1000/r.getdRay()));
             n++;
         }
