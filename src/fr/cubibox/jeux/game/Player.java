@@ -32,10 +32,8 @@ public class Player {
 
             angle = -(angle+90)*Ray.RADIAN;
 
-            System.out.println(this.x + "," + this.y);
             this.y -= (float) Math.cos(angle)/axisX * (axisX*x);
             this.x -= (float) Math.sin(angle)/axisX * (axisX*x);
-            System.out.println(this.x + "," + this.y);
         }
 
         // Axis X
@@ -43,17 +41,18 @@ public class Player {
             if ((angle < 225 && angle >= 135))
                 axisX = -1;
 
-            System.out.println(angle);
-
             angle = (angle * Ray.RADIAN);
 
-            System.out.println(this.x + "," + this.y);
             this.x += (float)Math.cos(angle)/axisX * (axisX*x);
             this.y += (float)Math.sin(angle)/axisX * (axisX*x);
-            System.out.println(this.x + "," + this.y);
         }
+        System.out.println(this);
     }
 
+
+    public String toString(){
+        return "["+this.x+", "+this.y+"]\t"+this.angle+"; "+this.pov;
+    }
 
     public float getX() {
         return x;

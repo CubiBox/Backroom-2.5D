@@ -51,6 +51,9 @@ public class Ray {
                 axisX = -1;
 
             A = -(A+90)*RADIAN;
+
+            sX = (pY + (axisX * a));
+            sY = pX + (axisX * a * (float) Math.tan(A));
             while (!isColision2(sX, sY, map)) {
                 a += d;
                 sX = (pY + (axisX * a));
