@@ -51,12 +51,16 @@ public class Ray {
                 axisX = -1;
 
             A = -(A+90)*RADIAN;
+
+            sX = (pY + (axisX * a));
+            sY = pX + (axisX * a * (float) Math.tan(A));
             while (!isColision2(sX, sY, map)) {
                 a += d;
                 sX = (pY + (axisX * a));
                 sY = pX + (axisX * a * (float) Math.tan(A));
             }
             this.colPos = new Points(sY*80,sX*80);
+
             return (float)Math.sqrt(
                     ((p.getY() - sX)*(p.getY() - sX)) +
                     ((p.getX() - sY)*(p.getX() - sY))
@@ -74,7 +78,6 @@ public class Ray {
                 sX = (pX + (axisX * a));
                 sY = pY + (axisX * a * (float)Math.tan(A));
             }
-
             this.colPos = new Points(sX*80, sY*80);
         }
         return (float)Math.sqrt(
