@@ -1,5 +1,7 @@
 package fr.cubibox.jeux.game;
 
+import fr.cubibox.jeux.engine.Ray;
+
 import java.awt.*;
 
 public class Player {
@@ -18,28 +20,36 @@ public class Player {
         int axisX = 1;
         float angle = this.angle;
 
+        while (angle >= 360)
+            angle -= 360;
+        while (angle <= 0)
+            angle += 360;
+
         //Axis Y
         if ((angle<315 && angle>=225) || (angle<135 && angle>=45)) {
             if ((angle < 315 && angle >= 225))
                 axisX = -1;
 
-            angle = ((angle+90)* ((float)Math.PI/180));
+            angle = -(angle+90)*Ray.RADIAN;
+
             System.out.println(this.x + "," + this.y);
-            this.y += (float) Math.cos(angle)/(axisX)/10;
-            this.x += (float) Math.sin(angle)/(axisX)/10;
+            this.y -= (float) Math.cos(angle)/axisX * (axisX*x);
+            this.x -= (float) Math.sin(angle)/axisX * (axisX*x);
             System.out.println(this.x + "," + this.y);
         }
 
         // Axis X
-        else if ((angle<225 && angle>=135) || ((angle<45 && angle>=0) ||(angle>=315 && angle<=360))) {
+        else {//if ((angle<225 && angle>=135) || ((angle<45 && angle>=0) ||(angle>=315 && angle<=360))) {
             if ((angle < 225 && angle >= 135))
                 axisX = -1;
 
             System.out.println(angle);
 
-            angle = (angle * ((float) Math.PI / 180));
-            this.x += (float) Math.cos(angle)/(axisX)/10;
-            this.y += (float) Math.sin(angle)/(axisX)/10;
+            angle = (angle * Ray.RADIAN);
+
+            System.out.println(this.x + "," + this.y);
+            this.x += (float)Math.cos(angle)/axisX * (axisX*x);
+            this.y += (float)Math.sin(angle)/axisX * (axisX*x);
             System.out.println(this.x + "," + this.y);
         }
     }

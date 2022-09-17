@@ -44,34 +44,37 @@ public class GraphicSwg2D extends JFrame{
                 }
             }
         }
-/*
+
+        int count = 0;
         for (Ray r : e.getRays()) {
-            float x = r.getColPos().getX() ;
-            float y = r.getColPos().getY()  + 20 ;
-            //g.fillRect((int) x, (int)y, 2, 2);
-            g.setColor(r.getC());
-            g.drawLine(
-                    (int)e.getPlayer().getX()*80,
-                    (int)e.getPlayer().getY()*80+20,
-                    (int)x,
-                    (int)y
-            );
+            count++;
+            if (count%100 == 1) {
+                float x = r.getColPos().getX();
+                float y = r.getColPos().getY() + 20;
+                //g.fillRect((int) x, (int)y, 2, 2);
+                g.drawLine(
+                        (int) (e.getPlayer().getX() * 80),
+                        (int) (e.getPlayer().getY() * 80) + 20,
+                        (int) x,
+                        (int) y
+                );
+            }
         }
 
- */
+
         Ray r = new Ray(e.getPlayer().getAngle(), e.getPlayer(), e.getRoom());
         r.calcDRay(e.getPlayer().getAngle(), e.getPlayer(), e.getRoom());
 
         g.setColor(Color.blue);
         g.drawLine(
-                (int)e.getPlayer().getX()*80,
-                (int)e.getPlayer().getY()*80+20,
+                (int) (e.getPlayer().getX() *80),
+                (int) (e.getPlayer().getY() *80) + 20,
                 (int)r.getColPos().getX(),
                 (int)r.getColPos().getY()+20
             );
 
         g.setColor(Color.DARK_GRAY);
-        g.fillRect((int)e.getPlayer().getX()*80-10, (int)e.getPlayer().getY()*80 + 10, 20, 20);
+        g.fillRect((int)(e.getPlayer().getX()*80)-10, (int)(e.getPlayer().getY()*80) + 10, 20, 20);
     }
     public static boolean JHere(int x, int y, Player p){
         if (x == p.getX() && y == p.getY())
