@@ -1,4 +1,4 @@
-package fr.cubibox.jeux.utils;
+package fr.cubibox.backroom2_5d.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

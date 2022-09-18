@@ -1,8 +1,7 @@
-package fr.cubibox.jeux.io;
+package fr.cubibox.backroom2_5d.io;
 
-import fr.cubibox.jeux.main;
+import fr.cubibox.backroom2_5d.main;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

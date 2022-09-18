@@ -1,9 +1,9 @@
-package fr.cubibox.jeux.io;
+package fr.cubibox.backroom2_5d.io;
 
-import fr.cubibox.jeux.game.Player;
-import fr.cubibox.jeux.engine.Engine;
-import fr.cubibox.jeux.engine.Ray;
-import fr.cubibox.jeux.main;
+import fr.cubibox.backroom2_5d.game.Player;
+import fr.cubibox.backroom2_5d.engine.Engine;
+import fr.cubibox.backroom2_5d.engine.Ray;
+import fr.cubibox.backroom2_5d.main;
 
 import javax.swing.*;
 import java.awt.*;

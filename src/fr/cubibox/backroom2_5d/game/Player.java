@@ -1,8 +1,6 @@
-package fr.cubibox.jeux.game;
+package fr.cubibox.backroom2_5d.game;
 
-import fr.cubibox.jeux.engine.Ray;
-
-import java.awt.*;
+import fr.cubibox.backroom2_5d.engine.Ray;
 
 public class Player {
     private float x;

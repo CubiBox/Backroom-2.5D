@@ -1,7 +1,7 @@
-package fr.cubibox.jeux.engine;
+package fr.cubibox.backroom2_5d.engine;
 
-import fr.cubibox.jeux.game.Map;
-import fr.cubibox.jeux.game.Player;
+import fr.cubibox.backroom2_5d.game.Map;
+import fr.cubibox.backroom2_5d.game.Player;
 
 import java.util.ArrayList;
 

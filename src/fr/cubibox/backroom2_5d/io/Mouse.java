@@ -1,11 +1,10 @@
-package fr.cubibox.jeux.io;
+package fr.cubibox.backroom2_5d.io;
 
-import fr.cubibox.jeux.engine.Engine;
-import fr.cubibox.jeux.main;
+import fr.cubibox.backroom2_5d.engine.Engine;
+import fr.cubibox.backroom2_5d.main;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class Mouse implements MouseMotionListener {

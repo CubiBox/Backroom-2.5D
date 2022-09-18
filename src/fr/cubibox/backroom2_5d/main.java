@@ -1,11 +1,11 @@
-package fr.cubibox.jeux;
+package fr.cubibox.backroom2_5d;
 
-import fr.cubibox.jeux.engine.Engine;
-import fr.cubibox.jeux.engine.Ray;
-import fr.cubibox.jeux.game.Map;
-import fr.cubibox.jeux.game.Player;
-import fr.cubibox.jeux.io.GraphicSwg;
-import fr.cubibox.jeux.io.GraphicSwg2D;
+import fr.cubibox.backroom2_5d.engine.Engine;
+import fr.cubibox.backroom2_5d.engine.Ray;
+import fr.cubibox.backroom2_5d.game.Map;
+import fr.cubibox.backroom2_5d.game.Player;
+import fr.cubibox.backroom2_5d.io.GraphicSwg;
+import fr.cubibox.backroom2_5d.io.GraphicSwg2D;
 
 import javax.swing.*;
 import java.io.File;

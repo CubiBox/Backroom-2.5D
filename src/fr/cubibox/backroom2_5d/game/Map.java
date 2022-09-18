@@ -1,8 +1,7 @@
-package fr.cubibox.jeux.game;
+package fr.cubibox.backroom2_5d.game;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 
 public class Map {
     private File mapFile;

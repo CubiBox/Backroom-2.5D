@@ -1,4 +1,4 @@
-package fr.cubibox.jeux.utils;
+package fr.cubibox.backroom2_5d.utils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
