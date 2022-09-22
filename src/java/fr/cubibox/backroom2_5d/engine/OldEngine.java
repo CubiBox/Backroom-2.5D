@@ -5,7 +5,7 @@ import fr.cubibox.backroom2_5d.game.Player;
 
 import java.util.ArrayList;
 
-public class Engine {
+public class OldEngine {
     private Map room;
     private Player player;
     private ArrayList<Ray> rays = new ArrayList<>();
@@ -13,12 +13,11 @@ public class Engine {
     public static int WIDTH;
     public static int HEIGHT;
 
-    public Engine(Map room, Player player, int width, int height) {
+    public OldEngine(Map room, Player player, int width, int height) {
         this.room = room;
         this.player = player;
         WIDTH = width;
         HEIGHT = height;
-        rays = Ray.setRays(player,room);
     }
 
 
