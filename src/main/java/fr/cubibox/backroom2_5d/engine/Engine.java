@@ -91,15 +91,7 @@ public class Engine implements Runnable {
         return true;
     }
 
-
-
-
     private void updateRay(Ray r) {
-        float x = r.getStartX();
-        float y = r.getStartY();
-        float angle = r.getAngle();
-
-        Chunk c = map.getMapContent()[(int) (player.getY() / Chunk.CHUNK_SIZE)][(int) (player.getX() / Chunk.CHUNK_SIZE)];
     }
 
     public void start() {

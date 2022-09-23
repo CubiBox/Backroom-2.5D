@@ -1,6 +1,5 @@
 package fr.cubibox.backroom2_5d;
 
-import fr.cubibox.backroom2_5d.engine.OldRay;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.entities.Player;
@@ -48,7 +47,7 @@ public class Controller2D implements Initializable {
 
             if (now - last > INTERVAL) {
                 drawFunction();
-                Main.getEngine().getPlayer().setRays(OldRay.setRays(Main.getEngine().getPlayer(), Main.getEngine().getMap()));
+                //Main.getEngine().getPlayer().setRays(OldRay.setRays(Main.getEngine().getPlayer(), Main.getEngine().getMap()));
                 last = now;
             }
         }
@@ -74,11 +73,11 @@ public class Controller2D implements Initializable {
         coordinateSystem.getChildren().add(new Circle(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()),2, Color.RED));
 
         //draw the player's rays
-        for (OldRay r : p.getRays()){
+        /*for (OldRay r : p.getRays()){
             Line l = new Line(r.getColPos().getX(),r.getColPos().getY(),Main.toScreenX(p.getX()),Main.toScreenY(p.getY()));
             l.setStroke(Color.RED);
             coordinateSystem.getChildren().add(l);
-        }
+        }*/
 
         coordinateSystem.getChildren().add(drawPoint(8f,8f));
 

@@ -1,6 +1,5 @@
 package fr.cubibox.backroom2_5d.entities;
 
-import fr.cubibox.backroom2_5d.engine.OldRay;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 
 import java.util.ArrayList;
@@ -8,13 +7,12 @@ import java.util.ArrayList;
 public class Player extends Entity {
     private float fov;
 
-    private ArrayList<OldRay> rays = new ArrayList<>();
-
     public Player(float x, float y, float fov) {
         super(x, y);
         this.fov = fov;
     }
 
+    /*
     public void Avancer(float x){
         int axisX = 1;
         float angle = super.getAngle();
@@ -48,16 +46,7 @@ public class Player extends Entity {
             this.y += (float)Math.sin(angle)/axisX * (axisX*x);
         }
         System.out.println(this.x + "; " + this.y);
-    }
-
-
-    public ArrayList<OldRay> getRays() {
-        return rays;
-    }
-
-    public void setRays(ArrayList<OldRay> rays) {
-        this.rays = rays;
-    }
+    }*/
 
     public float getX() {
         return super.getPosition().getX();
