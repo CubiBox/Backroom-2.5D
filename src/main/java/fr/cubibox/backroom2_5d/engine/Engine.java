@@ -1,6 +1,7 @@
 package fr.cubibox.backroom2_5d.engine;
 
 import fr.cubibox.backroom2_5d.game.Chunk;
+import fr.cubibox.backroom2_5d.game.Edge;
 import fr.cubibox.backroom2_5d.game.Map;
 
 import java.util.ArrayList;
@@ -56,6 +57,34 @@ public class Engine implements Runnable {
         }
 
         rays = tempRays;
+    }
+
+    private Edge getNearestLine(Player p, Ray r, ArrayList<Edge> egdes){
+        //get the nearest edge from the player
+        return null;
+    }
+
+    private Edge getDistanceRay(Player p, Ray r, ArrayList<Edge> egdes){
+        //set the DRay
+        //set the intersect's points
+        return null;
+    }
+
+    private ArrayList<Chunk> findChunkTravel(Ray r, Map map){
+        Chunk[][] chunks = map.getMapContent();
+        ArrayList<Chunk> chunkTravel = new ArrayList<>();
+        for (Chunk[] tablChunks : chunks)
+            for (Chunk chunk : tablChunks)
+                if(isOnChunk(r, chunk.getOriginX(), chunk.getOriginY()))
+                    chunkTravel.add(chunk);
+        return chunkTravel;
+    }
+    private boolean isOnChunk(Ray r, int cX, int cY){
+        if (cX < r.getStartX() && cX+16 > r.getIntersectionX())
+            return false;
+        if (cY < r.getStartY() && cY+16 > r.getIntersectionY())
+            return false;
+        return true;
     }
 
     private void updateRay(Ray r) {

@@ -27,6 +27,22 @@ public class Chunk {
         return isLoad;
     }
 
+    public int getOriginX() {
+        return originX;
+    }
+
+    public void setOriginX(int originX) {
+        this.originX = originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+
+    public void setOriginY(int originY) {
+        this.originY = originY;
+    }
+
     public void setLoad(boolean load) {
         isLoad = load;
     }
