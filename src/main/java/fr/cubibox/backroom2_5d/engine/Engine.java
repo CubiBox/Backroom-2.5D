@@ -84,7 +84,6 @@ public class Engine implements Runnable {
             rY2 = temp;
         }
 
-
         if (cX < rX && cX+16 > rX2)
             return false;
         if (cY < rY && cY+16 > rY2)
