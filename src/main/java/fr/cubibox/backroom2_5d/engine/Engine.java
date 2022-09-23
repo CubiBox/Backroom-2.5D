@@ -1,5 +1,6 @@
 package fr.cubibox.backroom2_5d.engine;
 
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
@@ -54,13 +55,13 @@ public class Engine implements Runnable {
         rays = tempRays;
     }
 
-    private ArrayList<Chunk> findTraveledChunk(Ray r){
+    private ArrayList<Chunk> findTraveledChunk(Ray r) {
         ArrayList<Chunk> chunksFound = new ArrayList<>();
         Chunk[][] chunks = this.getMap().getMapContent();
 
-        for(Chunk[] LineChunk : chunks)
-            for(Chunk chunk : LineChunk)
-                if (isOnChunk(r,chunk.getOriginX(), chunk.getOriginY()))
+        for (Chunk[] LineChunk : chunks)
+            for (Chunk chunk : LineChunk)
+                if (isOnChunk(r, chunk.getOriginX(), chunk.getOriginY()))
                     chunksFound.add(chunk);
 
         return chunksFound;
@@ -72,23 +73,34 @@ public class Engine implements Runnable {
         float rY = r.getStartY();
         float rY2 = r.getIntersectionY();
 
-        if (rX < rX2){
+        if (rX < rX2) {
             float temp = rX;
             rX = rX2;
             rX2 = temp;
         }
 
-        if (rY < rY2){
+        if (rY < rY2) {
             float temp = rY;
             rY = rY2;
             rY2 = temp;
         }
 
-        if (cX < rX && cX+16 > rX2)
+        if (cX < rX && cX + 16 > rX2)
             return false;
-        if (cY < rY && cY+16 > rY2)
+        if (cY < rY && cY + 16 > rY2)
             return false;
         return true;
+    }
+
+    private Line2F nearestLine(Ray r, ArrayList<Line2F> lines) {
+        //retourne la Line la plus proche du joueur a partir d'une liste de lignes
+        return null;
+    }
+
+    private void calculDistanceRay(Ray r, Line2F line) {
+        //actualise la distance entre la line et le joueur du Rayon (DRay)
+
+        //actualise egalement le intersectionPoint du Rayon
     }
 
     private void updateRay(Ray r) {
