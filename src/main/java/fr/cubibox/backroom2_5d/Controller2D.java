@@ -3,7 +3,7 @@ package fr.cubibox.backroom2_5d;
 import fr.cubibox.backroom2_5d.engine.OldRay;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.engine.Player;
+import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Polygon;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -48,7 +48,7 @@ public class Controller2D implements Initializable {
 
             if (now - last > INTERVAL) {
                 drawFunction();
-                Main.getEngine().getPlayer().setRays(OldRay.setRays(Main.getEngine().getPlayer(), Main.getEngine().getRoom()));
+                Main.getEngine().getPlayer().setRays(OldRay.setRays(Main.getEngine().getPlayer(), Main.getEngine().getMap()));
                 last = now;
             }
         }
@@ -71,7 +71,7 @@ public class Controller2D implements Initializable {
 
         //draw the player's point
         Player p = Main.getEngine().getPlayer();
-        coordinateSystem.getChildren().add(new Circle(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()),1, Color.RED));
+        coordinateSystem.getChildren().add(new Circle(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()),2, Color.RED));
 
         //draw the player's rays
         for (OldRay r : p.getRays()){
@@ -86,7 +86,7 @@ public class Controller2D implements Initializable {
         int counPol = 0;
         int xChunk = 0;
         int yChunk = 0;
-        for (Chunk[] chunkL : Main.getEngine().getRoom().getMapContent()){
+        for (Chunk[] chunkL : Main.getEngine().getMap().getMapContent()){
             for (Chunk chunk : chunkL){
                 if (chunk.getPols() != null)
                     for (Polygon pol : chunk.getPols()){
@@ -111,27 +111,27 @@ public class Controller2D implements Initializable {
         Color gray2 = Color.rgb(70,70,70);
         Rectangle r;
 
-        for (int i = 0; i< Main.getySize(); i+=8)
+        for (int i = 0; i< Main.getEngine().getMap().getSize(); i+=8)
             for (int j=1; j<=7; j++) {
                 r = new Rectangle(0, Main.toScreenY(i + j)-1, w, 2.0);
                 r.setFill(gray1);
                 rectangles.add(r);
             }
 
-        for (int i = 0; i< Main.getxSize(); i+=8)
+        for (int i = 0; i< Main.getEngine().getMap().getSize(); i+=8)
             for (int j=1; j<=7; j++) {
                 r = new Rectangle(Main.toScreenX(i + j)-1, 0, 2.0, h);
                 r.setFill(gray1);
                 rectangles.add(r);
             }
 
-        for (int i = 0; i< Main.getySize(); i+=8) {
+        for (int i = 0; i< Main.getEngine().getMap().getSize(); i+=8) {
             r = new Rectangle(0, Main.toScreenY(i)-1.25, w, 2.5);
             r.setFill(gray2);
             rectangles.add(r);
         }
 
-        for (int i = 0; i< Main.getxSize(); i+=8) {
+        for (int i = 0; i< Main.getEngine().getMap().getSize(); i+=8) {
             r = new Rectangle(Main.toScreenX(i)-1.25, 0, 2.5, h);
             r.setFill(gray2);
             rectangles.add(r);

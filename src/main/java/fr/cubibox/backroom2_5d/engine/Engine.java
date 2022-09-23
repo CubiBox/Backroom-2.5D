@@ -1,5 +1,6 @@
 package fr.cubibox.backroom2_5d.engine;
 
+import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 
@@ -7,22 +8,17 @@ import java.util.ArrayList;
 
 public class Engine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");
-    private int rayCount, height, width;
+    private int rayCount;
     private Map map;
     private Player player;
 
     private float fov = 90;
-
-
     private ArrayList<Ray> rays = new ArrayList<>();
-
     public boolean shouldStop = false;
 
 
-    public Engine(int rayCount, int width, int height, Player player, Map map) {
+    public Engine(int rayCount, Player player, Map map) {
         this.rayCount = rayCount;
-        this.height = height;
-        this.width = width;
         this.player = player;
         this.map = map;
     }
@@ -64,7 +60,6 @@ public class Engine implements Runnable {
         float angle = r.getAngle();
 
         Chunk c = map.getMapContent()[(int) (player.getY() / Chunk.CHUNK_SIZE)][(int) (player.getX() / Chunk.CHUNK_SIZE)];
-
 
     }
 

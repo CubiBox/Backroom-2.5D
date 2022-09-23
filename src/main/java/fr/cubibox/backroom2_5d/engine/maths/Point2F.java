@@ -27,4 +27,31 @@ public class Point2F {
     public String toString() {
         return "[" + (int)this.x + ";" + (int)this.y + "]";
     }
+
+
+    public void addToX(float x){
+        this.x += x;
+    }
+
+    public void addToY(float y){
+        this.y += y;
+    }
+
+    public void add(Point2F p){
+        this.x += p.getX();
+        this.y += p.getY();
+    }
+
+    public void sub(Point2F p){
+        this.x -= p.getX();
+        this.y -= p.getY();
+    }
+
+    public void subToX(float x){
+        this.x -= x;
+    }
+
+    public void subToY(float y){
+        this.y -= y;
+    }
 }

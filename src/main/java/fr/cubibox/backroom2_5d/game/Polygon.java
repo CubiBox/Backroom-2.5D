@@ -1,6 +1,7 @@
 package fr.cubibox.backroom2_5d.game;
 
 import fr.cubibox.backroom2_5d.Main;
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -8,7 +9,7 @@ import javafx.scene.shape.Shape;
 import java.util.ArrayList;
 
 public class Polygon {
-    private ArrayList<Edge> edges = new ArrayList<>();
+    private ArrayList<Line2F> edges = new ArrayList<>();
     private ArrayList<Point2F> points = new ArrayList<>();
     private float height;
     private String id;
@@ -23,10 +24,10 @@ public class Polygon {
         this.height = height;
         if (!points.isEmpty()) {
             this.points = points;
-            setupEdges();
+            setupEdges(Main.getEngine().getMap().getSize());
         }
     }
-    public Polygon(ArrayList<Edge> edges, float height, String id){
+    public Polygon(ArrayList<Line2F> edges, float height, String id){
         this.isLine = false;
         this.height = height;
         this.edges = edges;
@@ -38,34 +39,33 @@ public class Polygon {
         this.height = height;
         if (!points.isEmpty()) {
             this.points = points;
-            setupEdges();
+            setupEdges(Main.getEngine().getMap().getSize());
         }
     }
-    public Polygon(ArrayList<Edge> edges, ArrayList<Point2F> points, float height, String id, boolean isLine){
+    public Polygon(ArrayList<Line2F> edges, ArrayList<Point2F> points, float height, String id, boolean isLine, int mapSize){
         this.isLine = isLine;
         this.height = height;
         this.points = points;
         this.id = id;
         if (!points.isEmpty()) {
             this.points = points;
-            setupEdges();
+            setupEdges(mapSize);
         }
-
     }
 
-    public void setupEdges(){
+    public void setupEdges(int mapSize){
         edges = new ArrayList<>();
         int pSize = points.size() - 1;
         double[] polPoints = new double[points.size()*2];
 
         for (int countP = 0; countP < pSize; countP ++){
-            edges.add(new Edge(points.get(countP),points.get(countP+1)));
+            edges.add(new Line2F(points.get(countP),points.get(countP+1)));
         }
         int countP = 0;
         for (Point2F p : points){
-            polPoints[countP] = Main.toScreenX(p.getX());
+            polPoints[countP] = Main.toScreenX(p.getX(), mapSize);
             countP ++;
-            polPoints[countP] = Main.toScreenY(p.getY());
+            polPoints[countP] = Main.toScreenY(p.getY(), mapSize);
             countP ++;
         }
         if (this.isLine == true) {
@@ -75,7 +75,7 @@ public class Polygon {
             this.polShape.setStroke(Color.CYAN);
         }
         else {
-            edges.add(new Edge(points.get(pSize), points.get(0)));
+            edges.add(new Line2F(points.get(pSize), points.get(0)));
             this.polShape = new javafx.scene.shape.Polygon(polPoints);
             this.polShape.setFill(Color.TRANSPARENT);
             this.polShape.setStrokeWidth(2.0);
@@ -85,7 +85,7 @@ public class Polygon {
 
     public String toString(){
         String out = "$"+id+"\n";
-        for (Edge e : edges){
+        for (Line2F e : edges){
             out += e.toString();
         }
         out += "\t\t%" + (int)height + "\n";
@@ -129,11 +129,11 @@ public class Polygon {
         this.polShape = polShape;
     }
 
-    public ArrayList<Edge> getEdges() {
+    public ArrayList<Line2F> getEdges() {
         return edges;
     }
 
-    public void setEdges(ArrayList<Edge> edges) {
+    public void setEdges(ArrayList<Line2F> edges) {
         this.edges = edges;
     }
 

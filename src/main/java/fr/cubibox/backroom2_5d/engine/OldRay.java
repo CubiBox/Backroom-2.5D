@@ -1,7 +1,7 @@
 package fr.cubibox.backroom2_5d.engine;
 
-import fr.cubibox.backroom2_5d.Main;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
+import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Map;
 
 import java.util.ArrayList;
@@ -88,18 +88,18 @@ public class OldRay {
     public boolean isColision(float x, float y, Map map){
         int postX = (int)(1000*(x));
         int postY = (int)(1000*(y));
-        if (postY > Main.xSize*1000 || postX > Main.xSize*1000 || postY < 0 || postX < 0){ // || map.getMapContent()[postY/1000][postX/1000] == 1) {
+        /*if (postY > Main.xSize*1000 || postX > Main.xSize*1000 || postY < 0 || postX < 0){ // || map.getMapContent()[postY/1000][postX/1000] == 1) {
             return true;
-        }
+        }*/
         return false;
     }
 
     public boolean isColision2(float x, float y, Map map){
         int postX = (int)(1000*(x));
         int postY = (int)(1000*(y));
-        if (postY > Main.xSize || postX > Main.xSize || postY < 0 || postX < 0){ //|| map.getMapContent()[postX/1000][postY/1000] == 1) {
+        /*if (postY > Main.xSize || postX > Main.xSize || postY < 0 || postX < 0){ //|| map.getMapContent()[postX/1000][postY/1000] == 1) {
             return true;
-        }
+        }*/
         return false;
     }
 

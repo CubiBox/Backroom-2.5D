@@ -1,5 +1,6 @@
 package fr.cubibox.backroom2_5d.engine;
 
+import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Map;
 
 public class OldEngine {

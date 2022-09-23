@@ -2,7 +2,7 @@ package fr.cubibox.backroom2_5d;
 
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.engine.Player;
+import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Polygon;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -80,7 +80,7 @@ public class Controller3D implements Initializable {
         int counPol = 0;
         int xChunk = 0;
         int yChunk = 0;
-        for (Chunk[] chunkL : Main.getEngine().getRoom().getMapContent()){
+        for (Chunk[] chunkL : Main.getEngine().getMap().getMapContent()){
             for (Chunk chunk : chunkL){
                 if (chunk.getPols() != null)
                     for (Polygon pol : chunk.getPols()){
@@ -105,6 +105,7 @@ public class Controller3D implements Initializable {
         Color gray2 = Color.rgb(70,70,70);
         Rectangle r;
 
+        /*
         for (int i = 0; i< Main.getySize(); i+=8)
             for (int j=1; j<=7; j++) {
                 r = new Rectangle(0, Main.toScreenY(i + j)-1, w, 2.0);
@@ -129,7 +130,7 @@ public class Controller3D implements Initializable {
             r = new Rectangle(Main.toScreenX(i)-1.25, 0, 2.5, h);
             r.setFill(gray2);
             rectangles.add(r);
-        }
+        }*/
 
         r = new Rectangle(w/2-1, 0, 2, h);
         r.setFill(Color.rgb(160,160,160));
