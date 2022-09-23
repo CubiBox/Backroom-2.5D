@@ -36,7 +36,7 @@ public class Controller2D implements Initializable {
     private Button importer;
 
 
-    private int paneWidth = 300;
+    private final int paneWidth = 300;
 
     private class Movement extends AnimationTimer {
         private long last = 0;
