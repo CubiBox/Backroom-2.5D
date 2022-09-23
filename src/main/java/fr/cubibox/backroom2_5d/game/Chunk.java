@@ -10,9 +10,11 @@ public class Chunk {
     // TODO
     private int originX, originY;
 
-    public Chunk(ArrayList<Polygon> pols) {
+    public Chunk(ArrayList<Polygon> pols, int x, int y) {
         this.pols = pols;
         this.isLoad = false;
+        this.originX = x;
+        this.originY = y;
     }
 
     public ArrayList<Polygon> getPols() {
@@ -29,5 +31,21 @@ public class Chunk {
 
     public void setLoad(boolean load) {
         isLoad = load;
+    }
+
+    public int getOriginX() {
+        return originX;
+    }
+
+    public void setOriginX(int originX) {
+        this.originX = originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+
+    public void setOriginY(int originY) {
+        this.originY = originY;
     }
 }

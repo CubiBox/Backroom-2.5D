@@ -202,7 +202,7 @@ public class Map {
 
                     //Finish the currentChunk
                     if (r=='!'){
-                        chunks[tempCY][tempCX] = new Chunk(currentPolys);
+                        chunks[tempCY][tempCX] = new Chunk(currentPolys, tempCX, tempCY);
                         currentPolys = new ArrayList<>();
                     }
                 }

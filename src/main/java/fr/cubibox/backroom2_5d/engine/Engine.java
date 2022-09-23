@@ -54,13 +54,53 @@ public class Engine implements Runnable {
         rays = tempRays;
     }
 
+    private ArrayList<Chunk> findTraveledChunk(Ray r){
+        ArrayList<Chunk> chunksFound = new ArrayList<>();
+        Chunk[][] chunks = this.getMap().getMapContent();
+
+        for(Chunk[] LineChunk : chunks)
+            for(Chunk chunk : LineChunk)
+                if (isOnChunk(r,chunk.getOriginX(), chunk.getOriginY()))
+                    chunksFound.add(chunk);
+
+        return chunksFound;
+    }
+
+    private boolean isOnChunk(Ray r, int cX, int cY) {
+        float rX = r.getStartX();
+        float rX2 = r.getIntersectionX();
+        float rY = r.getStartY();
+        float rY2 = r.getIntersectionY();
+
+        if (rX < rX2){
+            float temp = rX;
+            rX = rX2;
+            rX2 = temp;
+        }
+
+        if (rY < rY2){
+            float temp = rY;
+            rY = rY2;
+            rY2 = temp;
+        }
+
+
+        if (cX < rX && cX+16 > rX2)
+            return false;
+        if (cY < rY && cY+16 > rY2)
+            return false;
+        return true;
+    }
+
+
+
+
     private void updateRay(Ray r) {
         float x = r.getStartX();
         float y = r.getStartY();
         float angle = r.getAngle();
 
         Chunk c = map.getMapContent()[(int) (player.getY() / Chunk.CHUNK_SIZE)][(int) (player.getX() / Chunk.CHUNK_SIZE)];
-
     }
 
     public void start() {
