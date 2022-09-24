@@ -48,7 +48,7 @@ public class Controller3D implements Initializable {
         public void handle(long now) {
             if (now - last > INTERVAL) {
                 drawFunction();
-                Main.getEngine().getPlayer().Avancer(0.01f);
+                //Main.getEngine().getPlayer().Avancer(0.01f);
                 last = now;
             }
         }

@@ -6,6 +6,7 @@ import fr.cubibox.backroom2_5d.engine.Engine;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.entities.Player;
 
+import fr.cubibox.backroom2_5d.utils.ImageUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,7 +36,7 @@ public class Main extends Application {
             switch (e.getCode().getCode()){
                 case 90 :
                 case 38 :
-                    p.Avancer(0.2f);
+                    //p.Avancer(0.2f);
                     break;
                 case 39 : p.setAngle(p.getAngle() + 10f);
                     break;
@@ -52,6 +53,7 @@ public class Main extends Application {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         Map map = Map.importMap(new File("map1.map"));
+        ImageUtils.writeImage("test.png", ImageUtils.placeHolder());
         engine = new Engine(
                 16,
                 new Player(16, 16, 80),
