@@ -64,7 +64,11 @@ public class Ray {
         return intersectionPoint.getY();
     }
 
-    public Point2F getIntersectionPoint() {
-        return intersectionPoint;
+    public void setIntersectionX(float x) {
+        intersectionPoint.setX(x);
+    }
+
+    public void setIntersectionY(float y) {
+        intersectionPoint.setY(y);
     }
 }

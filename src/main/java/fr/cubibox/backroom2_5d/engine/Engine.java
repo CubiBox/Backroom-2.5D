@@ -4,6 +4,7 @@ import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 
@@ -92,15 +93,66 @@ public class Engine implements Runnable {
         return true;
     }
 
-    private Line2F nearestLine(Ray r, ArrayList<Line2F> lines) {
-        //retourne la Line la plus proche du joueur a partir d'une liste de lignes
-        return null;
+    /**
+     * Retourne la Line la plus proche du joueur a partir d'une liste de lignes
+     */
+    private Line2F getNearestLine(Ray r, ArrayList<Line2F> lines) {
+        Line2F tempLine = null;
+        for (Line2F line : lines) {
+            if (tempLine == null) {
+                tempLine = line;
+            }
+
+            float dxPointA = line.getA().getX() - r.getStartX();
+            float dyPointA = line.getA().getY() - r.getStartY();
+            float dxPointB = line.getB().getX() - r.getStartX();
+            float dyPointB = line.getB().getY() - r.getStartY();
+
+            float dxTempPointA = tempLine.getA().getX() - r.getStartX();
+            float dyTempPointA = tempLine.getA().getY() - r.getStartY();
+            float dxTempPointB = tempLine.getB().getX() - r.getStartX();
+            float dyTempPointB = tempLine.getB().getY() - r.getStartY();
+
+            if ((dxPointA * dxPointA + dyPointA * dyPointA) < (dxTempPointA * dxTempPointA + dyTempPointA * dyTempPointA) ||
+                    (dxPointB * dxPointB + dyPointB * dyPointB) < (dxTempPointB * dxTempPointB + dyTempPointB * dyTempPointB)) {
+                tempLine = line;
+            }
+
+        }
+        return tempLine;
     }
 
-    private void calculDistanceRay(Ray r, Line2F line) {
-        //actualise la distance entre la line et le joueur du Rayon (DRay)
+    /**
+     * @param r
+     * @param line
+     *
+     * actualise la distance entre la line et le joueur du Rayon (DRay)
+     * actualise egalement le intersectionPoint du Rayon
+     */
 
-        //actualise egalement le intersectionPoint du Rayon
+    private float computeSquareRayDistance(Ray r, Line2F line) {
+        float x1 = line.getA().getX();
+        float y1 = line.getA().getY();
+        float x2 = line.getB().getX();
+        float y2 = line.getB().getY();
+        float x3 = r.getStartX();
+        float y3 = r.getStartY();
+        float x4 = r.getIntersectionX();
+        float y4 = r.getIntersectionY();
+
+        float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+        if (d != 0) {
+            float xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
+            float yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+
+            r.setIntersectionX(xi);
+            r.setIntersectionY(yi);
+
+            return ((xi - x3) * (xi - x3) + (yi - y3) * (yi - y3));
+        }
+
+        return Float.POSITIVE_INFINITY;
     }
 
     private void updateRay(Ray r) {
