@@ -1,6 +1,7 @@
 package fr.cubibox.backroom2_5d;
 
 import fr.cubibox.backroom2_5d.engine.Ray;
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.entities.Player;
@@ -80,6 +81,7 @@ public class Controller2D implements Initializable {
 
                 if (r.getAngle() == p.getAngle()) {
                     l.setStroke(Color.RED);
+                    System.out.println(r.getIntersectionX() + ", " + r.getIntersectionY());
                 } else {
                     l.setStroke(Color.BLUE);
                 }
@@ -101,6 +103,14 @@ public class Controller2D implements Initializable {
                         if (counPol != Integer.parseInt(pol.getId())){
                             coordinateSystem.getChildren().add(pol.getPolShape());
                             counPol++;
+                            for (Line2F l : pol.getEdges()){
+                                if (l.getView()){
+                                    Line ln = new Line(Main.toScreenX(l.getA().getX()), Main.toScreenY(l.getA().getY()), Main.toScreenX(l.getB().getX()), Main.toScreenY(l.getB().getY()));
+                                    ln.setStroke(Color.RED);
+                                    coordinateSystem.getChildren().add(ln);
+                                }
+                                l.isNotView();
+                            }
                         }
                     }
                 xChunk++;
