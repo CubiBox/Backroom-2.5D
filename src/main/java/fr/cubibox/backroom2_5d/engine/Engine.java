@@ -2,27 +2,26 @@ package fr.cubibox.backroom2_5d.engine;
 
 import fr.cubibox.backroom2_5d.Main;
 import fr.cubibox.backroom2_5d.engine.maths.Line2F;
-import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.game.Polygon;
-import javafx.scene.shape.Line;
+import fr.cubibox.backroom2_5d.io.Keyboard;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 
 public class Engine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");
+    private final Player player;
+    public boolean shouldStop = false;
     private int rayCount;
     private Map map;
-    private Player player;
-
     private float fov = 90;
     private ArrayList<Ray> rays = new ArrayList<>();
-    public boolean shouldStop = false;
 
 
     public Engine(int rayCount, Player player, Map map) {
@@ -35,12 +34,31 @@ public class Engine implements Runnable {
     public void run() {
         while (!shouldStop) {
             updateRays();
+            updatePlayer();
 
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    private void updatePlayer() {
+        Keyboard keyboard = Main.getKeyboard();
+
+        if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
+            player.setX(player.getX() + (float) Math.cos(player.getAngle() * RADIAN_PI_2) * 0.05f);
+            player.setY(player.getY() + (float) Math.sin(player.getAngle() * RADIAN_PI_2) * 0.05f);
+        } else if (keyboard.isKeyPressed(KeyEvent.VK_S)) {
+            player.setX(player.getX() + (float) Math.cos(player.getAngle() * RADIAN_PI_2) * -0.05f);
+            player.setY(player.getY() + (float) Math.sin(player.getAngle() * RADIAN_PI_2) * -0.05f);
+        }
+
+        if (keyboard.isKeyPressed(KeyEvent.VK_Q)) {
+            player.setAngle(player.getAngle() - 1f);
+        } else if (keyboard.isKeyPressed(KeyEvent.VK_D)) {
+            player.setAngle(player.getAngle() + 1f);
         }
     }
 
@@ -67,9 +85,7 @@ public class Engine implements Runnable {
         Chunk[][] chunks = this.getMap().getMapContent();
 
         for (Chunk[] LineChunk : chunks)
-            for (Chunk chunk : LineChunk)
-                //if (isOnChunk(r, chunk.getOriginX(), chunk.getOriginY()))
-                    chunksFound.add(chunk);
+            Collections.addAll(chunksFound, LineChunk);
 
         return chunksFound;
     }
@@ -77,8 +93,8 @@ public class Engine implements Runnable {
     private Line2F getIntersectEdge(Ray r, ArrayList<Chunk> chunks) {
         Line2F edgeFound = null;
         float dRay = 1024;
-        float tempX = 0;
-        float tempY = 0;
+        float tempX = r.getIntersectionX();
+        float tempY = r.getIntersectionY();
 
         //Chunk chunk = map.getMapContent()[0][0];
         for (Chunk chunk : chunks) {
@@ -103,11 +119,11 @@ public class Engine implements Runnable {
                     float s, t;
                     float v = -s2_x * s1_y + s1_x * s2_y;
                     s = (-s1_y * (p1X - p3X) + s1_x * (p1Y - p3Y)) / v;
-                    t = ( s2_x * (p1Y - p3Y) - s2_y * (p1X - p3X)) / v;
+                    t = (s2_x * (p1Y - p3Y) - s2_y * (p1X - p3X)) / v;
 
-                    if (s >= 0 && s <= 1 && t >= 0 && t <= 1){
-                        float intx = p1X + (t*s1_x);
-                        float inty = p1Y + (t*s1_y);
+                    if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
+                        float intx = p1X + (t * s1_x);
+                        float inty = p1Y + (t * s1_y);
 
                         float tempdRay = computeSquareRayDistance(r, intx, inty);
                         if (tempdRay < dRay) {
@@ -147,10 +163,7 @@ public class Engine implements Runnable {
         if (cX < rX && cX + 16 > rX2)
             return false;
 
-        if (cY < rY && cY + 16 > rY2)
-            return false;
-
-        return true;
+        return !(cY < rY) || !(cY + 16 > rY2);
     }
 
     /**
@@ -183,9 +196,6 @@ public class Engine implements Runnable {
     }
 
     /**
-     * @param r
-     * @param line
-     *
      * actualise la distance entre la line et le joueur du Rayon (DRay)
      * actualise egalement le intersectionPoint du Rayon
      */
@@ -194,10 +204,10 @@ public class Engine implements Runnable {
         float x1 = r.getStartX();
         float y1 = r.getStartY();
 
-        float dx = x1-x;
-        float dy = y1-y;
+        float dx = x1 - x;
+        float dy = y1 - y;
 
-        return dx*dx + dy*dy;
+        return dx * dx + dy * dy;
     }
 
     private void updateRay(Ray r) {
@@ -232,12 +242,12 @@ public class Engine implements Runnable {
         this.fov = fov;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
     public Map getMap() {
         return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     public Player getPlayer() {

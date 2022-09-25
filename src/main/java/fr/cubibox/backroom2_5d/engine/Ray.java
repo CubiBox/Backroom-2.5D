@@ -10,7 +10,7 @@ import static java.lang.Math.sin;
  */
 public class Ray {
     public static final float RADIAN_PI_2 = 0.0174532925199f;
-    private static final float dist = 10f;
+    private static final float dist = 32f;
 
     private final float angle;
     private final Point2F startPoint;
@@ -20,9 +20,7 @@ public class Ray {
 
     /**
      * @param startPoint
-     * @param angle
-     *
-     * Crée un rayon à partir d'un point de départ et d'un angle
+     * @param angle      Crée un rayon à partir d'un point de départ et d'un angle
      */
     public Ray(Point2F startPoint, float angle) {
         this.squareDistance = 32f * 32f;
@@ -38,9 +36,7 @@ public class Ray {
     /**
      * @param x
      * @param y
-     * @param angle
-     *
-     * Crée un rayon à partir d'une coordonée x et y, puis d'un angle
+     * @param angle Crée un rayon à partir d'une coordonée x et y, puis d'un angle
      */
     public Ray(float x, float y, float angle) {
         this.squareDistance = 32f * 32f;
@@ -56,9 +52,7 @@ public class Ray {
     }
 
     /**
-     * @return
-     *
-     * Retourne l'angle du rayon
+     * @return Retourne l'angle du rayon
      */
     public float getAngle() {
         return angle;
@@ -80,12 +74,12 @@ public class Ray {
         return intersectionPoint.getX();
     }
 
-    public float getIntersectionY() {
-        return intersectionPoint.getY();
-    }
-
     public void setIntersectionX(float x) {
         intersectionPoint.setX(x);
+    }
+
+    public float getIntersectionY() {
+        return intersectionPoint.getY();
     }
 
     public void setIntersectionY(float y) {

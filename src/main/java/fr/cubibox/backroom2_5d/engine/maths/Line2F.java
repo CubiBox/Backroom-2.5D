@@ -1,11 +1,8 @@
 package fr.cubibox.backroom2_5d.engine.maths;
-import javafx.scene.shape.Line;
 
 public class Line2F {
     private Point2F a;
     private Point2F b;
-
-    private boolean view;
 
     public Line2F(Point2F a, Point2F b) {
         this.a = a;
@@ -32,15 +29,7 @@ public class Line2F {
         this.b = b;
     }
 
-    public void isView(){
-        this.view = true;
-    }
-
-    public void isNotView(){
-        this.view = false;
-    }
-
-    public boolean getView(){
-        return this.view;
+    public Vector2F getNormal() {
+        return new Vector2F(b.getY() - a.getY(), a.getX() - b.getX());
     }
 }

@@ -1,41 +1,32 @@
-//package fr.cubibox.backroom2_5d.io;
-//
-//import fr.cubibox.backroom2_5d.main;
-//
-//import java.awt.event.KeyEvent;
-//import java.awt.event.KeyListener;
-//
-//public class Keyboard implements KeyListener {
-//    @Override
-//    public void keyTyped(KeyEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void keyPressed(KeyEvent e){
-//        // avancer
-//        if (e.getKeyCode() == KeyEvent.VK_Z){
-//            System.out.println("avancer");
-//            main.getEngine().getPlayer().Avancer(0.1f);
-//        }
-//
-//        //gauche
-//        else if (e.getKeyCode() == KeyEvent.VK_Q){
-//        }
-//
-//        //reculer
-//        else if (e.getKeyCode() == KeyEvent.VK_S){
-//            System.out.println("avancer");
-//            main.getEngine().getPlayer().Avancer(-0.1f);
-//        }
-//
-//        //droite
-//        else if (e.getKeyCode() == KeyEvent.VK_D){
-//
-//        }
-//    }
-//
-//    @Override
-//    public void keyReleased(KeyEvent e) {
-//    }
-//}
+package fr.cubibox.backroom2_5d.io;
+
+import javafx.scene.input.KeyEvent;
+
+public class Keyboard {
+    private final boolean[] keys = new boolean[256];
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getCode().getCode() >= 0 && e.getCode().getCode() <= 255) {
+            keys[e.getCode().getCode()] = true;
+        } else {
+            System.out.println("Key not supported");
+        }
+    }
+
+    public void keyReleased(KeyEvent e) {
+        if (e.getCode().getCode() >= 0 && e.getCode().getCode() <= 255) {
+            keys[e.getCode().getCode()] = false;
+        } else {
+            System.out.println("Key not supported");
+        }
+    }
+
+    public boolean isKeyPressed(int keyCode) {
+        if (keyCode >= 0 && keyCode <= 255) {
+            return keys[keyCode];
+        } else {
+            System.out.println("Key not supported");
+            return false;
+        }
+    }
+}

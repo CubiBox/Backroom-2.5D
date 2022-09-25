@@ -1,8 +1,10 @@
-package fr.cubibox.backroom2_5d.engine.maths;
+package fr.cubibox.backroom2_5d.engine.maths.shapes;
+
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
+import fr.cubibox.backroom2_5d.engine.maths.Point2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
 import java.util.ArrayList;
-
-// TODO
 
 public class Polygon2F {
     private final ArrayList<Line2F> edges;
@@ -26,10 +28,22 @@ public class Polygon2F {
         }
     }
 
-    public Polygon2F(Point2F ... points) {
+    public Polygon2F(Point2F... points) {
         this.edges = new ArrayList<>();
         for (int i = 0; i < points.length; i++) {
             edges.add(new Line2F(points[i], points[(i + 1) % points.length]));
         }
+    }
+
+    public ArrayList<Line2F> getEdges() {
+        return edges;
+    }
+
+    public Vector2F[] getAxes() {
+        Vector2F[] axes = new Vector2F[edges.size()];
+        for (int i = 0; i < edges.size(); i++) {
+            axes[i] = edges.get(i).getNormal();
+        }
+        return axes;
     }
 }
