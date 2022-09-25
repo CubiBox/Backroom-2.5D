@@ -1,12 +1,17 @@
 package fr.cubibox.backroom2_5d.engine;
 
 import fr.cubibox.backroom2_5d.engine.maths.Line2F;
+import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
+import fr.cubibox.backroom2_5d.game.Polygon;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class Engine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");
@@ -44,7 +49,7 @@ public class Engine implements Runnable {
         float angle = player.getAngle() - fov / 2;
         float angleStep = fov / rayCount;
 
-        for (int i = 0; i < rayCount; i++) {
+        for (int i = 0; i <= rayCount; i++) {
             tempRays.add(new Ray(player.getX(), player.getY(), angle));
             angle += angleStep;
         }
@@ -62,10 +67,87 @@ public class Engine implements Runnable {
 
         for (Chunk[] LineChunk : chunks)
             for (Chunk chunk : LineChunk)
-                if (isOnChunk(r, chunk.getOriginX(), chunk.getOriginY()))
+                //if (isOnChunk(r, chunk.getOriginX(), chunk.getOriginY()))
                     chunksFound.add(chunk);
 
         return chunksFound;
+    }
+
+    private ArrayList<Line2F> getIntersectedEdges(Ray r, ArrayList<Chunk> chunks) {
+        ArrayList<Line2F> edgesFound = new ArrayList<>();
+
+        for (Chunk chunk : chunks) {
+            for (Polygon polygon : chunk.getPols()) {
+                for (Line2F edge : polygon.getEdges()) {
+                    float x1 = r.getStartX();
+                    float y1 = r.getStartY();
+                    float x2 = r.getIntersectionX();
+                    float y2 = r.getIntersectionY();
+
+                    float x3 = edge.getA().getX();
+                    float y3 = edge.getA().getY();
+                    float x4 = edge.getB().getX();
+                    float y4 = edge.getB().getY();
+
+                    float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+                    if (d != 0) {
+                        //float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / d;
+                        float u = ((x1 - x3) * (y1 - y2) - (y1 - y3) * (x1 - x2)) / d;
+
+                        if (u > 0 && u < 1) {
+                            edgesFound.add(edge);
+                        }
+                    }
+                }
+            }
+        }
+
+        return edgesFound;
+    }
+
+    private Line2F getIntersectEdge(Ray r, ArrayList<Chunk> chunks) {
+        Line2F edgeFound = null;
+
+        Chunk chunk = map.getMapContent()[0][0];
+
+            for (Polygon polygon : chunk.getPols()) {
+                for (Line2F edge : polygon.getEdges()) {
+                    float x1 = r.getStartX();
+                    float y1 = r.getStartY();
+                    float x2 = r.getIntersectionX();
+                    float y2 = r.getIntersectionY();
+
+                    float x3 = edge.getA().getX();
+                    float y3 = edge.getA().getY();
+                    float x4 = edge.getB().getX();
+                    float y4 = edge.getB().getY();
+
+                    float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+                    if (d != 0) {
+                        float xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
+                        float yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+
+                        if (xi > Math.min(x1, x2) &&
+                                xi < Math.max(x1, x2) &&
+                                yi > Math.min(y1, y2) &&
+                                yi < Math.max(y1, y2)) {
+
+                            if (edgeFound == null) {
+                                edgeFound = edge;
+                            } else {
+                                if (Math.sqrt(Math.pow(xi - x1, 2) + Math.pow(yi - y1, 2)) <
+                                        Math.sqrt(Math.pow(edgeFound.getA().getX() - x1, 2) + Math.pow(edgeFound.getA().getY() - y1, 2))) {
+                                    edgeFound = edge;
+                                }
+                            }
+                        }
+                    }
+            }
+        }
+
+        return edgeFound;
     }
 
     private boolean isOnChunk(Ray r, int cX, int cY) {
@@ -88,8 +170,10 @@ public class Engine implements Runnable {
 
         if (cX < rX && cX + 16 > rX2)
             return false;
+
         if (cY < rY && cY + 16 > rY2)
             return false;
+
         return true;
     }
 
@@ -131,14 +215,15 @@ public class Engine implements Runnable {
      */
 
     private float computeSquareRayDistance(Ray r, Line2F line) {
-        float x1 = line.getA().getX();
-        float y1 = line.getA().getY();
-        float x2 = line.getB().getX();
-        float y2 = line.getB().getY();
-        float x3 = r.getStartX();
-        float y3 = r.getStartY();
-        float x4 = r.getIntersectionX();
-        float y4 = r.getIntersectionY();
+        float x1 = r.getStartX();
+        float y1 = r.getStartY();
+        float x2 = r.getIntersectionX();
+        float y2 = r.getIntersectionY();
+
+        float x3 = line.getA().getX();
+        float y3 = line.getA().getY();
+        float x4 = line.getB().getX();
+        float y4 = line.getB().getY();
 
         float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 
@@ -149,13 +234,25 @@ public class Engine implements Runnable {
             r.setIntersectionX(xi);
             r.setIntersectionY(yi);
 
-            return ((xi - x3) * (xi - x3) + (yi - y3) * (yi - y3));
+            return (float) (Math.pow(xi, 2) + Math.pow(yi, 2));
         }
 
         return Float.POSITIVE_INFINITY;
     }
 
     private void updateRay(Ray r) {
+        ArrayList<Chunk> chunks = findTraveledChunk(r);
+        //ArrayList<Line2F> lines = getIntersectedEdges(r, chunks);
+        //Line2F nearestLine = getNearestLine(r, lines);
+
+        Line2F nearestLine = getIntersectEdge(r, chunks);
+
+        if (nearestLine != null) {
+            float squareDistance = computeSquareRayDistance(r, nearestLine);
+            if (squareDistance < r.getSquareDistance()) {
+                r.setSquareDistance(squareDistance);
+            }
+        }
     }
 
     public void start() {

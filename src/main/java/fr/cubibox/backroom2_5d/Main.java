@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
+
 public class Main extends Application {
     private static Engine engine;
     public final static float DIML = 600;
@@ -32,31 +34,44 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
             Player p = Main.getEngine().getPlayer();
-            System.out.println(e.getCode().getCode());
             switch (e.getCode().getCode()){
-                case 90 :
+                case 40 :
+                    p.setX(p.getX() + (float) Math.cos(p.getAngle() * RADIAN_PI_2) * -0.1f);
+                    p.setY(p.getY() + (float) Math.sin(p.getAngle() * RADIAN_PI_2) * -0.1f);
+                    break;
                 case 38 :
-                    //p.Avancer(0.2f);
-                    break;
-                case 39 : p.setAngle(p.getAngle() + 10f);
-                    break;
-                case 37 : p.setAngle(p.getAngle() - 10f);
+                    p.setX(p.getX() + (float) Math.cos(p.getAngle() * RADIAN_PI_2) * 0.1f);
+                    p.setY(p.getY() + (float) Math.sin(p.getAngle() * RADIAN_PI_2) * 0.1f);
                     break;
             }
+
+            switch (e.getCode().getCode()){
+                case 39 :
+                    p.setAngle(p.getAngle() + 1f);
+                    break;
+                case 37 :
+                    p.setAngle(p.getAngle() - 1f);
+                    break;
+            }
+
+            System.out.println("Player angle : " + p.getAngle() + " " + e.getCode().getCode());
+
         });
 
         primaryStage.setScene(scene);
         primaryStage.setWidth(DIML);
         primaryStage.setHeight(DIMC);
         primaryStage.show();
+
+        getEngine().start();
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         Map map = Map.importMap(new File("map1.map"));
         ImageUtils.writeImage("test.png", ImageUtils.placeHolder());
         engine = new Engine(
-                16,
-                new Player(16, 16, 80),
+                10,
+                new Player(2, 9, 90),
                 map
         );
 

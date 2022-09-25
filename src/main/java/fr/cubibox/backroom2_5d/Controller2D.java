@@ -1,5 +1,6 @@
 package fr.cubibox.backroom2_5d;
 
+import fr.cubibox.backroom2_5d.engine.Ray;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.entities.Player;
@@ -73,11 +74,19 @@ public class Controller2D implements Initializable {
         coordinateSystem.getChildren().add(new Circle(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()),2, Color.RED));
 
         //draw the player's rays
-        /*for (OldRay r : p.getRays()){
-            Line l = new Line(r.getColPos().getX(),r.getColPos().getY(),Main.toScreenX(p.getX()),Main.toScreenY(p.getY()));
-            l.setStroke(Color.RED);
-            coordinateSystem.getChildren().add(l);
-        }*/
+        for (Ray r : Main.getEngine().getRays()){
+            if (r.getIntersectionX() != Float.POSITIVE_INFINITY && r.getIntersectionY() != Float.POSITIVE_INFINITY) {
+                Line l = new Line(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()), Main.toScreenX(r.getIntersectionX()), Main.toScreenY(r.getIntersectionY()));
+
+                if (r.getAngle() == p.getAngle()) {
+                    l.setStroke(Color.RED);
+                } else {
+                    l.setStroke(Color.BLUE);
+                }
+
+                coordinateSystem.getChildren().add(l);
+            }
+        }
 
         coordinateSystem.getChildren().add(drawPoint(8f,8f));
 
