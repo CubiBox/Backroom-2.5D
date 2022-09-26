@@ -1,13 +1,19 @@
 package fr.cubibox.backroom2_5d.entities;
 
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Circle2F;
 
 public class Player extends Entity {
     private float fov;
 
-    public Player(float x, float y, float fov) {
+    public Player(float x, float y, float angle) {
         super(x, y, 1, 1);
-        this.fov = fov;
+        this.angle = angle;
+        this.fov = 90;
+        this.collisionBox.add(new Circle2F(
+                new Point2F(0, 0),
+                0.5f
+        ));
     }
 
     public float getX() {

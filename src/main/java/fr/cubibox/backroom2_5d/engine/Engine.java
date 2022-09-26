@@ -1,7 +1,12 @@
 package fr.cubibox.backroom2_5d.engine;
 
 import fr.cubibox.backroom2_5d.Main;
+import fr.cubibox.backroom2_5d.engine.collisions.LineCircle;
 import fr.cubibox.backroom2_5d.engine.maths.Line2F;
+import fr.cubibox.backroom2_5d.engine.maths.Point2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Circle2F;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Shape;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
@@ -17,10 +22,10 @@ import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 public class Engine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");
     private final Player player;
+    private final int rayCount;
+    private final Map map;
+    private final float fov = 90;
     public boolean shouldStop = false;
-    private int rayCount;
-    private Map map;
-    private float fov = 90;
     private ArrayList<Ray> rays = new ArrayList<>();
 
 
@@ -33,6 +38,7 @@ public class Engine implements Runnable {
     @Override
     public void run() {
         while (!shouldStop) {
+            pollKeyEvents();
             updateRays();
             updatePlayer();
 
@@ -44,22 +50,73 @@ public class Engine implements Runnable {
         }
     }
 
-    private void updatePlayer() {
+    public void pollKeyEvents() {
         Keyboard keyboard = Main.getKeyboard();
-
         if (keyboard.isKeyPressed(KeyEvent.VK_Z)) {
-            player.setX(player.getX() + (float) Math.cos(player.getAngle() * RADIAN_PI_2) * 0.05f);
-            player.setY(player.getY() + (float) Math.sin(player.getAngle() * RADIAN_PI_2) * 0.05f);
+            player.getVelocity().setX((float) Math.cos(player.getAngle() * RADIAN_PI_2) * 0.01f);
+            player.getVelocity().setY((float) Math.sin(player.getAngle() * RADIAN_PI_2) * 0.01f);
         } else if (keyboard.isKeyPressed(KeyEvent.VK_S)) {
-            player.setX(player.getX() + (float) Math.cos(player.getAngle() * RADIAN_PI_2) * -0.05f);
-            player.setY(player.getY() + (float) Math.sin(player.getAngle() * RADIAN_PI_2) * -0.05f);
+            player.getVelocity().setX((float) Math.cos(player.getAngle() * RADIAN_PI_2) * -0.01f);
+            player.getVelocity().setY((float) Math.sin(player.getAngle() * RADIAN_PI_2) * -0.01f);
+        }
+
+        if (!keyboard.isKeyPressed(KeyEvent.VK_S) && !keyboard.isKeyPressed(KeyEvent.VK_Z)) {
+            player.setVelocity(new Vector2F(0.0f, 0.0f));
         }
 
         if (keyboard.isKeyPressed(KeyEvent.VK_Q)) {
-            player.setAngle(player.getAngle() - 1f);
+            player.setAngle(player.getAngle() - 0.5f);
         } else if (keyboard.isKeyPressed(KeyEvent.VK_D)) {
-            player.setAngle(player.getAngle() + 1f);
+            player.setAngle(player.getAngle() + 0.5f);
         }
+    }
+
+    private void updatePlayer() {
+        Chunk getPlayerChunk = map.getChunk((int) (player.getX() / 16), (int) (player.getY() / 16));
+
+
+        if (getPlayerChunk != null) {
+            for (Shape collisionBoxShard : player.getCollisionBox()) {
+                if (collisionBoxShard instanceof Circle2F circle) {
+                    for (Polygon polygon : getPlayerChunk.getPolygons()) {
+                        for (Line2F edge : polygon.getEdges()) {
+                            Point2F nextCirclePos = new Point2F(
+                                    circle.getX() + player.getX() + player.getVelocity().getX(),
+                                    circle.getY() + player.getY() + player.getVelocity().getY()
+                            );
+                            Circle2F nextCircle = new Circle2F(nextCirclePos, circle.getRadius());
+
+                            if (LineCircle.lineCircle(edge, nextCircle)) {
+                                System.out.println("Collide");
+
+                                Point2F nextCirclePosX = new Point2F(
+                                        circle.getX() + player.getX() + player.getVelocity().getX(),
+                                        circle.getY() + player.getY()
+                                );
+                                Circle2F nextCircleX = new Circle2F(nextCirclePosX, circle.getRadius());
+
+                                Point2F nextCirclePosY = new Point2F(
+                                        circle.getX() + player.getX(),
+                                        circle.getY() + player.getY() + player.getVelocity().getY()
+                                );
+                                Circle2F nextCircleY = new Circle2F(nextCirclePosY, circle.getRadius());
+
+                                if (LineCircle.lineCircle(edge, nextCircleX)) {
+                                    player.getVelocity().setX(0f);
+                                }
+
+                                if (LineCircle.lineCircle(edge, nextCircleY)) {
+                                    player.getVelocity().setY(0f);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        player.setX(player.getX() + player.getVelocity().getX());
+        player.setY(player.getY() + player.getVelocity().getY());
     }
 
     private void updateRays() {
@@ -82,7 +139,7 @@ public class Engine implements Runnable {
 
     private ArrayList<Chunk> findTraveledChunk(Ray r) {
         ArrayList<Chunk> chunksFound = new ArrayList<>();
-        Chunk[][] chunks = this.getMap().getMapContent();
+        Chunk[][] chunks = this.getMap().getChunks();
 
         for (Chunk[] LineChunk : chunks)
             Collections.addAll(chunksFound, LineChunk);
@@ -90,47 +147,46 @@ public class Engine implements Runnable {
         return chunksFound;
     }
 
-    private Line2F getIntersectEdge(Ray r, ArrayList<Chunk> chunks) {
-        Line2F edgeFound = null;
-        float dRay = 1024;
+    private void getIntersectEdge(Ray r, ArrayList<Chunk> chunks) {
+        float dRay = Float.MAX_VALUE;
         float tempX = r.getIntersectionX();
         float tempY = r.getIntersectionY();
 
-        //Chunk chunk = map.getMapContent()[0][0];
         for (Chunk chunk : chunks) {
-            for (Polygon polygon : chunk.getPols()) {
-                for (Line2F edge : polygon.getEdges()) {
-                    float p1X = r.getStartX();
-                    float p1Y = r.getStartY();
-                    float p2X = r.getIntersectionX();
-                    float p2Y = r.getIntersectionY();
+            if (chunk != null) {
+                for (Polygon polygon : chunk.getPolygons()) {
+                    for (Line2F edge : polygon.getEdges()) {
+                        float p1X = r.getStartX();
+                        float p1Y = r.getStartY();
+                        float p2X = r.getIntersectionX();
+                        float p2Y = r.getIntersectionY();
 
-                    float p3X = edge.getA().getX();
-                    float p3Y = edge.getA().getY();
-                    float p4X = edge.getB().getX();
-                    float p4Y = edge.getB().getY();
+                        float p3X = edge.getA().getX();
+                        float p3Y = edge.getA().getY();
+                        float p4X = edge.getB().getX();
+                        float p4Y = edge.getB().getY();
 
-                    float s1_x, s1_y = 0, s2_x, s2_y;
-                    s1_x = p2X - p1X;
-                    s1_y = p2Y - p1Y;
-                    s2_x = p4X - p3X;
-                    s2_y = p4Y - p3Y;
+                        float s1_x, s1_y = 0, s2_x, s2_y;
+                        s1_x = p2X - p1X;
+                        s1_y = p2Y - p1Y;
+                        s2_x = p4X - p3X;
+                        s2_y = p4Y - p3Y;
 
-                    float s, t;
-                    float v = -s2_x * s1_y + s1_x * s2_y;
-                    s = (-s1_y * (p1X - p3X) + s1_x * (p1Y - p3Y)) / v;
-                    t = (s2_x * (p1Y - p3Y) - s2_y * (p1X - p3X)) / v;
+                        float s, t;
+                        float v = -s2_x * s1_y + s1_x * s2_y;
+                        s = (-s1_y * (p1X - p3X) + s1_x * (p1Y - p3Y)) / v;
+                        t = (s2_x * (p1Y - p3Y) - s2_y * (p1X - p3X)) / v;
 
-                    if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
-                        float intx = p1X + (t * s1_x);
-                        float inty = p1Y + (t * s1_y);
+                        if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
+                            float intx = p1X + (t * s1_x);
+                            float inty = p1Y + (t * s1_y);
 
-                        float tempdRay = computeSquareRayDistance(r, intx, inty);
-                        if (tempdRay < dRay) {
-                            dRay = tempdRay;
-                            tempX = intx;
-                            tempY = inty;
-                            edgeFound = edge;
+                            float tempdRay = computeSquareRayDistance(r, intx, inty);
+                            if (tempdRay < dRay) {
+                                dRay = tempdRay;
+                                tempX = intx;
+                                tempY = inty;
+                            }
                         }
                     }
                 }
@@ -139,7 +195,6 @@ public class Engine implements Runnable {
 
         r.setIntersectionX(tempX);
         r.setIntersectionY(tempY);
-        return edgeFound;
     }
 
     private boolean isOnChunk(Ray r, int cX, int cY) {
@@ -167,39 +222,9 @@ public class Engine implements Runnable {
     }
 
     /**
-     * Retourne la Line la plus proche du joueur a partir d'une liste de lignes
-     */
-    private Line2F getNearestLine(Ray r, ArrayList<Line2F> lines) {
-        Line2F tempLine = null;
-        for (Line2F line : lines) {
-            if (tempLine == null) {
-                tempLine = line;
-            }
-
-            float dxPointA = line.getA().getX() - r.getStartX();
-            float dyPointA = line.getA().getY() - r.getStartY();
-            float dxPointB = line.getB().getX() - r.getStartX();
-            float dyPointB = line.getB().getY() - r.getStartY();
-
-            float dxTempPointA = tempLine.getA().getX() - r.getStartX();
-            float dyTempPointA = tempLine.getA().getY() - r.getStartY();
-            float dxTempPointB = tempLine.getB().getX() - r.getStartX();
-            float dyTempPointB = tempLine.getB().getY() - r.getStartY();
-
-            if ((dxPointA * dxPointA + dyPointA * dyPointA) < (dxTempPointA * dxTempPointA + dyTempPointA * dyTempPointA) ||
-                    (dxPointB * dxPointB + dyPointB * dyPointB) < (dxTempPointB * dxTempPointB + dyTempPointB * dyTempPointB)) {
-                tempLine = line;
-            }
-
-        }
-        return tempLine;
-    }
-
-    /**
      * actualise la distance entre la line et le joueur du Rayon (DRay)
      * actualise egalement le intersectionPoint du Rayon
      */
-
     private float computeSquareRayDistance(Ray r, float x, float y) {
         float x1 = r.getStartX();
         float y1 = r.getStartY();
@@ -212,18 +237,7 @@ public class Engine implements Runnable {
 
     private void updateRay(Ray r) {
         ArrayList<Chunk> chunks = findTraveledChunk(r);
-        //ArrayList<Line2F> lines = getIntersectedEdges(r, chunks);
-        //Line2F nearestLine = getNearestLine(r, lines);
-
-        Line2F nearestLine = getIntersectEdge(r, chunks);
-/*
-        if (nearestLine != null) {
-            float squareDistance = computeSquareRayDistance(r, nearestLine);
-            if (squareDistance < r.getSquareDistance()) {
-                r.setSquareDistance(squareDistance);
-            }
-        }
-        */
+        getIntersectEdge(r, chunks);
     }
 
     public void start() {
@@ -234,20 +248,8 @@ public class Engine implements Runnable {
         shouldStop = true;
     }
 
-    public void setRayCount(int rayCount) {
-        this.rayCount = rayCount;
-    }
-
-    public void setFov(float fov) {
-        this.fov = fov;
-    }
-
     public Map getMap() {
         return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
     }
 
     public Player getPlayer() {

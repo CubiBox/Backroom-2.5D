@@ -32,4 +32,22 @@ public class Line2F {
     public Vector2F getNormal() {
         return new Vector2F(b.getY() - a.getY(), a.getX() - b.getX());
     }
+
+    public float getLength() {
+        Vector2F length = new Vector2F(
+                this.getB().getX() - this.getA().getX(),
+                this.getB().getY() - this.getA().getY()
+        );
+
+        return (float) (Math.sqrt(length.dot(length)));
+    }
+
+    public float getSqLength() {
+        Vector2F length = new Vector2F(
+                this.getB().getX() - this.getA().getX(),
+                this.getB().getY() - this.getA().getY()
+        );
+
+        return length.dot(length);
+    }
 }

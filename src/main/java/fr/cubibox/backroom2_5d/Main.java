@@ -5,6 +5,7 @@ import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.io.Keyboard;
 import fr.cubibox.backroom2_5d.utils.ImageUtils;
+import fr.cubibox.backroom2_5d.utils.MapUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,17 +18,17 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class Main extends Application {
-    public final static float DIML = 600;
-    public final static float DIMC = 600;
+    public final static float DIML = 720;
+    public final static float DIMC = 480;
     private static final Keyboard keyboard = new Keyboard();
     private static Engine engine;
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-        Map map = Map.importMap(new File("map1.map"));
+        Map map = MapUtils.importMap(new File("map1.map"));
         ImageUtils.writeImage("test.png", ImageUtils.placeHolder());
         engine = new Engine(
-                90,
-                new Player(2, 9, 90),
+                720,
+                new Player(12, 11, 315),
                 map
         );
 
@@ -64,7 +65,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view2D.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view3D.fxml"));
         primaryStage.setTitle("Backroom2D");
         Scene scene = new Scene(root);
 

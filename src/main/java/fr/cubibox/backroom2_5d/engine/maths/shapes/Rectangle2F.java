@@ -3,7 +3,7 @@ package fr.cubibox.backroom2_5d.engine.maths.shapes;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
-public class Rectangle2F {
+public class Rectangle2F extends Shape {
     private final Point2F origin;
     private final Vector2F size;
 

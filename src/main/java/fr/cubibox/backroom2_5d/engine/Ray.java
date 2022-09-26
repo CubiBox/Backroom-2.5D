@@ -16,14 +16,11 @@ public class Ray {
     private final Point2F startPoint;
     private final Point2F intersectionPoint;
 
-    private float squareDistance;
-
     /**
      * @param startPoint
      * @param angle      Crée un rayon à partir d'un point de départ et d'un angle
      */
     public Ray(Point2F startPoint, float angle) {
-        this.squareDistance = 32f * 32f;
         this.startPoint = startPoint;
         this.angle = angle;
 
@@ -39,7 +36,6 @@ public class Ray {
      * @param angle Crée un rayon à partir d'une coordonée x et y, puis d'un angle
      */
     public Ray(float x, float y, float angle) {
-        this.squareDistance = 32f * 32f;
         this.startPoint = new Point2F(x, y);
         this.angle = angle;
 
@@ -66,10 +62,6 @@ public class Ray {
         return startPoint.getY();
     }
 
-    public Point2F getStartPoint() {
-        return startPoint;
-    }
-
     public float getIntersectionX() {
         return intersectionPoint.getX();
     }
@@ -84,13 +76,5 @@ public class Ray {
 
     public void setIntersectionY(float y) {
         intersectionPoint.setY(y);
-    }
-
-    public float getSquareDistance() {
-        return squareDistance;
-    }
-
-    public void setSquareDistance(float squareDistance) {
-        this.squareDistance = squareDistance;
     }
 }

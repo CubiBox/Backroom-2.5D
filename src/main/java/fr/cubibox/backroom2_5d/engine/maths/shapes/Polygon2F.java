@@ -6,7 +6,7 @@ import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
 import java.util.ArrayList;
 
-public class Polygon2F {
+public class Polygon2F extends Shape {
     private final ArrayList<Line2F> edges;
 
     private int height;
@@ -22,7 +22,7 @@ public class Polygon2F {
                 edges.add(new Line2F(points.get(i), points.get(i + 1)));
             }
         } else {
-            for (int i = 0; i < points.size() - 1; i++) {
+            for (int i = 0; i < points.size(); i++) {
                 edges.add(new Line2F(points.get(i), points.get((i + 1) % points.size())));
             }
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.scene.layout.Pane?>
-
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cubibox.backroom2_5d.Controller3D"/>
+<Pane xmlns:fx="http://javafx.com/fxml/1" fx:id="coordinateSystem" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/18"
+      fx:controller="fr.cubibox.backroom2_5d.Controller3D"/>

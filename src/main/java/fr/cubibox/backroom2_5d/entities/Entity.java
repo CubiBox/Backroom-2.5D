@@ -1,22 +1,26 @@
 package fr.cubibox.backroom2_5d.entities;
 
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Shape;
 
-public class Entity {
-    private final Rectangle2F collisionBox;
-    private final Point2F position;
-    private float angle;
-    private String id;
+import java.util.ArrayList;
+
+public abstract class Entity {
+    protected final ArrayList<Shape> collisionBox;
+    protected final Point2F position;
+    protected Vector2F velocity;
+    protected float angle;
+    protected String id;
 
     public Entity(Point2F position, float width, float height) {
-        this.collisionBox = new Rectangle2F(-width / 2, -height / 2, width, height);
+        this.collisionBox = new ArrayList<>();
         this.position = position;
         this.angle = 0f;
     }
 
     public Entity(float x, float y, float width, float height) {
-        this.collisionBox = new Rectangle2F(-width / 2, -height / 2, width, height);
+        this.collisionBox = new ArrayList<>();
         this.position = new Point2F(x, y);
         this.angle = 0f;
     }
@@ -47,7 +51,15 @@ public class Entity {
         this.id = id;
     }
 
-    public Rectangle2F getCollisionBox() {
+    public ArrayList<Shape> getCollisionBox() {
         return collisionBox;
+    }
+
+    public Vector2F getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Vector2F velocity) {
+        this.velocity = velocity;
     }
 }
