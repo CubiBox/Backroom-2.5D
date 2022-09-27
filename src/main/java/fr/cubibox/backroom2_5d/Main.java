@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class Main extends Application {
-    public final static float DIML = 720;
-    public final static float DIMC = 480;
+    public final static float windowsWidth = 720;
+    public final static float windowHeight = 480;
     private static final Keyboard keyboard = new Keyboard();
     private static Engine engine;
 
@@ -27,8 +27,8 @@ public class Main extends Application {
         Map map = MapUtils.importMap(new File("map1.map"));
         ImageUtils.writeImage("test.png", ImageUtils.placeHolder());
         engine = new Engine(
-                720,
-                new Player(12, 11, 315),
+                360,
+                new Player(12, 11, 0),
                 map
         );
 
@@ -36,19 +36,19 @@ public class Main extends Application {
     }
 
     public static float toScreenX(double x) {
-        return (float) (DIMC * (x) / (engine.getMap().getSize()));
+        return (float) (windowHeight * (x) / (engine.getMap().getSize()));
     }
 
     public static float toScreenY(double y) {
-        return (float) ((DIML * (y) / (engine.getMap().getSize())));
+        return (float) ((windowsWidth * (y) / (engine.getMap().getSize())));
     }
 
     public static float toScreenX(double x, int mapSize) {
-        return (float) (DIMC * (x) / mapSize);
+        return (float) (windowHeight * (x) / mapSize);
     }
 
     public static float toScreenY(double y, int mapSize) {
-        return (float) ((DIML * (y) / mapSize));
+        return (float) ((windowsWidth * (y) / mapSize));
     }
 
     public static Engine getEngine() {
@@ -79,8 +79,8 @@ public class Main extends Application {
         scene.addEventHandler(KeyEvent.KEY_RELEASED, keyboard::keyReleased);
 
         primaryStage.setScene(scene);
-        primaryStage.setWidth(DIML);
-        primaryStage.setHeight(DIMC);
+        primaryStage.setWidth(windowsWidth);
+        primaryStage.setHeight(windowHeight);
         primaryStage.show();
 
         getEngine().start();

@@ -20,11 +20,14 @@ import java.util.Collections;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 
 public class Engine implements Runnable {
+    public static float screenDistance = 50.0f;
+    public static float wallHeight = 16.0f;
+    public static float eyeLevel = 1.0f;
     private final Thread engineThread = new Thread(this, "ENGINE");
     private final Player player;
     private final int rayCount;
     private final Map map;
-    private final float fov = 90;
+    private final float fov = 70;
     public boolean shouldStop = false;
     private ArrayList<Ray> rays = new ArrayList<>();
 
@@ -60,14 +63,22 @@ public class Engine implements Runnable {
             player.getVelocity().setY((float) Math.sin(player.getAngle() * RADIAN_PI_2) * -0.01f);
         }
 
+        if (keyboard.isKeyPressed(KeyEvent.VK_UP)) {
+            screenDistance++;
+        } else if (keyboard.isKeyPressed(KeyEvent.VK_DOWN)) {
+            if (screenDistance > 1) {
+                screenDistance--;
+            }
+        }
+
         if (!keyboard.isKeyPressed(KeyEvent.VK_S) && !keyboard.isKeyPressed(KeyEvent.VK_Z)) {
             player.setVelocity(new Vector2F(0.0f, 0.0f));
         }
 
         if (keyboard.isKeyPressed(KeyEvent.VK_Q)) {
-            player.setAngle(player.getAngle() - 0.5f);
+            player.setAngle((player.getAngle() * 10 - 5) / 10);
         } else if (keyboard.isKeyPressed(KeyEvent.VK_D)) {
-            player.setAngle(player.getAngle() + 0.5f);
+            player.setAngle((player.getAngle() * 10 + 5) / 10);
         }
     }
 
@@ -87,8 +98,6 @@ public class Engine implements Runnable {
                             Circle2F nextCircle = new Circle2F(nextCirclePos, circle.getRadius());
 
                             if (LineCircle.lineCircle(edge, nextCircle)) {
-                                System.out.println("Collide");
-
                                 Point2F nextCirclePosX = new Point2F(
                                         circle.getX() + player.getX() + player.getVelocity().getX(),
                                         circle.getY() + player.getY()
@@ -186,6 +195,15 @@ public class Engine implements Runnable {
                                 dRay = tempdRay;
                                 tempX = intx;
                                 tempY = inty;
+
+                                float dx = tempX - p3X;
+                                float dy = tempY - p3Y;
+
+                                int textureIndex = (int) (Math.pow(
+                                        ((dx * dx) + (dy * dy)),
+                                        0.5f
+                                ) * 32) % 16;
+                                r.setTextureIndex(textureIndex);
                             }
                         }
                     }

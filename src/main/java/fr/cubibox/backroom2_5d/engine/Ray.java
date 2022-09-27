@@ -16,6 +16,8 @@ public class Ray {
     private final Point2F startPoint;
     private final Point2F intersectionPoint;
 
+    private int textureIndex;
+
     /**
      * @param startPoint
      * @param angle      Crée un rayon à partir d'un point de départ et d'un angle
@@ -76,5 +78,13 @@ public class Ray {
 
     public void setIntersectionY(float y) {
         intersectionPoint.setY(y);
+    }
+
+    public int getTextureIndex() {
+        return textureIndex;
+    }
+
+    public void setTextureIndex(int textureIndex) {
+        this.textureIndex = textureIndex;
     }
 }

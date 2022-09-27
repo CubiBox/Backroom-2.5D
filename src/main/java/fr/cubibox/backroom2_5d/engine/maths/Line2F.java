@@ -50,4 +50,17 @@ public class Line2F {
 
         return length.dot(length);
     }
+
+    public boolean isPointOnLine(Point2F intersectionPoint) {
+        float x1 = this.getA().getX();
+        float y1 = this.getA().getY();
+        float x2 = this.getB().getX();
+        float y2 = this.getB().getY();
+        float x3 = intersectionPoint.getX();
+        float y3 = intersectionPoint.getY();
+
+        float d = (x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1);
+
+        return (d == 0);
+    }
 }
