@@ -67,12 +67,6 @@ public class Controller2D implements Initializable {
         coordinateSystem.getChildren().add(new Circle(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()), 2, Color.RED));
 
         //draw the player's collision box
-        /*Rectangle collisionBox = new Rectangle(
-                Main.toScreenX(p.getX() - p.getCollisionBox().getWidth() / 2),
-                Main.toScreenY(p.getY() - p.getCollisionBox().getHeight() / 2),
-                Main.toScreenX(p.getCollisionBox().getWidth()),
-                Main.toScreenY(p.getCollisionBox().getHeight())
-        );*/
         for (Shape shape : p.getCollisionBox()) {
             if (shape instanceof Rectangle2F rect) {
                 Rectangle collisionBox = new Rectangle(
