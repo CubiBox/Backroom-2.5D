@@ -1,6 +1,7 @@
 package fr.cubibox.backroom2_5d.game;
 
 
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 
 import java.io.File;
@@ -12,16 +13,15 @@ public class Map {
     private String idLevel;
     private Chunk[][] mapContent;
 
-    private int mapSize;
+    private int size;
 
     public Map(Chunk[][] mapContent, String name, float mapSize) {
         this.idLevel = name;
-        this.mapSize = (int)mapSize;
+        this.size = (int)mapSize;
         this.mapContent = mapContent;
     }
 
     public static Map importMap(File f){
-
         //initialize Level Id
         String idLevel = "";
         boolean idLevelDone = false;
@@ -39,7 +39,7 @@ public class Map {
 
         //Initialize Polygons
         String poly = "";
-        ArrayList<Edge> currentEdges = new ArrayList<>();
+        ArrayList<Line2F> currentEdges = new ArrayList<>();
         ArrayList<Polygon> currentPolys = new ArrayList<>();
         float height;
 
@@ -167,7 +167,7 @@ public class Map {
                         }
                         if ((char)r == '\n')   r=fis.read();
                         tempP2 = new Point2F(tempX, tempY);
-                        currentEdges.add(new Edge(tempP,tempP2));
+                        currentEdges.add(new Line2F(tempP,tempP2));
                     }
 
                     //Height polygon / finish it
@@ -181,28 +181,28 @@ public class Map {
                         if ((char)r == '\n')   r=fis.read();
                         height = Float.parseFloat(temp);
                         ArrayList<Point2F> tempPointsArray = new ArrayList<>();
-                        for (Edge e : currentEdges){
-                            tempPointsArray.add(e.getP1());
+                        for (Line2F e : currentEdges){
+                            tempPointsArray.add(e.getA());
                         }
                         boolean isLine = false;
-                        float tmpX1 = currentEdges.get(0).getP1().getX();
-                        float tmpY1 = currentEdges.get(0).getP1().getY();
-                        float tmpX2 = currentEdges.get(currentEdges.size()-1).getP2().getX();
-                        float tmpY2 = currentEdges.get(currentEdges.size()-1).getP2().getY();
+                        float tmpX1 = currentEdges.get(0).getA().getX();
+                        float tmpY1 = currentEdges.get(0).getA().getY();
+                        float tmpX2 = currentEdges.get(currentEdges.size()-1).getB().getX();
+                        float tmpY2 = currentEdges.get(currentEdges.size()-1).getB().getY();
                         if (tmpX1 == tmpX2 && tmpY1 == tmpY2)
-                            tempPointsArray.add(currentEdges.get(currentEdges.size()-1).getP2());
+                            tempPointsArray.add(currentEdges.get(currentEdges.size()-1).getB());
                         else {
                             isLine = true;
-                            tempPointsArray.add(currentEdges.get(currentEdges.size()-1).getP2());
+                            tempPointsArray.add(currentEdges.get(currentEdges.size()-1).getB());
                         }
-                        currentPolys.add(new Polygon(currentEdges, tempPointsArray, height, poly, isLine));
+                        currentPolys.add(new Polygon(currentEdges, tempPointsArray, height, poly, isLine, mapSize));
                         poly = "";
                         currentEdges= new ArrayList<>();
                     }
 
                     //Finish the currentChunk
                     if (r=='!'){
-                        chunks[tempCY][tempCX] = new Chunk(currentPolys);
+                        chunks[tempCY][tempCX] = new Chunk(currentPolys, tempCX, tempCY);
                         currentPolys = new ArrayList<>();
                     }
                 }
@@ -215,12 +215,12 @@ public class Map {
         return new Map(chunks, idLevel, mapSize);
     }
 
-    public int getMapSize() {
-        return mapSize;
+    public int getSize() {
+        return size;
     }
 
-    public void setMapSize(int mapSize) {
-        this.mapSize = mapSize;
+    public void setSize(int mapSize) {
+        this.size = mapSize;
     }
 
     public String getIdLevel() {

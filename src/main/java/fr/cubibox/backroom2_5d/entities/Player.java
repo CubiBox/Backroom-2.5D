@@ -1,24 +1,23 @@
-package fr.cubibox.backroom2_5d.engine;
+package fr.cubibox.backroom2_5d.entities;
 
+import fr.cubibox.backroom2_5d.engine.OldRay;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 
 import java.util.ArrayList;
 
-public class Player {
-    private final Point2F position;
-    private float angle;
+public class Player extends Entity {
     private float fov;
 
     private ArrayList<OldRay> rays = new ArrayList<>();
 
     public Player(float x, float y, float fov) {
-        this.position = new Point2F(x,y);
+        super(x, y);
         this.fov = fov;
     }
 
     public void Avancer(float x){
-        /*int axisX = 1;
-        float angle = this.angle;
+        int axisX = 1;
+        float angle = super.getAngle();
 
         while (angle > 360)
             angle -= 360;
@@ -45,10 +44,10 @@ public class Player {
 
             angle = (angle * OldRay.RADIAN);
 
-            this.x += (float)Math.cos(angle)/axisX * (axisX*x);
+            super.getPosition().addToX((float)Math.cos(angle)/axisX * (axisX*x));
             this.y += (float)Math.sin(angle)/axisX * (axisX*x);
         }
-        System.out.println(this.x + "; " + this.y);*/
+        System.out.println(this.x + "; " + this.y);
     }
 
 
@@ -61,29 +60,27 @@ public class Player {
     }
 
     public float getX() {
-        return this.position.getX();
+        return super.getPosition().getX();
     }
 
     public void setX(float x) {
-        this.position.setX(x);
+        super.getPosition().setX(x);
     }
 
     public float getY() {
-        return this.position.getY();
+        return super.getPosition().getY();
     }
 
     public void setY(float y) {
-        this.position.setY(y);
+        super.getPosition().setY(y);
     }
 
     public float getAngle() {
-        return angle;
+        return super.getAngle();
     }
 
     public void setAngle(float angle) {
-        while (angle >= 360)
-            angle = angle - 360;
-        this.angle = angle;
+        super.setAngle(angle);
     }
 
     public float getFov() {
@@ -95,11 +92,11 @@ public class Player {
     }
 
     public void setPos(float x, float y){
-        this.position.setX(x);
-        this.position.setY(y);
+        super.getPosition().setX(x);
+        super.getPosition().setY(y);
     }
 
     public Point2F getPos(){
-        return this.position;
+        return super.getPosition();
     }
 }
