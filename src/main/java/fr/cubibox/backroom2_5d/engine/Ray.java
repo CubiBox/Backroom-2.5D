@@ -1,6 +1,9 @@
 package fr.cubibox.backroom2_5d.engine;
 
+import fr.cubibox.backroom2_5d.Main;
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
+import fr.cubibox.backroom2_5d.game.Polygon;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -15,6 +18,10 @@ public class Ray {
     private final float angle;
     private final Point2F startPoint;
     private final Point2F intersectionPoint;
+
+    private float height = 20;
+
+    private Polygon colPol;
 
     private int textureIndex;
 
@@ -32,6 +39,17 @@ public class Ray {
         );
     }
 
+    public Ray(Ray r) {
+        this.startPoint = r.getStartPoint();
+        this.angle = r.getAngle();
+
+        this.intersectionPoint = new Point2F(
+                (float) (cos(angle * RADIAN_PI_2) * dist) + startPoint.getX(),
+                (float) (sin(angle * RADIAN_PI_2) * dist) + startPoint.getY()
+        );
+    }
+
+
     /**
      * @param x
      * @param y
@@ -47,6 +65,14 @@ public class Ray {
                 (float) (cos(angle * RADIAN_PI_2) * dist) + startPoint.getX(),
                 (float) (sin(angle * RADIAN_PI_2) * dist) + startPoint.getY()
         );
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 
     /**
@@ -86,5 +112,22 @@ public class Ray {
 
     public void setTextureIndex(int textureIndex) {
         this.textureIndex = textureIndex;
+    }
+
+
+    public Point2F getStartPoint() {
+        return startPoint;
+    }
+
+    public Point2F getIntersectionPoint() {
+        return intersectionPoint;
+    }
+
+    public Polygon getColPol() {
+        return colPol;
+    }
+
+    public void setColPol(Polygon colPol) {
+        this.colPol = colPol;
     }
 }

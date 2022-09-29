@@ -204,6 +204,8 @@ public class Engine implements Runnable {
                                         0.5f
                                 ) * 32) % 16;
                                 r.setTextureIndex(textureIndex);
+                                r.setColPol(polygon);
+                                r.setHeight(polygon.getHeight());
                             }
                         }
                     }
@@ -211,6 +213,72 @@ public class Engine implements Runnable {
             }
         }
 
+        r.setIntersectionX(tempX);
+        r.setIntersectionY(tempY);
+    }
+    private void getIntersectEdge(Ray r, ArrayList<Chunk> chunks, ArrayList<String> dejavu) {
+        float dRay = Float.MAX_VALUE;
+        float tempX = r.getIntersectionX();
+        float tempY = r.getIntersectionY();
+
+        for (Chunk chunk : chunks) {
+            if (chunk != null) {
+                for (Polygon polygon : chunk.getPolygons()) {
+                    for (Line2F edge : polygon.getEdges()) {
+                        boolean isFind = false;
+                        for (String s : dejavu)
+                            if (s == polygon.getId())
+                                isFind = true;
+                        if (isFind)
+                            break;
+
+                        float p1X = r.getStartX();
+                        float p1Y = r.getStartY();
+                        float p2X = r.getIntersectionX();
+                        float p2Y = r.getIntersectionY();
+
+                        float p3X = edge.getA().getX();
+                        float p3Y = edge.getA().getY();
+                        float p4X = edge.getB().getX();
+                        float p4Y = edge.getB().getY();
+
+                        float s1_x, s1_y = 0, s2_x, s2_y;
+                        s1_x = p2X - p1X;
+                        s1_y = p2Y - p1Y;
+                        s2_x = p4X - p3X;
+                        s2_y = p4Y - p3Y;
+
+                        float s, t;
+                        float v = -s2_x * s1_y + s1_x * s2_y;
+                        s = (-s1_y * (p1X - p3X) + s1_x * (p1Y - p3Y)) / v;
+                        t = (s2_x * (p1Y - p3Y) - s2_y * (p1X - p3X)) / v;
+
+                        if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
+                            float intx = p1X + (t * s1_x);
+                            float inty = p1Y + (t * s1_y);
+
+                            float tempdRay = computeSquareRayDistance(r, intx, inty);
+                            if (tempdRay < dRay) {
+                                dRay = tempdRay;
+                                tempX = intx;
+                                tempY = inty;
+
+                                float dx = tempX - p3X;
+                                float dy = tempY - p3Y;
+
+                                int textureIndex = (int) (Math.pow(
+                                        ((dx * dx) + (dy * dy)),
+                                        0.5f
+                                ) * 32) % 16;
+                                r.setTextureIndex(textureIndex);
+                                r.setColPol(polygon);
+                                r.setHeight(polygon.getHeight());
+                            }
+                        }
+                    }
+                }
+            }
+        }
         r.setIntersectionX(tempX);
         r.setIntersectionY(tempY);
     }
@@ -257,6 +325,12 @@ public class Engine implements Runnable {
         ArrayList<Chunk> chunks = findTraveledChunk(r);
         getIntersectEdge(r, chunks);
     }
+
+    public void updateRay2(Ray r, ArrayList<String> dejavu) {
+        ArrayList<Chunk> chunks = findTraveledChunk(r);
+        getIntersectEdge(r, chunks, dejavu);
+    }
+
 
     public void start() {
         engineThread.start();

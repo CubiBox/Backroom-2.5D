@@ -70,43 +70,65 @@ public class Controller3D implements Initializable {
             float width = windowsWidth / playersRay.size();
 
             for (Ray ray : playersRay) {
-                float rayDX = ray.getIntersectionX() - ray.getStartX();
-                float rayDY = ray.getIntersectionY() - ray.getStartY();
-
-                float rayDistance = (float) (Math.pow((rayDX * rayDX) + (rayDY * rayDY), 0.5));
-                //float rayDistance = ((rayDX * rayDX) + (rayDY * rayDY));
-
-                float rayAngleFromMiddle = middleRay.getAngle() - ray.getAngle();
-                float rayAngleDiffAbsCos = (float) Math.abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
-                rayDistance = rayDistance * rayAngleDiffAbsCos;
-                float perceivedHeight = (screenDistance) * (wallHeight / rayDistance);
-
-
-                // Draw Rectangle
-                float startX = mul * width;
-                float startY = (windowHeight - perceivedHeight) / 2f;
-                Rectangle r = new Rectangle(startX, startY, width, perceivedHeight);
-                Rectangle shadow = new Rectangle(startX, startY, width, perceivedHeight);
-
-                float grey = 0f + (1f / rayDistance);
-
-                if (grey > 1f) {
-                    grey = 1f;
-                } else if (grey < 0f) {
-                    grey = 0f;
+                if (ray.getHeight() < 20){
+                    ArrayList<Ray> superposedLine = new ArrayList<>();
+                    ArrayList<String> dejavu = new ArrayList<>();
+                    Ray ray2 = ray;
+                    while (ray2.getHeight() != 20){
+                        superposedLine.add(ray2);
+                        dejavu.add(ray2.getColPol().getId());
+                        ray2 = new Ray(ray2);
+                        Main.getEngine().updateRay2(ray2, dejavu);
+                    }
+                    drawRay(ray2,mul,width,middleRay);
+                    for (int i = superposedLine.size()-1; i >= 0; i--){
+                        drawRay(superposedLine.get(i),mul,width,middleRay);
+                    }
                 }
-
-                shadow.setFill(Color.color(grey, grey, grey, 0.25f));
-                shadow.setStroke(Color.color(grey, grey, grey, 0.25f));
-                r.setFill(new ImagePattern(wallTexture[ray.getTextureIndex()]));
-                r.setStroke(new ImagePattern(wallTexture[ray.getTextureIndex()]));
-
-                coordinateSystem.getChildren().add(r);
-                coordinateSystem.getChildren().add(shadow);
-
+                drawRay(ray,mul,width,middleRay);
                 mul++;
             }
         }
+    }
+
+    private void drawRay(Ray ray, float mul, float width, Ray middleRay){
+        float rayDX = ray.getIntersectionX() - ray.getStartX();
+        float rayDY = ray.getIntersectionY() - ray.getStartY();
+
+        float rayDistance = (float) (Math.pow((rayDX * rayDX) + (rayDY * rayDY), 0.5));
+        //float rayDistance = ((rayDX * rayDX) + (rayDY * rayDY));
+
+        float rayAngleFromMiddle = middleRay.getAngle() - ray.getAngle();
+        float rayAngleDiffAbsCos = (float) Math.abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
+        rayDistance = rayDistance * rayAngleDiffAbsCos;
+        float perceivedHeight = (screenDistance) * (ray.getHeight() / rayDistance) ;
+
+
+        // Draw Rectangle
+        float startX = mul * width;
+        float startY = (windowHeight - perceivedHeight) / 2f;
+        if (ray.getHeight() < 20){
+            //condition top/bottom
+            startY = (windowHeight- perceivedHeight)/2f + ((screenDistance) * ((20 - ray.getHeight()) / rayDistance))/2;
+        }
+        Rectangle r = new Rectangle(startX, startY, width, perceivedHeight);
+        Rectangle shadow = new Rectangle(startX, startY, width, perceivedHeight);
+
+        float grey = 0f + (1f / rayDistance);
+
+        if (grey > 1f) {
+            grey = 1f;
+        } else if (grey < 0f) {
+            grey = 0f;
+        }
+
+        shadow.setFill(Color.color(grey, grey, grey, 0.25f));
+        shadow.setStroke(Color.color(grey, grey, grey, 0.25f));
+        r.setFill(new ImagePattern(wallTexture[ray.getTextureIndex()]));
+        r.setStroke(new ImagePattern(wallTexture[ray.getTextureIndex()]));
+
+        coordinateSystem.getChildren().add(r);
+        coordinateSystem.getChildren().add(shadow);
     }
 
     public Circle drawPoint(double x, double y) {

@@ -97,7 +97,7 @@ public class MapUtils {
                         }
                         if ((char) r == '\n') r = fis.read();
                         tempCY = Integer.parseInt(temp);
-                        r = fis.read();
+                        //r = fis.read();
                         temp = "";
                     }
 

@@ -11,18 +11,22 @@ public abstract class Entity {
     protected final Point2F position;
     protected Vector2F velocity;
     protected float angle;
+
+    protected float height = 20f;
     protected String id;
 
     public Entity(Point2F position, float width, float height) {
         this.collisionBox = new ArrayList<>();
         this.position = position;
         this.angle = 0f;
+        this.height = 2f;
     }
 
     public Entity(float x, float y, float width, float height) {
         this.collisionBox = new ArrayList<>();
         this.position = new Point2F(x, y);
         this.angle = 0f;
+        this.height = 2f;
     }
 
     public Point2F getPosition() {
@@ -41,6 +45,15 @@ public abstract class Entity {
             angle -= 360;
 
         this.angle = angle;
+    }
+
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 
     public String getId() {
