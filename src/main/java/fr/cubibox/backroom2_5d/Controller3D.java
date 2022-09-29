@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static fr.cubibox.backroom2_5d.Main.windowHeight;
-import static fr.cubibox.backroom2_5d.Main.windowsWidth;
+import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Engine.screenDistance;
 import static fr.cubibox.backroom2_5d.engine.Engine.wallHeight;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
@@ -53,33 +53,24 @@ public class Controller3D implements Initializable {
     public void drawFunction() {
         coordinateSystem.getChildren().clear();
 
-        Rectangle bottomScreen = new Rectangle(0, 0, windowsWidth, windowHeight);
-        bottomScreen.setFill(Color.BROWN);
-        coordinateSystem.getChildren().add(bottomScreen);
-
-        Rectangle topScreen = new Rectangle(0, 0, windowsWidth, windowHeight / 2f);
-        topScreen.setFill(Color.BLACK);
-        coordinateSystem.getChildren().add(topScreen);
-
         ArrayList<Ray> playersRay = Main.getEngine().getRays();
 
         if (playersRay.size() > 0) {
-            Ray middleRay = playersRay.get(playersRay.size() / 2);
 
             float mul = 0;
-            float width = windowsWidth / playersRay.size();
+            float width = windowWidth / (Main.getEngine().getRayCount() + 1);
 
             for (Ray ray : playersRay) {
                 float rayDX = ray.getIntersectionX() - ray.getStartX();
                 float rayDY = ray.getIntersectionY() - ray.getStartY();
 
                 float rayDistance = (float) (Math.pow((rayDX * rayDX) + (rayDY * rayDY), 0.5));
-                //float rayDistance = ((rayDX * rayDX) + (rayDY * rayDY));
 
-                float rayAngleFromMiddle = middleRay.getAngle() - ray.getAngle();
+                float rayAngleFromMiddle = Main.getEngine().getPlayer().getAngle() - ray.getAngle();
                 float rayAngleDiffAbsCos = (float) Math.abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
                 rayDistance = rayDistance * rayAngleDiffAbsCos;
-                float perceivedHeight = (screenDistance) * (wallHeight / rayDistance);
+
+                float perceivedHeight = (screenDistance * (wallHeight / rayDistance)) / 6f;
 
 
                 // Draw Rectangle

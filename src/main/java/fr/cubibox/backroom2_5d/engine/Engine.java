@@ -17,18 +17,22 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 
 public class Engine implements Runnable {
-    public static float screenDistance = 50.0f;
+    public static float screenDistance = 120.0f;
     public static float wallHeight = 16.0f;
     public static float eyeLevel = 1.0f;
+
+    public static int RATIO = 100;
+
     private final Thread engineThread = new Thread(this, "ENGINE");
     private final Player player;
-    private final int rayCount;
     private final Map map;
     private final float fov = 70;
     public boolean shouldStop = false;
+    private int rayCount;
     private ArrayList<Ray> rays = new ArrayList<>();
 
 
@@ -64,11 +68,15 @@ public class Engine implements Runnable {
         }
 
         if (keyboard.isKeyPressed(KeyEvent.VK_UP)) {
-            screenDistance++;
-        } else if (keyboard.isKeyPressed(KeyEvent.VK_DOWN)) {
-            if (screenDistance > 1) {
-                screenDistance--;
+            if (rayCount < windowWidth) {
+                rayCount++;
             }
+            System.out.println("rayCount = " + rayCount);
+        } else if (keyboard.isKeyPressed(KeyEvent.VK_DOWN)) {
+            if (rayCount > 1) {
+                rayCount--;
+            }
+            System.out.println("rayCount = " + rayCount);
         }
 
         if (!keyboard.isKeyPressed(KeyEvent.VK_S) && !keyboard.isKeyPressed(KeyEvent.VK_Z)) {
@@ -131,12 +139,14 @@ public class Engine implements Runnable {
     private void updateRays() {
         ArrayList<Ray> tempRays = new ArrayList<>();
 
-        float angle = player.getAngle() - fov / 2;
-        float angleStep = fov / rayCount;
+        float cutStep = windowWidth / rayCount;
+        float halfWindow = (windowWidth) / 2f;
 
-        for (int i = 0; i <= rayCount; i++) {
-            tempRays.add(new Ray(player.getX(), player.getY(), angle));
-            angle += angleStep;
+        for (float x = 0; x <= windowWidth; x += cutStep) {
+            float rayAngle = (float) Math.atan((x - halfWindow) / halfWindow) / RADIAN_PI_2;
+            rayAngle += player.getAngle();
+
+            tempRays.add(new Ray(player.getX(), player.getY(), rayAngle));
         }
 
         for (Ray r : tempRays) {
@@ -276,5 +286,13 @@ public class Engine implements Runnable {
 
     public ArrayList<Ray> getRays() {
         return rays;
+    }
+
+    public float getRayCount() {
+        return rayCount;
+    }
+
+    public void setRayCount(int doubleValue) {
+        this.rayCount = doubleValue;
     }
 }

@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class Main extends Application {
-    public final static float windowsWidth = 720;
-    public final static float windowHeight = 480;
     private static final Keyboard keyboard = new Keyboard();
+    public static float windowWidth = 720;
+    public static float windowHeight = 480;
     private static Engine engine;
 
     public static void main(String[] args) throws URISyntaxException, IOException {
@@ -40,7 +40,7 @@ public class Main extends Application {
     }
 
     public static float toScreenY(double y) {
-        return (float) ((windowsWidth * (y) / (engine.getMap().getSize())));
+        return (float) ((windowWidth * (y) / (engine.getMap().getSize())));
     }
 
     public static float toScreenX(double x, int mapSize) {
@@ -48,7 +48,7 @@ public class Main extends Application {
     }
 
     public static float toScreenY(double y, int mapSize) {
-        return (float) ((windowsWidth * (y) / mapSize));
+        return (float) ((windowWidth * (y) / mapSize));
     }
 
     public static Engine getEngine() {
@@ -78,8 +78,23 @@ public class Main extends Application {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, keyboard::keyPressed);
         scene.addEventHandler(KeyEvent.KEY_RELEASED, keyboard::keyReleased);
 
+        //update windows size when resized
+        primaryStage.widthProperty().addListener((observableValue, oldSceneWidth, newSceneWidth) -> {
+            if (newSceneWidth.doubleValue() < Main.getEngine().getRayCount()) {
+                Main.getEngine().setRayCount((int) newSceneWidth.doubleValue());
+            }
+            windowWidth = (float) newSceneWidth.doubleValue();
+            Engine.screenDistance = windowWidth / 2;
+            System.out.println("Width: " + newSceneWidth + " Height: " + windowHeight + " RayCount: " + Main.getEngine().getRayCount() + " ScreenDistance: " + Engine.screenDistance);
+        });
+
+        primaryStage.heightProperty().addListener((observableValue, oldSceneHeight, newSceneHeight) -> {
+            windowHeight = (float) newSceneHeight.doubleValue();
+            System.out.println("Width: " + windowWidth + " Height: " + newSceneHeight + " RayCount: " + Main.getEngine().getRayCount() + " ScreenDistance: " + Engine.screenDistance);
+        });
+
         primaryStage.setScene(scene);
-        primaryStage.setWidth(windowsWidth);
+        primaryStage.setWidth(windowWidth);
         primaryStage.setHeight(windowHeight);
         primaryStage.show();
 

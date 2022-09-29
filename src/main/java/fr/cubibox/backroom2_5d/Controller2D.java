@@ -136,7 +136,7 @@ public class Controller2D implements Initializable {
 
     public ArrayList<Rectangle> drawGrid() {
         Double w = Double.valueOf(Main.windowHeight);
-        Double h = Double.valueOf(Main.windowsWidth);
+        Double h = Double.valueOf(Main.windowWidth);
         ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
 
         Color gray1 = Color.rgb(30, 30, 30);
