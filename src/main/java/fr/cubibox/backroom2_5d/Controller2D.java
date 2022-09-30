@@ -7,7 +7,7 @@ import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle2F;
 import fr.cubibox.backroom2_5d.engine.maths.shapes.Shape;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
-import fr.cubibox.backroom2_5d.game.Polygon;
+import fr.cubibox.backroom2_5d.game.MapObject;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -108,7 +108,7 @@ public class Controller2D implements Initializable {
             for (Chunk chunk : chunkL) {
                 if (chunk != null)
                     if (chunk.getPolygons() != null) {
-                        for (Polygon pol : chunk.getPolygons()) {
+                        for (MapObject pol : chunk.getPolygons()) {
                             if (countPols != Integer.parseInt(pol.getId())) {
                                 coordinateSystem.getChildren().add(pol.getPolShape());
                                 countPols++;

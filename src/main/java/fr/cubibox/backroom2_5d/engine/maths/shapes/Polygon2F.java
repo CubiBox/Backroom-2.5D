@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 public class Polygon2F extends Shape {
     private final ArrayList<Line2F> edges;
-
-    private int height;
-
+    
     public Polygon2F(ArrayList<Line2F> edges) {
         this.edges = edges;
     }

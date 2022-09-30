@@ -10,7 +10,7 @@ import fr.cubibox.backroom2_5d.engine.maths.shapes.Shape;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.game.Polygon;
+import fr.cubibox.backroom2_5d.game.MapObject;
 import fr.cubibox.backroom2_5d.io.Keyboard;
 import fr.cubibox.backroom2_5d.utils.ImageUtils;
 
@@ -95,8 +95,8 @@ public class Engine implements Runnable {
         if (getPlayerChunk != null) {
             for (Shape collisionBoxShard : player.getCollisionBox()) {
                 if (collisionBoxShard instanceof Circle2F circle) {
-                    for (Polygon polygon : getPlayerChunk.getPolygons()) {
-                        for (Line2F edge : polygon.getEdges()) {
+                    for (MapObject mapObject : getPlayerChunk.getPolygons()) {
+                        for (Line2F edge : mapObject.getEdges()) {
                             Point2F nextCirclePos = new Point2F(
                                     circle.getX() + player.getX() + player.getVelocity().getX(),
                                     circle.getY() + player.getY() + player.getVelocity().getY()
@@ -171,8 +171,8 @@ public class Engine implements Runnable {
 
         for (Chunk chunk : chunks) {
             if (chunk != null) {
-                for (Polygon polygon : chunk.getPolygons()) {
-                    for (Line2F edge : polygon.getEdges()) {
+                for (MapObject mapObject : chunk.getPolygons()) {
+                    for (Line2F edge : mapObject.getEdges()) {
                         float p1X = r.getStartX();
                         float p1Y = r.getStartY();
                         float p2X = r.getIntersectionX();

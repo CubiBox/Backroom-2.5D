@@ -4,7 +4,7 @@ import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.game.Polygon;
+import fr.cubibox.backroom2_5d.game.MapObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +30,7 @@ public class MapUtils {
         //Initialize Polygons
         String poly = "";
         ArrayList<Line2F> currentEdges = new ArrayList<>();
-        ArrayList<Polygon> currentPolys = new ArrayList<>();
+        ArrayList<MapObject> currentPolys = new ArrayList<>();
         float height;
 
         //Initialize Edges
@@ -183,7 +183,7 @@ public class MapUtils {
                             isLine = true;
                             tempPointsArray.add(currentEdges.get(currentEdges.size() - 1).getB());
                         }
-                        currentPolys.add(new Polygon(currentEdges, tempPointsArray, height, poly, isLine, mapSize));
+                        currentPolys.add(new MapObject(currentEdges, tempPointsArray, height, poly, isLine, mapSize));
                         poly = "";
                         currentEdges = new ArrayList<>();
                     }

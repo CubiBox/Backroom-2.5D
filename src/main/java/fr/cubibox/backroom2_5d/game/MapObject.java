@@ -8,7 +8,7 @@ import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 
-public class Polygon {
+public class MapObject {
     private ArrayList<Line2F> edges = new ArrayList<>();
     private ArrayList<Point2F> points = new ArrayList<>();
     private float height;
@@ -19,7 +19,7 @@ public class Polygon {
     private javafx.scene.shape.Shape polShape;
 
 
-    public Polygon(ArrayList<Point2F> points, float height){
+    public MapObject(ArrayList<Point2F> points, float height) {
         this.isLine = false;
         this.height = height;
         if (!points.isEmpty()) {
@@ -27,14 +27,15 @@ public class Polygon {
             setupEdges(Main.getEngine().getMap().getSize());
         }
     }
-    public Polygon(ArrayList<Line2F> edges, float height, String id){
+
+    public MapObject(ArrayList<Line2F> edges, float height, String id) {
         this.isLine = false;
         this.height = height;
         this.edges = edges;
         this.id = id;
     }
 
-    public Polygon(ArrayList<Point2F> points, float height, boolean isLine){
+    public MapObject(ArrayList<Point2F> points, float height, boolean isLine) {
         this.isLine = isLine;
         this.height = height;
         if (!points.isEmpty()) {
@@ -42,7 +43,8 @@ public class Polygon {
             setupEdges(Main.getEngine().getMap().getSize());
         }
     }
-    public Polygon(ArrayList<Line2F> edges, ArrayList<Point2F> points, float height, String id, boolean isLine, int mapSize){
+
+    public MapObject(ArrayList<Line2F> edges, ArrayList<Point2F> points, float height, String id, boolean isLine, int mapSize) {
         this.isLine = isLine;
         this.height = height;
         this.points = points;
@@ -53,28 +55,27 @@ public class Polygon {
         }
     }
 
-    public void setupEdges(int mapSize){
+    public void setupEdges(int mapSize) {
         edges = new ArrayList<>();
         int pSize = points.size() - 1;
-        double[] polPoints = new double[points.size()*2];
+        double[] polPoints = new double[points.size() * 2];
 
-        for (int countP = 0; countP < pSize; countP ++){
-            edges.add(new Line2F(points.get(countP),points.get(countP+1)));
+        for (int countP = 0; countP < pSize; countP++) {
+            edges.add(new Line2F(points.get(countP), points.get(countP + 1)));
         }
         int countP = 0;
-        for (Point2F p : points){
+        for (Point2F p : points) {
             polPoints[countP] = Main.toScreenX(p.getX(), mapSize);
-            countP ++;
+            countP++;
             polPoints[countP] = Main.toScreenY(p.getY(), mapSize);
-            countP ++;
+            countP++;
         }
-        if (this.isLine == true) {
+        if (this.isLine) {
             this.polShape = new javafx.scene.shape.Polyline(polPoints);
             this.polShape.setFill(Color.TRANSPARENT);
             this.polShape.setStrokeWidth(2.0);
             this.polShape.setStroke(Color.CYAN);
-        }
-        else {
+        } else {
             edges.add(new Line2F(points.get(pSize), points.get(0)));
             this.polShape = new javafx.scene.shape.Polygon(polPoints);
             this.polShape.setFill(Color.TRANSPARENT);
@@ -83,12 +84,12 @@ public class Polygon {
         }
     }
 
-    public String toString(){
-        String out = "$"+id+"\n";
-        for (Line2F e : edges){
+    public String toString() {
+        String out = "$" + id + "\n";
+        for (Line2F e : edges) {
             out += e.toString();
         }
-        out += "\t\t%" + (int)height + "\n";
+        out += "\t\t%" + (int) height + "\n";
         return out;
     }
 
@@ -109,10 +110,6 @@ public class Polygon {
         isLine = line;
     }
 
-    public void setPolShape(Shape polShape) {
-        this.polShape = polShape;
-    }
-
     public ArrayList<Point2F> getPoints() {
         return points;
     }
@@ -123,6 +120,10 @@ public class Polygon {
 
     public javafx.scene.shape.Shape getPolShape() {
         return polShape;
+    }
+
+    public void setPolShape(Shape polShape) {
+        this.polShape = polShape;
     }
 
     public void setPolShape(javafx.scene.shape.Polygon polShape) {

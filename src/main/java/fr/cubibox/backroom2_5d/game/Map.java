@@ -1,6 +1,5 @@
 package fr.cubibox.backroom2_5d.game;
 
-
 public class Map {
     private final Chunk[][] chunks;
     private final String levelID;
