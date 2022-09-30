@@ -12,6 +12,7 @@ import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.game.Polygon;
 import fr.cubibox.backroom2_5d.io.Keyboard;
+import fr.cubibox.backroom2_5d.utils.ImageUtils;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -25,12 +26,9 @@ public class Engine implements Runnable {
     public static float wallHeight = 16.0f;
     public static float eyeLevel = 1.0f;
 
-    public static int RATIO = 100;
-
     private final Thread engineThread = new Thread(this, "ENGINE");
     private final Player player;
     private final Map map;
-    private final float fov = 70;
     public boolean shouldStop = false;
     private int rayCount;
     private ArrayList<Ray> rays = new ArrayList<>();
@@ -212,7 +210,7 @@ public class Engine implements Runnable {
                                 int textureIndex = (int) (Math.pow(
                                         ((dx * dx) + (dy * dy)),
                                         0.5f
-                                ) * 32) % 16;
+                                )) % ImageUtils.TILE_SIZE;
                                 r.setTextureIndex(textureIndex);
                             }
                         }

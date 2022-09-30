@@ -4,30 +4,30 @@ import fr.cubibox.backroom2_5d.engine.Engine;
 import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.io.Keyboard;
-import fr.cubibox.backroom2_5d.utils.ImageUtils;
+import fr.cubibox.backroom2_5d.io.Mouse;
 import fr.cubibox.backroom2_5d.utils.MapUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class Main extends Application {
     private static final Keyboard keyboard = new Keyboard();
+    private static final Mouse mouse = new Mouse();
+
     public static float windowWidth = 720;
     public static float windowHeight = 480;
     private static Engine engine;
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) {
         Map map = MapUtils.importMap(new File("map1.map"));
-        ImageUtils.writeImage("test.png", ImageUtils.placeHolder());
         engine = new Engine(
-                360,
+                16,
                 new Player(12, 11, 0),
                 map
         );
@@ -77,6 +77,7 @@ public class Main extends Application {
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, keyboard::keyPressed);
         scene.addEventHandler(KeyEvent.KEY_RELEASED, keyboard::keyReleased);
+        scene.addEventHandler(MouseEvent.MOUSE_MOVED, mouse::mouseMoved);
 
         //update windows size when resized
         primaryStage.widthProperty().addListener((observableValue, oldSceneWidth, newSceneWidth) -> {
@@ -85,12 +86,10 @@ public class Main extends Application {
             }
             windowWidth = (float) newSceneWidth.doubleValue();
             Engine.screenDistance = windowWidth / 2;
-            System.out.println("Width: " + newSceneWidth + " Height: " + windowHeight + " RayCount: " + Main.getEngine().getRayCount() + " ScreenDistance: " + Engine.screenDistance);
         });
 
         primaryStage.heightProperty().addListener((observableValue, oldSceneHeight, newSceneHeight) -> {
             windowHeight = (float) newSceneHeight.doubleValue();
-            System.out.println("Width: " + windowWidth + " Height: " + newSceneHeight + " RayCount: " + Main.getEngine().getRayCount() + " ScreenDistance: " + Engine.screenDistance);
         });
 
         primaryStage.setScene(scene);
