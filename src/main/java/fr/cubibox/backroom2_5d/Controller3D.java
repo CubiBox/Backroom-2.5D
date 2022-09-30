@@ -18,6 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;

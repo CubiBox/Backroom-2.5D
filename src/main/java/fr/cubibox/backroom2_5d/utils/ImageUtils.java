@@ -7,9 +7,7 @@ import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class ImageUtils {
     public static final int TILE_SIZE = 128;
@@ -77,6 +75,21 @@ public class ImageUtils {
 
     public static BufferedImage getSubImage(BufferedImage image, int x, int y, int width, int height) {
         return image.getSubimage(x, y, width, height);
+    }
+
+    public static byte[] toByteArray(BufferedImage bi, String format)throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(bi, format, baos);
+        byte[] bytes = baos.toByteArray();
+        return bytes;
+
+    }
+
+    // convert byte[] to BufferedImage
+    public static BufferedImage toBufferedImage(byte[] bytes)throws IOException {
+        InputStream is = new ByteArrayInputStream(bytes);
+        BufferedImage bi = ImageIO.read(is);
+        return bi;
     }
 
     public static javafx.scene.image.Image convertToFxImage(BufferedImage image) {

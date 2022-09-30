@@ -7,28 +7,27 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Texture {
-    private ArrayList<Image> wallStripTexture = new ArrayList<Image>();
+    private ArrayList<BufferedImage> wallStripTexture = new ArrayList<>();
     private float offsetX;
     private float offsetY;
     private float size;
 
     public Texture(BufferedImage wallTexture) {
-        ArrayList<Image> wallStripTexture = new ArrayList<>();
+        ArrayList<BufferedImage> wallStripTexture = new ArrayList<>();
         for (int i = 0; i < ImageUtils.TILE_SIZE; i++) {
             BufferedImage subImg = wallTexture.getSubimage(i, 0, 1, ImageUtils.TILE_SIZE);
-            Image img = ImageUtils.convertToFxImage(subImg);
+            //Image img = ImageUtils.convertToFxImage(subImg);
 
-            wallStripTexture.add(img);
-            subImg;
+            wallStripTexture.add(subImg);
         }
         this.wallStripTexture = wallStripTexture;
     }
 
-    public ArrayList<Image> getWallStripTexture() {
+    public ArrayList<BufferedImage> getWallStripTexture() {
         return wallStripTexture;
     }
 
-    public void setWallStripTexture(ArrayList<Image> wallStripTexture) {
+    public void setWallStripTexture(ArrayList<BufferedImage> wallStripTexture) {
         this.wallStripTexture = wallStripTexture;
     }
 
