@@ -1,10 +1,13 @@
 package fr.cubibox.backroom2_5d;
 
 import fr.cubibox.backroom2_5d.engine.Ray;
+import fr.cubibox.backroom2_5d.game.Texture;
 import fr.cubibox.backroom2_5d.utils.ImageUtils;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -27,10 +30,9 @@ import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 import static fr.cubibox.backroom2_5d.utils.ImageUtils.readImage;
 
 public class Controller3D implements Initializable {
-    private Image[] wallStripTexture;
+
     //private BufferedImage[] floorStripTexture;
     //private BufferedImage[] ceilStripTexture;
-
     @FXML
     private Pane drawPane;
     @FXML
@@ -41,17 +43,10 @@ public class Controller3D implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Chargement de la map...");
-        wallStripTexture = new Image[ImageUtils.TILE_SIZE];
 
         // Chargement des textures de mur
         BufferedImage wallTexture = readImage("textures/wall.png");
-
-        for (int i = 0; i < ImageUtils.TILE_SIZE; i++) {
-            BufferedImage subImg = wallTexture.getSubimage(i, 0, 1, ImageUtils.TILE_SIZE);
-            Image img = ImageUtils.convertToFxImage(subImg);
-
-            wallStripTexture[i] = img;
-        }
+        Main.getEngine().getMap().setWall(new Texture(wallTexture));
 
         /*
         for (int i = 0; i < TILE_SIZE; i++) {
@@ -92,10 +87,11 @@ public class Controller3D implements Initializable {
         ArrayList<Ray> playersRay = Main.getEngine().getRays();
 
         if (playersRay.size() > 0) {
-
             float mul = 0;
             float width = windowWidth / (Main.getEngine().getRayCount() + 1);
 
+            ImagePattern ip;
+            Texture wall = Main.getEngine().getMap().getWall();
             for (Ray ray : playersRay) {
                 float rayDX = ray.getIntersectionX() - ray.getStartX();
                 float rayDY = ray.getIntersectionY() - ray.getStartY();
@@ -131,8 +127,7 @@ public class Controller3D implements Initializable {
                     perceivedHeight = ImageUtils.TILE_SIZE;
                 }
 
-                ImagePattern ip = new ImagePattern(wallStripTexture[ray.getTextureIndex()]);
-
+                ip = new ImagePattern(wall.getWallStripTexture().get(ray.getTextureIndex()));
                 //Color ip = Color.PAPAYAWHIP;
 
                 r.setFill(ip);
@@ -184,7 +179,7 @@ public class Controller3D implements Initializable {
             }
         }
 
-        System.out.println(drawPane.getChildren().size());
+        //System.out.println(drawPane.getChildren().size());
     }
 
     public Circle drawPoint(double x, double y) {
