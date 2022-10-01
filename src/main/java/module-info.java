@@ -1,6 +1,8 @@
 module fr.cubibox.backroom2_5d {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
+    requires javafx.swing;
     requires java.desktop;
 
 

@@ -1,6 +1,7 @@
 package fr.cubibox.backroom2_5d;
 
 import fr.cubibox.backroom2_5d.engine.Ray;
+import fr.cubibox.backroom2_5d.entities.Player;
 import fr.cubibox.backroom2_5d.utils.ImageUtils;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -24,12 +26,12 @@ import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Engine.screenDistance;
 import static fr.cubibox.backroom2_5d.engine.Engine.wallHeight;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
-import static fr.cubibox.backroom2_5d.utils.ImageUtils.readImage;
+import static fr.cubibox.backroom2_5d.utils.ImageUtils.TILE_SIZE;
 
 public class Controller3D implements Initializable {
     private Image[] wallStripTexture;
-    //private BufferedImage[] floorStripTexture;
-    //private BufferedImage[] ceilStripTexture;
+    private Color[] floorStripTexture;
+    private Color[] ceilStripTexture;
 
     @FXML
     private Pane drawPane;
@@ -41,44 +43,31 @@ public class Controller3D implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Chargement de la map...");
-        wallStripTexture = new Image[ImageUtils.TILE_SIZE];
-
         // Chargement des textures de mur
-        BufferedImage wallTexture = readImage("textures/wall.png");
+        wallStripTexture = new Image[TILE_SIZE];
+        for (int i = 0; i < TILE_SIZE; i++) {
+            InputStream is2 = Main.class.getResourceAsStream("textures/wall/texture-" + (i + 1) + ".png");
 
-        for (int i = 0; i < ImageUtils.TILE_SIZE; i++) {
-            BufferedImage subImg = wallTexture.getSubimage(i, 0, 1, ImageUtils.TILE_SIZE);
-            Image img = ImageUtils.convertToFxImage(subImg);
-
-            wallStripTexture[i] = img;
+            if (is2 != null) {
+                wallStripTexture[i] = new Image(is2);
+            }
         }
 
-        /*
-        for (int i = 0; i < TILE_SIZE; i++) {
-            InputStream is = Main.class.getResourceAsStream("textures/wall" + (i + 1) + ".png");
-
-            if (is != null) {
-                wallStripTexture[i] = new Image(is);
-            }
-        }*/
-
-        /* Chargement des textures de sol
-        BufferedImage ceilTexture = readImage("textures/ceil.png");
-        ceilStripTexture = new BufferedImage[ImageUtils.TILE_SIZE * ImageUtils.TILE_SIZE];
-        for (int i = 0; i < ImageUtils.TILE_SIZE; i++) {
-            for (int j = 0; j < ImageUtils.TILE_SIZE; j++) {
-                ceilStripTexture[(j + (i * TILE_SIZE))] = ceilTexture.getSubimage(i, j, 1, 1);
-            }
+        // Chargement des textures de sol
+        ceilStripTexture = new Color[TILE_SIZE * TILE_SIZE];
+        BufferedImage ceilTexture = ImageUtils.readImage("textures/ceil.png");
+        for (int i = 0; i < (TILE_SIZE * TILE_SIZE); i++) {
+            int rgb = ceilTexture.getRGB(i % TILE_SIZE, i / TILE_SIZE);
+            ceilStripTexture[i] = Color.rgb((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
         }
 
         // Chargement des textures de plafond
-        BufferedImage floorTexture = readImage("textures/floor.png");
-        floorStripTexture = new BufferedImage[ImageUtils.TILE_SIZE * ImageUtils.TILE_SIZE];
-        for (int i = 0; i < ImageUtils.TILE_SIZE; i++) {
-            for (int j = 0; j < ImageUtils.TILE_SIZE; j++) {
-                floorStripTexture[(j + (i * TILE_SIZE))] = floorTexture.getSubimage(i, j, 1, 1);
-            }
-        }*/
+        floorStripTexture = new Color[TILE_SIZE * TILE_SIZE];
+        BufferedImage floorTexture = ImageUtils.readImage("textures/floor.png");
+        for (int i = 0; i < (TILE_SIZE * TILE_SIZE); i++) {
+            int rgb = floorTexture.getRGB(i % TILE_SIZE, i / TILE_SIZE);
+            floorStripTexture[i] = Color.rgb((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+        }
 
         System.out.println("Map chargée !");
 
@@ -127,22 +116,32 @@ public class Controller3D implements Initializable {
                 shadow.setFill(Color.color(grey, grey, grey, 0.25f));
                 shadow.setStroke(Color.color(grey, grey, grey, 0.25f));
 
-                if (perceivedHeight > ImageUtils.TILE_SIZE) {
-                    perceivedHeight = ImageUtils.TILE_SIZE;
+                if (perceivedHeight > TILE_SIZE) {
+                    perceivedHeight = TILE_SIZE;
                 }
 
-                ImagePattern ip = new ImagePattern(wallStripTexture[ray.getTextureIndex()]);
+                System.out.println(ray.getTextureIndex());
 
-                //Color ip = Color.PAPAYAWHIP;
+                for (int i = 0; i < width; i++) {
+                    ImagePattern ip = new ImagePattern(
+                            wallStripTexture[(ray.getTextureIndex() + i) % TILE_SIZE],
+                            (0.0 + i) / width,
+                            0.0,
+                            (1.0 / width),
+                            (1.0 / perceivedHeight),
+                            false
+                    );
 
-                r.setFill(ip);
-                r.setStroke(ip);
+
+                    r.setFill(ip);
+                    r.setStroke(ip);
+                }
 
                 drawPane.getChildren().add(r);
                 drawPane.getChildren().add(shadow);
 
                 mul++;
-                /*
+
                 Player player = Main.getEngine().getPlayer();
                 float win2 = windowHeight / 2f;
 
@@ -151,7 +150,6 @@ public class Controller3D implements Initializable {
                 if (floorToTop > 0) {
                     int pixels = (int) floorToTop;
                     int pixelRowHeight = (int) ((win2) - pixels);
-
 
                     for (int y = pixelRowHeight; y < win2; y++) {
                         float directDistFloor = (win2) / y;
@@ -163,28 +161,19 @@ public class Controller3D implements Initializable {
                         int floorTexX = (int) (floorX * 64) % 64;
                         int floorTexY = (int) (floorY * 64) % 64;
 
-                        BufferedImage bandFloor = ImageUtils.getImagePixel(floorTexture, floorTexX, floorTexY);
-                        ImagePattern ipFloor = new ImagePattern(ImageUtils.convertToFxImage(bandFloor));
-
                         Rectangle floor = new Rectangle(startX, y, width, width);
-                        floor.setFill(ipFloor);
-                        floor.setStroke(ipFloor);
-                        coordinateSystem.getChildren().add(floor);
-
-
-                        BufferedImage bandCeil = ImageUtils.getImagePixel(ceilingTexture, floorTexX, floorTexY);
-                        ImagePattern ipCeil = new ImagePattern(ImageUtils.convertToFxImage(bandCeil));
+                        floor.setFill(floorStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
+                        floor.setStroke(floorStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
+                        drawPane.getChildren().add(floor);
 
                         Rectangle ceil = new Rectangle(startX, y, width, width);
-                        ceil.setFill(ipCeil);
-                        ceil.setStroke(ipCeil);
-                        coordinateSystem.getChildren().add(ceil);
+                        ceil.setFill(ceilStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
+                        ceil.setStroke(ceilStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
+                        drawPane.getChildren().add(ceil);
                     }
-                }*/
+                }
             }
         }
-
-        System.out.println(drawPane.getChildren().size());
     }
 
     public Circle drawPoint(double x, double y) {

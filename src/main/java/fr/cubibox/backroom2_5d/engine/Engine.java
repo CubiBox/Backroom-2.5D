@@ -12,7 +12,6 @@ import fr.cubibox.backroom2_5d.game.Chunk;
 import fr.cubibox.backroom2_5d.game.Map;
 import fr.cubibox.backroom2_5d.game.MapObject;
 import fr.cubibox.backroom2_5d.io.Keyboard;
-import fr.cubibox.backroom2_5d.utils.ImageUtils;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.Collections;
 
 import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
+import static fr.cubibox.backroom2_5d.utils.ImageUtils.TILE_SIZE;
 
 public class Engine implements Runnable {
     public static float screenDistance = 120.0f;
@@ -32,7 +32,6 @@ public class Engine implements Runnable {
     public boolean shouldStop = false;
     private int rayCount;
     private ArrayList<Ray> rays = new ArrayList<>();
-
 
     public Engine(int rayCount, Player player, Map map) {
         this.rayCount = rayCount;
@@ -91,7 +90,6 @@ public class Engine implements Runnable {
     private void updatePlayer() {
         Chunk getPlayerChunk = map.getChunk((int) (player.getX() / 16), (int) (player.getY() / 16));
 
-
         if (getPlayerChunk != null) {
             for (Shape collisionBoxShard : player.getCollisionBox()) {
                 if (collisionBoxShard instanceof Circle2F circle) {
@@ -137,19 +135,17 @@ public class Engine implements Runnable {
     private void updateRays() {
         ArrayList<Ray> tempRays = new ArrayList<>();
 
-        float cutStep = windowWidth / rayCount;
-        float halfWindow = (windowWidth) / 2f;
+        float angleStep = windowWidth / rayCount;
+        float halfWindowWidth = windowWidth / 2f;
 
-        for (float x = 0; x <= windowWidth; x += cutStep) {
-            float rayAngle = (float) Math.atan((x - halfWindow) / halfWindow) / RADIAN_PI_2;
-            rayAngle += player.getAngle();
+        for (float x = 0; x <= windowWidth; x += angleStep) {
+            float rayAngle = ((float) Math.atan((x - halfWindowWidth) / halfWindowWidth) / RADIAN_PI_2) + player.getAngle();
 
-            tempRays.add(new Ray(player.getX(), player.getY(), rayAngle));
-        }
-
-        for (Ray r : tempRays) {
+            Ray r = new Ray(player.getX(), player.getY(), rayAngle);
             updateRay(r);
+            tempRays.add(r);
         }
+
 
         rays = tempRays;
     }
@@ -210,7 +206,7 @@ public class Engine implements Runnable {
                                 int textureIndex = (int) (Math.pow(
                                         ((dx * dx) + (dy * dy)),
                                         0.5f
-                                )) % ImageUtils.TILE_SIZE;
+                                ) * TILE_SIZE) % TILE_SIZE;
                                 r.setTextureIndex(textureIndex);
                             }
                         }

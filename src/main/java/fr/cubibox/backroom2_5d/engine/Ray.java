@@ -2,6 +2,8 @@ package fr.cubibox.backroom2_5d.engine;
 
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -15,6 +17,8 @@ public class Ray {
     private final float angle;
     private final Point2F startPoint;
     private final Point2F intersectionPoint;
+
+    ArrayList<Point2F> points;
 
     private int textureIndex;
 
@@ -86,5 +90,16 @@ public class Ray {
 
     public void setTextureIndex(int textureIndex) {
         this.textureIndex = textureIndex;
+    }
+
+    public void addPoint(Point2F point) {
+        if (points == null) {
+            points = new ArrayList<>();
+        }
+        points.add(point);
+    }
+
+    public ArrayList<Point2F> getPoints() {
+        return points;
     }
 }

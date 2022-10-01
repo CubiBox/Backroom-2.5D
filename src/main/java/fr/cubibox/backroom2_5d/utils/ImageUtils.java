@@ -1,8 +1,6 @@
 package fr.cubibox.backroom2_5d.utils;
 
 import fr.cubibox.backroom2_5d.Main;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,7 +17,9 @@ public class ImageUtils {
 
         if (pathURL != null) {
             try {
-                return ImageIO.read(pathURL);
+                BufferedImage image = ImageIO.read(pathURL);
+                pathURL.close();
+                return image;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,43 +52,7 @@ public class ImageUtils {
         g2.fillRect(TILE_SIZE / 2, 0, TILE_SIZE / 2, TILE_SIZE / 2);
         g2.fillRect(0, TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE / 2);
 
+        g2.dispose();
         return img;
-    }
-
-    public static BufferedImage resize(BufferedImage img, int newW, int newH) {
-        int w = img.getWidth();
-        int h = img.getHeight();
-
-        BufferedImage dimg = new BufferedImage(newW, newH, img.getType());
-        Graphics2D g = dimg.createGraphics();
-
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-        g.drawImage(img, 0, 0, newW, newH, 0, 0, w, h, null);
-        g.dispose();
-
-        writeImage("test.png", dimg);
-
-        return dimg;
-    }
-
-    public static BufferedImage getImagePixel(BufferedImage image, int x, int y) {
-        return image.getSubimage(x, y, 1, 1);
-    }
-
-    public static BufferedImage getSubImage(BufferedImage image, int x, int y, int width, int height) {
-        return image.getSubimage(x, y, width, height);
-    }
-
-    public static javafx.scene.image.Image convertToFxImage(BufferedImage image) {
-        WritableImage fxImage = new WritableImage(image.getWidth(), image.getHeight());
-        PixelWriter pw = fxImage.getPixelWriter();
-
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                pw.setArgb(x, y, image.getRGB(x, y));
-            }
-        }
-
-        return fxImage;
     }
 }

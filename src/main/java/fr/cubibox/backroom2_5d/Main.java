@@ -27,7 +27,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         Map map = MapUtils.importMap(new File("map1.map"));
         engine = new Engine(
-                16,
+                120,
                 new Player(12, 11, 0),
                 map
         );
@@ -65,7 +65,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view3D.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view3D2.fxml"));
         primaryStage.setTitle("Backroom2D");
         Scene scene = new Scene(root);
 
