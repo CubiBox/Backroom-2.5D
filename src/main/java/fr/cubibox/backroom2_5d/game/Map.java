@@ -1,6 +1,8 @@
 package fr.cubibox.backroom2_5d.game;
 
 public class Map {
+    // ArrayList<Texture> indexTexture;
+    private Texture wall;
     private final Chunk[][] chunks;
     private final String levelID;
     private final int size;
@@ -25,6 +27,15 @@ public class Map {
         } else {
             return null;
         }
+    }
+
+
+    public Texture getWall() {
+        return wall;
+    }
+
+    public void setWall(Texture wall) {
+        this.wall = wall;
     }
 
     public String getLevelID() {
