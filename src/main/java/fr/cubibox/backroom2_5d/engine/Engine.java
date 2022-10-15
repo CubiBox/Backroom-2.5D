@@ -20,6 +20,7 @@ import java.util.Collections;
 import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 import static fr.cubibox.backroom2_5d.utils.ImageUtils.TILE_SIZE;
+import static java.lang.Math.abs;
 
 public class Engine implements Runnable {
     public static float screenDistance = 120.0f;
@@ -164,7 +165,7 @@ public class Engine implements Runnable {
         float tempX = r.getIntersectionX();
         float tempY = r.getIntersectionY();
 
-        int text = 0;
+        int textureID = 0;
 
         for (Chunk chunk : chunks) {
             if (chunk != null) {
@@ -204,7 +205,7 @@ public class Engine implements Runnable {
                                 float dx = tempX - p3X;
                                 float dy = tempY - p3Y;
 
-                                text = (int) ((dx * dx + dy * dy)) % TILE_SIZE;
+                                textureID = (int) ((abs(dx) + abs(dy)) * (TILE_SIZE / 2)) % TILE_SIZE;
                             }
                         }
                     }
@@ -212,7 +213,7 @@ public class Engine implements Runnable {
             }
         }
 
-        r.setTextureIndex(text);
+        r.setTextureIndex(textureID);
         r.setIntersectionX(tempX);
         r.setIntersectionY(tempY);
     }

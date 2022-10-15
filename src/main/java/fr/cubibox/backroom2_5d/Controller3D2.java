@@ -27,6 +27,7 @@ import static fr.cubibox.backroom2_5d.engine.Engine.screenDistance;
 import static fr.cubibox.backroom2_5d.engine.Engine.wallHeight;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 import static fr.cubibox.backroom2_5d.utils.ImageUtils.TILE_SIZE;
+import static java.lang.Math.abs;
 
 public class Controller3D2 implements Initializable {
     private Image[] wallStripTexture;
@@ -106,7 +107,7 @@ public class Controller3D2 implements Initializable {
 
                 // Perspective correction
                 float rayAngleFromMiddle = player.getAngle() - ray.getAngle();
-                float rayAngleDiffAbsCos = (float) Math.abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
+                float rayAngleDiffAbsCos = (float) abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
                 rayDistance = rayDistance * rayAngleDiffAbsCos;
 
                 float perceivedHeight = (screenDistance * (wallHeight / rayDistance)) / 6f;
@@ -117,7 +118,7 @@ public class Controller3D2 implements Initializable {
 
                 for (int i = 0; i < bandWidth; i++) {
                     // Set texture image on the band of the rectangle
-                    Image texture = wallStripTexture[(ray.getTextureIndex() + 1) % TILE_SIZE];
+                    Image texture = wallStripTexture[(ray.getTextureIndex() + i) % TILE_SIZE];
 
                     // Fit the texture to the band
                     gc.setFill(new ImagePattern(texture, startX, startY, 1, perceivedHeight, false));
@@ -126,31 +127,30 @@ public class Controller3D2 implements Initializable {
                 }
 
                 // Draw floor and ceil
-                if (startY > 0) {
-                    for (int y = 0; y < windowHeight; y++) {
-                        /*
+                /*if (startY > 0) {
+                    int pixelRowHeight = (int) ((halfHeight) - floorToTop);
+
+                    for (int y = pixelRowHeight; y < halfHeight; y++) {
                         float directDistFloor = halfHeight / y;
                         float currentDistFloor = directDistFloor / rayDistance;
 
                         float floorX = (player.getX() + currentDistFloor * rayDX);
                         float floorY = (player.getY() + currentDistFloor * rayDY);
 
-                        int floorTexX = (int) (floorX * TILE_SIZE) % TILE_SIZE;
-                        int floorTexY = (int) (floorY * TILE_SIZE) % TILE_SIZE;
+                        int floorTexX = (int) (floorX * (TILE_SIZE / 2)) % TILE_SIZE;
+                        int floorTexY = (int) (floorY * (TILE_SIZE / 2)) % TILE_SIZE;
 
-                        Color color = floorStripTexture[floorTexX + (floorTexY * TILE_SIZE)];
+                        Color color = floorStripTexture[abs(floorTexX + (floorTexY * TILE_SIZE))];
                         gc.setFill(color);
                         gc.fillRect(startX, halfHeight - y, bandWidth, bandWidth);
 
-                        Color color2 = ceilStripTexture[floorTexX + (floorTexY * TILE_SIZE)];
+                        Color color2 = ceilStripTexture[abs(floorTexX + (floorTexY * TILE_SIZE))];
                         gc.setFill(color2);
                         gc.fillRect(startX, halfHeight + y, bandWidth, bandWidth);
-                        */
                     }
-                }
+                }*/
             }
         }
-
 
         pane.getChildren().add(canvas);
     }
