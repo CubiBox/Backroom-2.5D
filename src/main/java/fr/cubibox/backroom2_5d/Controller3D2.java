@@ -42,7 +42,9 @@ public class Controller3D2 implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Chargement de la map...");
+        // es
+        System.out.println("Chargement de la map..");
+
         // Chargement des textures de mur
         wallStripTexture = new Image[TILE_SIZE];
         for (int i = 0; i < TILE_SIZE; i++) {
@@ -115,19 +117,18 @@ public class Controller3D2 implements Initializable {
 
                 for (int i = 0; i < bandWidth; i++) {
                     // Set texture image on the band of the rectangle
-                    Image texture = wallStripTexture[ray.getTextureIndex()];
+                    Image texture = wallStripTexture[(ray.getTextureIndex() + 1) % TILE_SIZE];
 
                     // Fit the texture to the band
-                    gc.setFill(new ImagePattern(texture, startX + i, startY, bandWidth, perceivedHeight, false));
+                    gc.setFill(new ImagePattern(texture, startX, startY, 1, perceivedHeight, false));
                     gc.setStroke(Color.BLACK);
                     gc.fillRect(startX + i, startY, 1, perceivedHeight);
                 }
 
                 // Draw floor and ceil
                 if (startY > 0) {
-                    int pixelRowHeight = (int) (halfHeight - startY);
-
-                    for (int y = pixelRowHeight; y < halfHeight; y++) {
+                    for (int y = 0; y < windowHeight; y++) {
+                        /*
                         float directDistFloor = halfHeight / y;
                         float currentDistFloor = directDistFloor / rayDistance;
 
@@ -144,6 +145,7 @@ public class Controller3D2 implements Initializable {
                         Color color2 = ceilStripTexture[floorTexX + (floorTexY * TILE_SIZE)];
                         gc.setFill(color2);
                         gc.fillRect(startX, halfHeight + y, bandWidth, bandWidth);
+                        */
                     }
                 }
             }
@@ -154,13 +156,12 @@ public class Controller3D2 implements Initializable {
     }
 
     private class Movement extends AnimationTimer {
-        private final long FRAMES_PER_SEC = 30L;
-        private final long INTERVAL = 1000000000L / FRAMES_PER_SEC;
-
         private long last = 0;
 
         @Override
         public void handle(long now) {
+            long FRAMES_PER_SEC = 30L;
+            long INTERVAL = 1000000000L / FRAMES_PER_SEC;
             if (now - last > INTERVAL) {
                 drawFunction();
 

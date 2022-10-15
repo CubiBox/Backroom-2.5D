@@ -146,7 +146,6 @@ public class Engine implements Runnable {
             tempRays.add(r);
         }
 
-
         rays = tempRays;
     }
 
@@ -165,6 +164,8 @@ public class Engine implements Runnable {
         float tempX = r.getIntersectionX();
         float tempY = r.getIntersectionY();
 
+        int text = 0;
+
         for (Chunk chunk : chunks) {
             if (chunk != null) {
                 for (MapObject mapObject : chunk.getPolygons()) {
@@ -179,7 +180,7 @@ public class Engine implements Runnable {
                         float p4X = edge.getB().getX();
                         float p4Y = edge.getB().getY();
 
-                        float s1_x, s1_y = 0, s2_x, s2_y;
+                        float s1_x, s1_y, s2_x, s2_y;
                         s1_x = p2X - p1X;
                         s1_y = p2Y - p1Y;
                         s2_x = p4X - p3X;
@@ -203,11 +204,7 @@ public class Engine implements Runnable {
                                 float dx = tempX - p3X;
                                 float dy = tempY - p3Y;
 
-                                int textureIndex = (int) (Math.pow(
-                                        ((dx * dx) + (dy * dy)),
-                                        0.5f
-                                ) * TILE_SIZE) % TILE_SIZE;
-                                r.setTextureIndex(textureIndex);
+                                text = (int) ((dx * dx + dy * dy)) % TILE_SIZE;
                             }
                         }
                     }
@@ -215,6 +212,7 @@ public class Engine implements Runnable {
             }
         }
 
+        r.setTextureIndex(text);
         r.setIntersectionX(tempX);
         r.setIntersectionY(tempY);
     }

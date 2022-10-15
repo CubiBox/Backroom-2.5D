@@ -27,16 +27,6 @@ public class FileUtils {
         return null;
     }
 
-    public static File readFile(String inputPath) {
-        File tempFile = new File(inputPath);
-
-        if (tempFile.exists() && tempFile.isFile() && tempFile.canRead() && tempFile.canRead()) {
-            return tempFile;
-        }
-
-        return null;
-    }
-
     public static File writeFile(String outputPath) {
         String[] slicedPath = outputPath.split("/");
         File tempFile = new File(outputPath);

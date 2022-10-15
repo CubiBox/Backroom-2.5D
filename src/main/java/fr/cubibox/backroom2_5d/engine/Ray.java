@@ -102,4 +102,11 @@ public class Ray {
     public ArrayList<Point2F> getPoints() {
         return points;
     }
+
+    @Override
+    public String toString() {
+        return "Ray{" +
+                "textureIndex=" + textureIndex +
+                '}';
+    }
 }
