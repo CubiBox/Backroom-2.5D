@@ -6,20 +6,18 @@ import fr.cubibox.backroom2_5d.utils.ImageUtils;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.nio.IntBuffer;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
@@ -29,46 +27,43 @@ import static fr.cubibox.backroom2_5d.engine.Engine.screenDistance;
 import static fr.cubibox.backroom2_5d.engine.Engine.wallHeight;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 import static fr.cubibox.backroom2_5d.utils.ImageUtils.TILE_SIZE;
+import static java.lang.Math.abs;
 
 public class Controller3D implements Initializable {
-    private Image[] wallStripTexture;
-    private Color[] floorStripTexture;
-    private Color[] ceilStripTexture;
+    private int[][] wallTextureMatrix;
+    private Color[][] floorTextureMatrix;
+    private Color[][] ceilTextureMatrix;
 
     @FXML
-    private Pane drawPane;
-    @FXML
-    private TextArea functionText;
-    @FXML
-    private VBox vBoxPanel;
+    private Pane pane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Chargement de la map...");
-        // Chargement des textures de mur
-        wallStripTexture = new Image[TILE_SIZE];
-        for (int i = 0; i < TILE_SIZE; i++) {
-            InputStream is2 = Main.class.getResourceAsStream("textures/wall/texture-" + (i + 1) + ".png");
+        // es
+        System.out.println("Chargement de la map..");
 
-            if (is2 != null) {
-                wallStripTexture[i] = new Image(is2);
-            }
-        }
+        // Chargement des textures de mur
+        wallTextureMatrix = new int[TILE_SIZE][TILE_SIZE];
+        BufferedImage wallTexture = ImageUtils.readImage("textures/wall.png");
 
         // Chargement des textures de sol
-        ceilStripTexture = new Color[TILE_SIZE * TILE_SIZE];
+        ceilTextureMatrix = new Color[TILE_SIZE][TILE_SIZE];
         BufferedImage ceilTexture = ImageUtils.readImage("textures/ceil.png");
-        for (int i = 0; i < (TILE_SIZE * TILE_SIZE); i++) {
-            int rgb = ceilTexture.getRGB(i % TILE_SIZE, i / TILE_SIZE);
-            ceilStripTexture[i] = Color.rgb((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
-        }
 
         // Chargement des textures de plafond
-        floorStripTexture = new Color[TILE_SIZE * TILE_SIZE];
+        floorTextureMatrix = new Color[TILE_SIZE][TILE_SIZE];
         BufferedImage floorTexture = ImageUtils.readImage("textures/floor.png");
-        for (int i = 0; i < (TILE_SIZE * TILE_SIZE); i++) {
-            int rgb = floorTexture.getRGB(i % TILE_SIZE, i / TILE_SIZE);
-            floorStripTexture[i] = Color.rgb((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+
+        for (int y = 0; y < (TILE_SIZE); y++) {
+            for (int x = 0; x < (TILE_SIZE); x++) {
+                wallTextureMatrix[y][x] = wallTexture.getRGB(x, y);
+
+                int rgb = ceilTexture.getRGB(x, y);
+                ceilTextureMatrix[y][x] = Color.rgb((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+
+                rgb = floorTexture.getRGB(x, y);
+                floorTextureMatrix[y][x] = Color.rgb((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+            }
         }
 
         System.out.println("Map chargée !");
@@ -78,118 +73,107 @@ public class Controller3D implements Initializable {
     }
 
     public void drawFunction() {
-        drawPane.getChildren().clear();
+        pane.getChildren().clear();
 
-        HashSet<Ray> playersRay = Main.getEngine().getRays();
+        IntBuffer buffer = IntBuffer.allocate((int) (windowWidth * windowHeight));
 
-        if (playersRay.size() > 0) {
+        int[] pixels = buffer.array();
+        PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>((int) windowWidth, (int) windowHeight, buffer, PixelFormat.getIntArgbPreInstance());
 
-            float mul = 0;
-            float width = windowWidth / (Main.getEngine().getRayCount() + 1);
+        WritableImage image = new WritableImage(pixelBuffer);
 
-            for (Ray ray : playersRay) {
+        float width = windowWidth;
+        float height = windowHeight;
+        float halfHeight = height / 2f;
+
+        Ray [] rays = Main.getEngine().getRays();
+
+        if (rays.length > 0) {
+            Player player = Main.getEngine().getPlayer();
+            int bandWidth = (int) (width / rays.length);
+
+            for (int rayIndex = 0; rayIndex < rays.length; rayIndex++) {
+                Ray ray = rays[rayIndex];
                 float rayDX = ray.getIntersectionX() - ray.getStartX();
                 float rayDY = ray.getIntersectionY() - ray.getStartY();
 
                 float rayDistance = (float) (Math.pow((rayDX * rayDX) + (rayDY * rayDY), 0.5));
 
-                float rayAngleFromMiddle = Main.getEngine().getPlayer().getAngle() - ray.getAngle();
-                float rayAngleDiffAbsCos = (float) Math.abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
+                // Perspective correction
+                float rayAngleFromMiddle = player.getAngle() - ray.getAngle();
+                float rayAngleDiffAbsCos = (float) abs(Math.cos(rayAngleFromMiddle * RADIAN_PI_2));
                 rayDistance = rayDistance * rayAngleDiffAbsCos;
 
                 float perceivedHeight = (screenDistance * (wallHeight / rayDistance)) / 6f;
 
-
                 // Draw Rectangle
-                float startX = mul * width;
-                float startY = (windowHeight - perceivedHeight) / 2f;
+                float startX = rayIndex * bandWidth;
+                float startY = perceivedHeight - (height - perceivedHeight) / 2f;
 
-                Rectangle r = new Rectangle(startX, startY, width, perceivedHeight);
-                Rectangle shadow = new Rectangle(startX, startY, width, perceivedHeight);
+                for (int y = 0; y < perceivedHeight; y ++) {
+                    for (int x = 0; x < bandWidth; x ++) {
+                        int i = (int) perceivedHeight % TILE_SIZE;
+                        int textureX = (ray.getTextureIndex() + x) % TILE_SIZE;
 
-                float grey = 0f + (1f / rayDistance);
+                        int sX = (int) startX + x;
+                        int sY = (int) startY + y;
 
-                if (grey > 1f) {
-                    grey = 1f;
-                } else if (grey < 0f) {
-                    grey = 0f;
-                }
+                        if (sX < 0 || sX >= width || sY < 0 || sY >= height) {
+                            continue;
+                        }
 
-                shadow.setFill(Color.color(grey, grey, grey, 0.25f));
-                shadow.setStroke(Color.color(grey, grey, grey, 0.25f));
-
-                if (perceivedHeight > TILE_SIZE) {
-                    perceivedHeight = TILE_SIZE;
-                }
-
-                System.out.println(ray.getTextureIndex());
-
-                for (int i = 0; i < width; i++) {
-                    ImagePattern ip = new ImagePattern(
-                            wallStripTexture[(ray.getTextureIndex() + i) % TILE_SIZE],
-                            (0.0 + i) / width,
-                            0.0,
-                            (1.0 / width),
-                            (1.0 / perceivedHeight),
-                            false
-                    );
-
-
-                    r.setFill(ip);
-                    r.setStroke(ip);
-                }
-
-                drawPane.getChildren().add(r);
-                drawPane.getChildren().add(shadow);
-
-                mul++;
-
-                Player player = Main.getEngine().getPlayer();
-                float win2 = windowHeight / 2f;
-
-                // Draw floor
-                float floorToTop = (windowHeight - perceivedHeight) / 2f;
-                if (floorToTop > 0) {
-                    int pixels = (int) floorToTop;
-                    int pixelRowHeight = (int) ((win2) - pixels);
-
-                    for (int y = pixelRowHeight; y < win2; y++) {
-                        float directDistFloor = (win2) / y;
-                        float currentDistFloor = directDistFloor / rayDistance;
-
-                        float floorX = player.getX() + currentDistFloor * rayDX;
-                        float floorY = player.getY() + currentDistFloor * rayDY;
-
-                        int floorTexX = (int) (floorX * 64) % 64;
-                        int floorTexY = (int) (floorY * 64) % 64;
-
-                        Rectangle floor = new Rectangle(startX, y, width, width);
-                        floor.setFill(floorStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
-                        floor.setStroke(floorStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
-                        drawPane.getChildren().add(floor);
-
-                        Rectangle ceil = new Rectangle(startX, y, width, width);
-                        ceil.setFill(ceilStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
-                        ceil.setStroke(ceilStripTexture[(floorTexX + floorTexY * TILE_SIZE)]);
-                        drawPane.getChildren().add(ceil);
+                        pixels[(int) (sX + sY * width)] = wallTextureMatrix[i][textureX];
                     }
                 }
+
+                /*for (int i = 0; i < bandWidth; i++) {
+                    // Set texture image on the band of the rectangle
+                    int textureX = (ray.getTextureIndex() + i) % TILE_SIZE;
+                    Image texture = wallStripTexture[textureX];
+
+                    // Fit the texture to the band
+                    gc.setFill(new ImagePattern(texture, startX, startY, 1, perceivedHeight, false));
+                    gc.setStroke(Color.BLACK);
+                    gc.fillRect(startX + i, startY, 1, perceivedHeight);
+                }*/
+
+                // Draw floor and ceil
+                /*if (startY > 0) {
+                    int pixelRowHeight = (int) ((halfHeight) - floorToTop);
+
+                    for (int y = pixelRowHeight; y < halfHeight; y++) {
+                        float directDistFloor = halfHeight / y;
+                        float currentDistFloor = directDistFloor / rayDistance;
+
+                        float floorX = (player.getX() + currentDistFloor * rayDX);
+                        float floorY = (player.getY() + currentDistFloor * rayDY);
+
+                        int floorTexX = (int) (floorX * (TILE_SIZE / 2)) % TILE_SIZE;
+                        int floorTexY = (int) (floorY * (TILE_SIZE / 2)) % TILE_SIZE;
+
+                        Color color = floorStripTexture[abs(floorTexX + (floorTexY * TILE_SIZE))];
+                        gc.setFill(color);
+                        gc.fillRect(startX, halfHeight - y, bandWidth, bandWidth);
+
+                        Color color2 = ceilStripTexture[abs(floorTexX + (floorTexY * TILE_SIZE))];
+                        gc.setFill(color2);
+                        gc.fillRect(startX, halfHeight + y, bandWidth, bandWidth);
+                    }
+                }*/
             }
         }
-    }
+        pixelBuffer.updateBuffer(b -> null);
 
-    public Circle drawPoint(double x, double y) {
-        return new Circle(Main.toScreenX(x), Main.toScreenY(y), 0.3, Color.RED);
+        pane.getChildren().add(new ImageView(image));
     }
 
     private class Movement extends AnimationTimer {
-        private final long FRAMES_PER_SEC = 60L;
-        private final long INTERVAL = 1000000000L / FRAMES_PER_SEC;
-
         private long last = 0;
 
         @Override
         public void handle(long now) {
+            long FRAMES_PER_SEC = 30L;
+            long INTERVAL = 1000000000L / FRAMES_PER_SEC;
             if (now - last > INTERVAL) {
                 drawFunction();
 

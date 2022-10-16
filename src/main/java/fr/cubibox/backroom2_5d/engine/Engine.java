@@ -33,12 +33,13 @@ public class Engine implements Runnable {
     private final Map map;
     public boolean shouldStop = false;
     private int rayCount;
-    private HashSet<Ray> rays = new HashSet<>();
+    private Ray [] rays;
 
     public Engine(int rayCount, Player player, Map map) {
         this.rayCount = rayCount;
         this.player = player;
         this.map = map;
+        this.rays = new Ray[rayCount];
     }
 
     @Override
@@ -135,20 +136,19 @@ public class Engine implements Runnable {
     }
 
     private void updateRays() {
-        HashSet<Ray> tempRays = new HashSet<>();
+        rays = new Ray[rayCount + 1];
 
         float angleStep = windowWidth / rayCount;
         float halfWindowWidth = windowWidth / 2f;
 
-        for (float x = 0; x <= windowWidth; x += angleStep) {
-            float rayAngle = ((float) Math.atan((x - halfWindowWidth) / halfWindowWidth) / RADIAN_PI_2) + player.getAngle();
+        for (int x = 0; x <= rayCount; x++) {
+            float step = x * angleStep;
+            float rayAngle = ((float) Math.atan((step - halfWindowWidth) / halfWindowWidth) / RADIAN_PI_2) + player.getAngle();
 
             Ray r = new Ray(player.getX(), player.getY(), rayAngle);
             updateRay(r);
-            tempRays.add(r);
+            rays[x] = r;
         }
-
-        rays = tempRays;
     }
 
     private ArrayList<Chunk> findTraveledChunk(Ray r) {
@@ -278,7 +278,7 @@ public class Engine implements Runnable {
         return player;
     }
 
-    public HashSet<Ray> getRays() {
+    public Ray [] getRays() {
         return rays;
     }
 
