@@ -95,7 +95,7 @@ public class Controller3D2 implements Initializable {
 
         if (rays.size() > 0) {
             Player player = Main.getEngine().getPlayer();
-            float bandWidth = width / rays.size();
+            int bandWidth = (int) (width / rays.size());
 
             for (int rayIndex = 0; rayIndex < rays.size(); rayIndex++) {
                 Ray ray = rays.get(rayIndex);
