@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import static fr.cubibox.backroom2_5d.Main.windowHeight;
@@ -91,15 +92,15 @@ public class Controller3D2 implements Initializable {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, width, height);
 
-        ArrayList<Ray> rays = Main.getEngine().getRays();
+        HashSet<Ray> rays = Main.getEngine().getRays();
 
         if (rays.size() > 0) {
             Player player = Main.getEngine().getPlayer();
             int bandWidth = (int) (width / rays.size());
 
-            for (int rayIndex = 0; rayIndex < rays.size(); rayIndex++) {
-                Ray ray = rays.get(rayIndex);
+            int rayIndex = 0;
 
+            for (Ray ray : rays) {
                 float rayDX = ray.getIntersectionX() - ray.getStartX();
                 float rayDY = ray.getIntersectionY() - ray.getStartY();
 
@@ -149,6 +150,8 @@ public class Controller3D2 implements Initializable {
                         gc.fillRect(startX, halfHeight + y, bandWidth, bandWidth);
                     }
                 }*/
+
+                rayIndex++;
             }
         }
 

@@ -19,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import static fr.cubibox.backroom2_5d.Main.windowHeight;
@@ -78,7 +80,7 @@ public class Controller3D implements Initializable {
     public void drawFunction() {
         drawPane.getChildren().clear();
 
-        ArrayList<Ray> playersRay = Main.getEngine().getRays();
+        HashSet<Ray> playersRay = Main.getEngine().getRays();
 
         if (playersRay.size() > 0) {
 

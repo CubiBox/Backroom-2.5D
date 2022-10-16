@@ -16,6 +16,7 @@ import fr.cubibox.backroom2_5d.io.Keyboard;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
@@ -32,7 +33,7 @@ public class Engine implements Runnable {
     private final Map map;
     public boolean shouldStop = false;
     private int rayCount;
-    private ArrayList<Ray> rays = new ArrayList<>();
+    private HashSet<Ray> rays = new HashSet<>();
 
     public Engine(int rayCount, Player player, Map map) {
         this.rayCount = rayCount;
@@ -134,7 +135,7 @@ public class Engine implements Runnable {
     }
 
     private void updateRays() {
-        ArrayList<Ray> tempRays = new ArrayList<>();
+        HashSet<Ray> tempRays = new HashSet<>();
 
         float angleStep = windowWidth / rayCount;
         float halfWindowWidth = windowWidth / 2f;
@@ -277,7 +278,7 @@ public class Engine implements Runnable {
         return player;
     }
 
-    public ArrayList<Ray> getRays() {
+    public HashSet<Ray> getRays() {
         return rays;
     }
 

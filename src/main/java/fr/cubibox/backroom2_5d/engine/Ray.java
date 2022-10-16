@@ -3,6 +3,7 @@ package fr.cubibox.backroom2_5d.engine;
 import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -108,5 +109,17 @@ public class Ray {
         return "Ray{" +
                 "textureIndex=" + textureIndex +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ray ray)) return false;
+        return Float.compare(ray.getAngle(), getAngle()) == 0 && getTextureIndex() == ray.getTextureIndex() && Objects.equals(startPoint, ray.startPoint) && Objects.equals(intersectionPoint, ray.intersectionPoint) && Objects.equals(getPoints(), ray.getPoints());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAngle(), startPoint, intersectionPoint, getPoints(), getTextureIndex());
     }
 }
