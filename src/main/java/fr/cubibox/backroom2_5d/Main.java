@@ -20,8 +20,8 @@ public class Main extends Application {
     private static final Keyboard keyboard = new Keyboard();
     private static final Mouse mouse = new Mouse();
 
-    public static float windowWidth = 720;
-    public static float windowHeight = 480;
+    public static int windowWidth = 720;
+    public static int windowHeight = 480;
     private static Engine engine;
 
     public static void main(String[] args) {
@@ -84,12 +84,12 @@ public class Main extends Application {
             if (newSceneWidth.doubleValue() < Main.getEngine().getRayCount()) {
                 Main.getEngine().setRayCount((int) newSceneWidth.doubleValue());
             }
-            windowWidth = (float) newSceneWidth.doubleValue();
-            Engine.screenDistance = windowWidth / 2;
+            windowWidth = newSceneWidth.intValue();
+            Engine.screenDistance = windowWidth / 2f;
         });
 
         primaryStage.heightProperty().addListener((observableValue, oldSceneHeight, newSceneHeight) -> {
-            windowHeight = (float) newSceneHeight.doubleValue();
+            windowHeight = newSceneHeight.intValue();
         });
 
         primaryStage.setScene(scene);
