@@ -1,5 +1,7 @@
 package fr.cubibox.backroom2_5d.game;
 
+import fr.cubibox.backroom2_5d.graphics.Texture;
+
 public class Map {
     // ArrayList<Texture> indexTexture;
     private Texture wall;

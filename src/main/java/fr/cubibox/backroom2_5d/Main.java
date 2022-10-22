@@ -15,19 +15,28 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Main extends Application {
     private static final Keyboard keyboard = new Keyboard();
     private static final Mouse mouse = new Mouse();
+
+    private static boolean view2D = false;
 
     public static int windowWidth = 720;
     public static int windowHeight = 480;
     private static Engine engine;
 
     public static void main(String[] args) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("-2d"))
+        {
+            view2D = true;
+        }
+
+
         Map map = MapUtils.importMap(new File("map1.map"));
         engine = new Engine(
-                120,
+                windowWidth,
                 new Player(12, 11, 0),
                 map
         );
@@ -65,7 +74,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view3D.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/gameplay.fxml")));
+
+        if (view2D) {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("scenes/mapdebug.fxml")));
+        }
+
         primaryStage.setTitle("Backroom2D");
         Scene scene = new Scene(root);
 
@@ -81,8 +95,8 @@ public class Main extends Application {
 
         //update windows size when resized
         primaryStage.widthProperty().addListener((observableValue, oldSceneWidth, newSceneWidth) -> {
-            if (newSceneWidth.doubleValue() < Main.getEngine().getRayCount()) {
-                Main.getEngine().setRayCount((int) newSceneWidth.doubleValue());
+            if (newSceneWidth.doubleValue() < getEngine().getRayCount()) {
+                getEngine().setRayCount(newSceneWidth.intValue());
             }
             windowWidth = newSceneWidth.intValue();
             Engine.screenDistance = windowWidth / 2f;

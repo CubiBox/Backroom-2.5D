@@ -13,7 +13,7 @@ public class Chunk {
         this.originY = y;
     }
 
-    public ArrayList<MapObject> getPolygons() {
+    public ArrayList<MapObject> getMapObjects() {
         return mapObjects;
     }
 

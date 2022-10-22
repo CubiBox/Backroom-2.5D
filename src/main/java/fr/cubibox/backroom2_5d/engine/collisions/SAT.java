@@ -80,21 +80,6 @@ public class SAT {
         return !(intervalA.getMax() < intervalB.getMin() || intervalB.getMax() < intervalA.getMin());
     }
 
-    public static boolean RectangleRectangleSAT(Rectangle2F rectA, Rectangle2F rectB) {
-        Vector2F[] axes = {
-                new Vector2F(1, 0),
-                new Vector2F(0, 1)
-        };
-
-        for (int i = 0; i < 2; i++) {
-            if (overlapOnAxis(rectA, rectB, axes[i])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public static boolean GenericSAT(Circle2F circle, Shape shapeB) {
 
 
@@ -105,14 +90,14 @@ public class SAT {
         Vector2F[] axesA = polyA.getAxes();
         Vector2F[] axesB = polyB.getAxes();
 
-        for (int i = 0; i < axesA.length; i++) {
-            if (overlapOnAxis(polyA, polyB, axesA[i])) {
+        for (Vector2F vector2F : axesA) {
+            if (overlapOnAxis(polyA, polyB, vector2F)) {
                 return false;
             }
         }
 
-        for (int i = 0; i < axesB.length; i++) {
-            if (overlapOnAxis(polyA, polyB, axesB[i])) {
+        for (Vector2F vector2F : axesB) {
+            if (overlapOnAxis(polyA, polyB, vector2F)) {
                 return false;
             }
         }

@@ -10,18 +10,21 @@ public abstract class Entity {
     protected final HashSet<Shape> collisionBox;
     protected final Point2F position;
     protected Vector2F velocity;
+    protected Vector2F direction;
     protected String id;
     protected float angle;
 
     public Entity(Point2F position, float width, float height) {
         this.collisionBox = new HashSet<>();
         this.position = position;
+        this.direction = new Vector2F(0f, 0f);
         this.angle = 0f;
     }
 
     public Entity(float x, float y, float width, float height) {
         this.collisionBox = new HashSet<>();
         this.position = new Point2F(x, y);
+        this.direction = new Vector2F(0f, 0f);
         this.angle = 0f;
     }
 
@@ -61,5 +64,13 @@ public abstract class Entity {
 
     public void setVelocity(Vector2F velocity) {
         this.velocity = velocity;
+    }
+
+    public Vector2F getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Vector2F direction) {
+        this.direction = direction;
     }
 }

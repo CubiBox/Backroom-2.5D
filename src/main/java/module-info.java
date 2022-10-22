@@ -8,4 +8,15 @@ module fr.cubibox.backroom2_5d {
 
     opens fr.cubibox.backroom2_5d to javafx.fxml;
     exports fr.cubibox.backroom2_5d;
+
+    opens fr.cubibox.backroom2_5d.scenes to javafx.fxml;
+    exports fr.cubibox.backroom2_5d.scenes;
+
+    opens fr.cubibox.backroom2_5d.engine to javafx.fxml;
+    exports fr.cubibox.backroom2_5d.engine;
+
+    opens fr.cubibox.backroom2_5d.engine.maths.shapes to javafx.fxml;
+    exports fr.cubibox.backroom2_5d.engine.maths.shapes;
+    exports fr.cubibox.backroom2_5d.graphics;
+    opens fr.cubibox.backroom2_5d.graphics to javafx.fxml;
 }

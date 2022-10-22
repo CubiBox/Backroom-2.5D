@@ -41,7 +41,6 @@ public class Controller2D implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //drawFunction();
         Movement clock = new Movement();
         clock.start();
     }
@@ -56,10 +55,12 @@ public class Controller2D implements Initializable {
 
         //draw the player's rays
         for (Ray r : Main.getEngine().getRays()) {
-            if (r.getIntersectionX() != Float.POSITIVE_INFINITY && r.getIntersectionY() != Float.POSITIVE_INFINITY) {
-                Line l = new Line(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()), Main.toScreenX(r.getIntersectionX()), Main.toScreenY(r.getIntersectionY()));
-                l.setStroke(RAY_COLOR);
-                coordinateSystem.getChildren().add(l);
+            if (r != null) {
+                if (r.getIntersectionX() != Float.POSITIVE_INFINITY && r.getIntersectionY() != Float.POSITIVE_INFINITY) {
+                    Line l = new Line(Main.toScreenX(p.getX()), Main.toScreenY(p.getY()), Main.toScreenX(r.getIntersectionX()), Main.toScreenY(r.getIntersectionY()));
+                    l.setStroke(RAY_COLOR);
+                    coordinateSystem.getChildren().add(l);
+                }
             }
         }
 
@@ -107,8 +108,8 @@ public class Controller2D implements Initializable {
         for (Chunk[] chunkL : Main.getEngine().getMap().getChunks()) {
             for (Chunk chunk : chunkL) {
                 if (chunk != null)
-                    if (chunk.getPolygons() != null) {
-                        for (MapObject pol : chunk.getPolygons()) {
+                    if (chunk.getMapObjects() != null) {
+                        for (MapObject pol : chunk.getMapObjects()) {
                             if (countPols != Integer.parseInt(pol.getId())) {
                                 coordinateSystem.getChildren().add(pol.getPolShape());
                                 countPols++;
