@@ -22,6 +22,7 @@ public class Ray {
     ArrayList<Point2F> points;
 
     private int textureIndex;
+    private ArrayList<Point2F> floorHit;
 
     /**
      * @param startPoint
@@ -45,6 +46,7 @@ public class Ray {
     public Ray(float x, float y, float angle) {
         this.startPoint = new Point2F(x, y);
         this.angle = angle;
+        this.floorHit = new ArrayList<>();
 
         //set the intersection point with a length of 32
 
@@ -121,5 +123,13 @@ public class Ray {
     @Override
     public int hashCode() {
         return Objects.hash(getAngle(), startPoint, intersectionPoint, getPoints(), getTextureIndex());
+    }
+
+    public void addFloorHit(Point2F floorHit) {
+        this.floorHit.add(floorHit);
+    }
+
+    public ArrayList<Point2F> getFloorPoints() {
+        return floorHit;
     }
 }

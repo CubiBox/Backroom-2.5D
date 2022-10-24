@@ -25,6 +25,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.nio.IntBuffer;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import static fr.cubibox.backroom2_5d.Main.*;
@@ -40,7 +41,7 @@ public class Gameplay extends AnimationTimer implements Initializable {
     private Pane pane;
 
     // Variables nécessaire pour la boucle
-    private long targetFps = 30L;
+    private long targetFps = 60L;
     private long lastTime = 0L;
     //
 
@@ -93,18 +94,18 @@ public class Gameplay extends AnimationTimer implements Initializable {
     }
 
     private void update() {
-        pane.getChildren().clear();
+        if (getEngine().isReady()) {
+            pane.getChildren().clear();
 
-        Canvas canvas = new Canvas(windowWidth, windowHeight);
+            Canvas canvas = new Canvas(windowWidth, windowHeight);
 
-        float width = windowWidth;
-        float height = windowHeight;
-        float halfHeight = height / 2f;
+            float width = windowWidth;
+            float height = windowHeight;
+            float halfHeight = height / 2f;
 
-        Ray[] rays = Main.getEngine().getRays();
+            Ray[] rays = getEngine().getRays().clone();
 
-        if (rays.length > 0) {
-            Player player = Main.getEngine().getPlayer();
+            Player player = getEngine().getPlayer();
             int bandWidth = (int) (width / (rays.length - 1));
 
             for (int rayIndex = 0; rayIndex < rays.length; rayIndex++) {
@@ -127,27 +128,15 @@ public class Gameplay extends AnimationTimer implements Initializable {
                     float startX = rayIndex * bandWidth;
                     float startY = (height - perceivedHeight) / 2f;
 
-                    canvas.fillRect(
-                            new Rectangle2F(startX, startY, bandWidth, perceivedHeight),
-                            new Color(100, 100, 100).getRGB()
-                    );
-
                     float wallToBorder = (canvas.height - perceivedHeight) / 2f;
 
                     // Draw floor and ceil
                     if (wallToBorder > 0) {
-                        float pixelsToBottom = (float) Math.floor(wallToBorder);
-                        float pixelRowHeight = halfHeight - pixelsToBottom;
+                        float y = 1;
 
-                        for (float y = pixelRowHeight; y < halfHeight; y++) {
-                            float directDistFloor = (screenDistance * halfHeight) / (int) (y);
-                            float realDistFloor = (float) (directDistFloor / Math.cos((player.getAngle() - ray.getAngle()) * RADIAN_PI_2));
-
-                            float floorX = (float) (player.getX() + Math.cos(ray.getAngle() * RADIAN_PI_2) * realDistFloor / (screenDistance / 2f));
-                            float floorY = (float) (player.getY() + Math.sin(ray.getAngle() * RADIAN_PI_2) * realDistFloor / (screenDistance / 2f));
-
-                            int floorTextureX = (int) ((floorX - Math.floor(floorX)) * TILE_SIZE) % TILE_SIZE;
-                            int floorTextureY = (int) ((floorY - Math.floor(floorY)) * TILE_SIZE) % TILE_SIZE;
+                        for (Point2F p : ray.getFloorPoints()) {
+                            int floorTextureX = (int) ((p.getX() - Math.floor(p.getX())) * TILE_SIZE) % TILE_SIZE;
+                            int floorTextureY = (int) ((p.getY() - Math.floor(p.getY())) * TILE_SIZE) % TILE_SIZE;
 
                             canvas.drawPixel(
                                     new Point2F(startX, halfHeight - y),
@@ -155,18 +144,25 @@ public class Gameplay extends AnimationTimer implements Initializable {
                             );
 
                             canvas.drawPixel(
-                                    new Point2F(startX, halfHeight + y),
+                                    new Point2F(startX, halfHeight + y - 1),
                                     ceilTextureMatrix[floorTextureY][floorTextureX]
                             );
+
+                            y++;
                         }
                     }
+
+                    canvas.fillRect(
+                            new Rectangle2F(startX, startY, bandWidth, perceivedHeight),
+                            new Color(100, 100, 100).getRGB()
+                    );
                 }
             }
-        }
 
-        PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
-        WritableImage image = new WritableImage(pixelBuffer);
-        pixelBuffer.updateBuffer(b -> null);
-        pane.getChildren().add(new ImageView(image));
+            PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
+            WritableImage image = new WritableImage(pixelBuffer);
+            pixelBuffer.updateBuffer(b -> null);
+            pane.getChildren().add(new ImageView(image));
+        }
     }
 }

@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static fr.cubibox.backroom2_5d.Main.windowHeight;
 import static fr.cubibox.backroom2_5d.Main.windowWidth;
 import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
 import static fr.cubibox.backroom2_5d.utils.ImageUtils.TILE_SIZE;
@@ -34,6 +35,8 @@ public class Engine implements Runnable {
     private int rayCount;
     private Ray [] rays;
 
+    private boolean ready;
+
     public Engine(int rayCount, Player player, Map map) {
         this.rayCount = rayCount;
         this.player = player;
@@ -44,12 +47,16 @@ public class Engine implements Runnable {
     @Override
     public void run() {
         while (!shouldStop) {
+            this.ready = false;
+
             pollKeyEvents();
             updateRays();
             update(0.016f);
 
+            this.ready = true;
+
             try {
-                Thread.sleep(50);
+                Thread.sleep(6);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -134,6 +141,7 @@ public class Engine implements Runnable {
 
         int angleStep = windowWidth / rayCount;
         float halfWindowWidth = windowWidth / 2f;
+        int halfHeight = windowHeight / 2;
 
         for (int x = 0; x <= rayCount; x++) {
             float step = x * angleStep;
@@ -141,6 +149,17 @@ public class Engine implements Runnable {
 
             Ray r = new Ray(player.getX(), player.getY(), rayAngle);
             updateRay(r);
+
+            for (float y = 1; y < halfHeight; y++) {
+                float directDistFloor = (screenDistance * halfHeight) / (int) (y);
+                float realDistFloor = (float) (directDistFloor / Math.cos((player.getAngle() - r.getAngle()) * RADIAN_PI_2));
+
+                float floorX = (float) (player.getX() + Math.cos(r.getAngle() * RADIAN_PI_2) * realDistFloor / (screenDistance / 2f));
+                float floorY = (float) (player.getY() + Math.sin(r.getAngle() * RADIAN_PI_2) * realDistFloor / (screenDistance / 2f));
+
+                r.addFloorHit(new Point2F(floorX, floorY));
+            }
+
             rays[x] = r;
         }
     }
@@ -258,5 +277,9 @@ public class Engine implements Runnable {
 
     public void setRayCount(int doubleValue) {
         this.rayCount = doubleValue;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 }
