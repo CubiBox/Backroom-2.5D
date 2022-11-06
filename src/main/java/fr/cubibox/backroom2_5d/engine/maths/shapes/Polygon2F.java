@@ -1,7 +1,6 @@
 package fr.cubibox.backroom2_5d.engine.maths.shapes;
 
 import fr.cubibox.backroom2_5d.engine.maths.Line2F;
-import fr.cubibox.backroom2_5d.engine.maths.Point2F;
 import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class Polygon2F extends Shape {
         this.edges = edges;
     }
 
-    public Polygon2F(ArrayList<Point2F> points, boolean isLine) {
+    public Polygon2F(ArrayList<Vector2F> points, boolean isLine) {
         this.edges = new ArrayList<>();
         if (isLine) {
             for (int i = 0; i < points.size() - 1; i++) {
@@ -26,7 +25,7 @@ public class Polygon2F extends Shape {
         }
     }
 
-    public Polygon2F(Point2F... points) {
+    public Polygon2F(Vector2F... points) {
         this.edges = new ArrayList<>();
         for (int i = 0; i < points.length; i++) {
             edges.add(new Line2F(points[i], points[(i + 1) % points.length]));

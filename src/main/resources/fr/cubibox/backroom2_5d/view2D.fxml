@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-
-<?import javafx.scene.layout.Pane?>
-<Pane xmlns:fx="http://javafx.com/fxml/1" fx:id="coordinateSystem" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="-Infinity"
-      prefHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/17"
-      fx:controller="fr.cubibox.backroom2_5d.Controller2D"/>

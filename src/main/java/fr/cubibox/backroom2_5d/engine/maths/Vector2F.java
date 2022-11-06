@@ -48,4 +48,9 @@ public class Vector2F {
     public float dot(Vector2F v) {
         return x * v.getX() + y * v.getY();
     }
+
+    @Override
+    public String toString() {
+        return "[" + (int)this.x + ";" + (int)this.y + "]";
+    }
 }

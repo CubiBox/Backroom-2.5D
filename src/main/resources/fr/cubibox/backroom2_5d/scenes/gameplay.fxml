@@ -8,7 +8,7 @@
 
 <Pane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.cubibox.backroom2_5d.scenes.Gameplay"
+            fx:controller="fr.cubibox.backroom2_5d.old.Gameplay"
             fx:id="pane"
             prefHeight="Infinity" prefWidth="Infinity">
 

@@ -1,17 +1,17 @@
 package fr.cubibox.backroom2_5d.engine.maths.shapes;
 
-import fr.cubibox.backroom2_5d.engine.maths.Point2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
 public class Circle2F extends Shape {
-    private final Point2F position;
+    private final Vector2F position;
     private float radius;
 
-    public Circle2F(Point2F position, float radius) {
+    public Circle2F(Vector2F position, float radius) {
         this.position = position;
         this.radius = radius;
     }
 
-    public Point2F getPosition() {
+    public Vector2F getPosition() {
         return position;
     }
 

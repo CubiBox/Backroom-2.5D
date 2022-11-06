@@ -9,7 +9,7 @@ public class Keyboard {
         if (e.getCode().getCode() >= 0 && e.getCode().getCode() <= 255) {
             keys[e.getCode().getCode()] = true;
         } else {
-            System.out.println("Key not supported");
+            System.err.println("Key not supported");
         }
     }
 
@@ -17,7 +17,7 @@ public class Keyboard {
         if (e.getCode().getCode() >= 0 && e.getCode().getCode() <= 255) {
             keys[e.getCode().getCode()] = false;
         } else {
-            System.out.println("Key not supported");
+            System.err.println("Key not supported");
         }
     }
 
@@ -25,7 +25,7 @@ public class Keyboard {
         if (keyCode >= 0 && keyCode <= 255) {
             return keys[keyCode];
         } else {
-            System.out.println("Key not supported");
+            System.err.println("Key not supported");
             return false;
         }
     }

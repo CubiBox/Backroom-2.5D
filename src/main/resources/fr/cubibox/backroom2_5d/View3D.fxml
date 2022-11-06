@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.Pane?>
-<Pane xmlns:fx="http://javafx.com/fxml"
-      fx:id="pane"
-      xmlns="http://javafx.com/javafx"
-      fx:controller="fr.cubibox.backroom2_5d.Controller3D"
-      prefHeight="Infinity" prefWidth="Infinity">
-</Pane>

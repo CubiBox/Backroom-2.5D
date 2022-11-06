@@ -1,42 +1,7 @@
-package fr.cubibox.backroom2_5d.scenes;
+package fr.cubibox.backroom2_5d.old;
 
-import fr.cubibox.backroom2_5d.engine.GameScene;
-import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
-import fr.cubibox.backroom2_5d.game.Backroom2D;
-import fr.cubibox.backroom2_5d.io.Keyboard;
-import fr.cubibox.backroom2_5d.io.Mouse;
-import javafx.animation.AnimationTimer;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
-import javafx.scene.image.PixelBuffer;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-
-import java.net.URL;
-import java.nio.IntBuffer;
-
-import java.awt.Color;
-import java.util.ResourceBundle;
-
-import static fr.cubibox.backroom2_5d.BackroomsMain.*;
-import static fr.cubibox.backroom2_5d.engine.GameEngine.ONE_SECOND_IN_MILLIS;
-
-public class MapDebug extends AnimationTimer implements Initializable {
-    private final Keyboard keyboard;
-    private final Mouse mouse;
-
-    private final GameScene gameScene = new Backroom2D("map1.map");
-
-    private final long timeForRender = ONE_SECOND_IN_MILLIS / 30L;
-    private float deltaR = 0f;
-    private long lastTime;
-    private long renderTime = System.currentTimeMillis();
-
-    public Slider mapScale;
+public class oMapDebug {
+    /*public Slider mapScale;
     public CheckBox drawPlayerRays;
     public CheckBox drawPlayerDirection;
     public CheckBox drawPlayerCollision;
@@ -44,46 +9,72 @@ public class MapDebug extends AnimationTimer implements Initializable {
     @FXML
     private javafx.scene.canvas.Canvas fxCanvas;
 
-    public MapDebug() {
-        this.keyboard = new Keyboard();
-        this.mouse = new Mouse();
-    }
+    private long lastTime = 0L;
+
+    private final LinkedBlockingQueue<Event> events = new LinkedBlockingQueue<>();
+
+    //
+
+
+    // Variables pour charger les modèles / textures / objects à charger sur la map.
+    private int[][] wallTextureMatrix;
+    private int[][] floorTextureMatrix;
+    private int[][] ceilTextureMatrix;
+    //
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //this.fxCanvas.getScene().addEventHandler(KeyEvent.KEY_PRESSED, keyboard::keyPressed);
-        //this.fxCanvas.getScene().addEventHandler(KeyEvent.KEY_RELEASED, keyboard::keyReleased);
-        //this.fxCanvas.getScene().addEventHandler(MouseEvent.MOUSE_MOVED, mouse::mouseMoved);
+        // es
+        System.out.println("Chargement des textures..");
 
-        lastTime = System.currentTimeMillis();
+        // Chargement des textures de mur
+        wallTextureMatrix = new int[TILE_SIZE][TILE_SIZE];
+        BufferedImage wallTexture = ImageUtils.readImage("textures/wall.png");
+
+        // Chargement des textures de sol
+        ceilTextureMatrix = new int[TILE_SIZE][TILE_SIZE];
+        BufferedImage ceilTexture = ImageUtils.readImage("textures/ceil.png");
+
+        // Chargement des textures de plafond
+        floorTextureMatrix = new int[TILE_SIZE][TILE_SIZE];
+        BufferedImage floorTexture = ImageUtils.readImage("textures/floor.png");
+
+        for (int y = 0; y < (TILE_SIZE); y++) {
+            for (int x = 0; x < (TILE_SIZE); x++) {
+                wallTextureMatrix[y][x] = wallTexture.getRGB(x, y);
+                ceilTextureMatrix[y][x] = ceilTexture.getRGB(x, y);
+                floorTextureMatrix[y][x] = floorTexture.getRGB(x, y);
+            }
+        }
+
+        System.out.println("Textures chargées !");
+
         this.start();
     }
 
     @Override
     public void handle(long currentTime) {
-        long now = System.currentTimeMillis();
-        deltaR += (now - lastTime) / timeForRender;
+        // Variables nécessaire pour la boucle
+        long targetFps = 60L;
+        long interval = ONE_SECOND_IN_NANO / targetFps;
 
-        if (deltaR >= 1) {
-            this.render(now - renderTime);
-            deltaR--;
-            renderTime = now;
+        if (currentTime - lastTime > interval) {
+            Canvas canvas = new Canvas(windowWidth, windowHeight);
+
+            update(canvas);
+
+            PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
+            pixelBuffer.updateBuffer(b -> null);
+            WritableImage image = new WritableImage(pixelBuffer);
+
+            fxCanvas.setWidth(canvas.width);
+            fxCanvas.setHeight(canvas.height);
+            fxCanvas.getGraphicsContext2D().clearRect(0, 0, canvas.width, canvas.height);
+            fxCanvas.getGraphicsContext2D().drawImage(image, 0, 0);
+
+            lastTime = currentTime;
         }
-        
-        try {
-            long sleepTime = now + timeForRender - System.currentTimeMillis();
-
-            if (sleepTime > 0) {
-                Thread.sleep(sleepTime);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-
-        lastTime = now;
     }
-
-    /*
 
     private void update(Canvas canvas) {
         int rayCount = 72;
@@ -215,20 +206,14 @@ public class MapDebug extends AnimationTimer implements Initializable {
             Collections.addAll(chunksFound, LineChunk);
 
         getIntersectEdge(r, chunksFound);
-    }*/
-
-    public void render(float dt) {
-        Canvas canvas = new Canvas(windowWidth, windowHeight);
-
-        gameScene.render(canvas, dt);
-
-        PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
-        pixelBuffer.updateBuffer(b -> null);
-        WritableImage image = new WritableImage(pixelBuffer);
-
-        fxCanvas.setWidth(canvas.width);
-        fxCanvas.setHeight(canvas.height);
-        fxCanvas.getGraphicsContext2D().clearRect(0, 0, canvas.width, canvas.height);
-        fxCanvas.getGraphicsContext2D().drawImage(image, 0, 0);
     }
+
+    @Override
+    public void addEvent(Event event) {
+        try {
+            this.events.put(event);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
 }
