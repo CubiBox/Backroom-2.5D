@@ -1,37 +1,34 @@
-package fr.cubibox.backroom2_5d.scenes;
+package fr.cubibox.backroom2_5d.controllers;
 
 import fr.cubibox.backroom2_5d.engine.GameScene;
 import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
 import fr.cubibox.backroom2_5d.game.Backroom2D;
-import fr.cubibox.backroom2_5d.io.Keyboard;
-import fr.cubibox.backroom2_5d.io.Mouse;
+import fr.cubibox.backroom2_5d.game.entities.Player;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelBuffer;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.nio.IntBuffer;
 
-import java.awt.Color;
 import java.util.ResourceBundle;
 
 import static fr.cubibox.backroom2_5d.BackroomsMain.*;
 import static fr.cubibox.backroom2_5d.engine.GameEngine.ONE_SECOND_IN_MILLIS;
+import static fr.cubibox.backroom2_5d.engine.GameEngine.getInstance;
 
 public class MapDebug extends AnimationTimer implements Initializable {
-    private final Keyboard keyboard;
-    private final Mouse mouse;
-
-    private final GameScene gameScene = new Backroom2D("map1.map");
 
     private final long timeForRender = ONE_SECOND_IN_MILLIS / 30L;
+    public Label ppos;
+    public Label pdir;
+    public Label pvel;
     private float deltaR = 0f;
     private long lastTime;
     private long renderTime = System.currentTimeMillis();
@@ -44,17 +41,8 @@ public class MapDebug extends AnimationTimer implements Initializable {
     @FXML
     private javafx.scene.canvas.Canvas fxCanvas;
 
-    public MapDebug() {
-        this.keyboard = new Keyboard();
-        this.mouse = new Mouse();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //this.fxCanvas.getScene().addEventHandler(KeyEvent.KEY_PRESSED, keyboard::keyPressed);
-        //this.fxCanvas.getScene().addEventHandler(KeyEvent.KEY_RELEASED, keyboard::keyReleased);
-        //this.fxCanvas.getScene().addEventHandler(MouseEvent.MOUSE_MOVED, mouse::mouseMoved);
-
         lastTime = System.currentTimeMillis();
         this.start();
     }
@@ -63,6 +51,8 @@ public class MapDebug extends AnimationTimer implements Initializable {
     public void handle(long currentTime) {
         long now = System.currentTimeMillis();
         deltaR += (now - lastTime) / timeForRender;
+
+        getInstance().getGameScene().input();
 
         if (deltaR >= 1) {
             this.render(now - renderTime);
@@ -219,8 +209,16 @@ public class MapDebug extends AnimationTimer implements Initializable {
 
     public void render(float dt) {
         Canvas canvas = new Canvas(windowWidth, windowHeight);
+        GameScene gameScene = getInstance().getGameScene();
 
         gameScene.render(canvas, dt);
+
+        if (gameScene instanceof Backroom2D bscene) {
+            Player p = bscene.getPlayer();
+            ppos.setText(p.getPos().toString());
+            pdir.setText(p.getDirection().toString());
+            pvel.setText(p.getVelocity().toString());
+        }
 
         PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
         pixelBuffer.updateBuffer(b -> null);

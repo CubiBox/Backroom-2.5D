@@ -12,6 +12,7 @@ public class Player extends Entity {
                 new Vector2F(0, 0),
                 0.5f
         ));
+        this.setAngle(angle);
     }
 
     public float getX() {

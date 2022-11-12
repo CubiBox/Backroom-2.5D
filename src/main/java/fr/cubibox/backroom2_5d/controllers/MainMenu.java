@@ -1,4 +1,4 @@
-package fr.cubibox.backroom2_5d.scenes;
+package fr.cubibox.backroom2_5d.controllers;
 
 import javafx.event.ActionEvent;
 

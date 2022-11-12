@@ -1,7 +1,14 @@
 package fr.cubibox.backroom2_5d.game.level;
 
+import fr.cubibox.backroom2_5d.game.entities.Entity;
+import fr.cubibox.backroom2_5d.game.entities.Player;
+
+import java.util.HashSet;
+
 public class Map {
     private final Chunk[][] chunks;
+    private final Player player;
+    private final HashSet<Entity> entities;
     private final String levelID;
     private final int size;
 
@@ -9,6 +16,8 @@ public class Map {
         this.levelID = levelID;
         this.size = (int) mapSize;
         this.chunks = chunks;
+        this.player = new Player(0, 0, 45);
+        this.entities = new HashSet<>();
     }
 
     public int getSize() {
@@ -29,5 +38,13 @@ public class Map {
 
     public String getLevelID() {
         return levelID;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public HashSet<Entity> getEntities() {
+        return entities;
     }
 }

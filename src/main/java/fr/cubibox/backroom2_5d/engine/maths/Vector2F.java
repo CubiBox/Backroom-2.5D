@@ -49,8 +49,13 @@ public class Vector2F {
         return x * v.getX() + y * v.getY();
     }
 
+    public Vector2F normalize() {
+        float length = this.length();
+        return new Vector2F(this.x / length, this.y / length);
+    }
+
     @Override
     public String toString() {
-        return "[" + (int)this.x + ";" + (int)this.y + "]";
+        return "[" + this.x + ";" + this.y + "]";
     }
 }

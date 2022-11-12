@@ -25,6 +25,10 @@ public abstract class Entity {
         return position;
     }
 
+    public void setPosition(Vector2F position) {
+        this.position = position;
+    }
+
     public float getAngle() {
         return (float) Math.atan2(direction.getY(), direction.getX()) / RADIAN_PI_2;
     }
@@ -54,6 +58,10 @@ public abstract class Entity {
         this.velocity = velocity;
     }
 
+    /**
+     * The direction of an entity is also the max speed value for that entity
+     * @return Vector2F
+     */
     public Vector2F getDirection() {
         return direction;
     }
