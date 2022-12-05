@@ -5,7 +5,7 @@ import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
 import java.util.ArrayList;
 
-public class Polygon2F extends Shape {
+public class Polygon2F implements Shape {
     private final ArrayList<Line2F> edges;
     
     public Polygon2F(ArrayList<Line2F> edges) {
@@ -42,5 +42,10 @@ public class Polygon2F extends Shape {
             axes[i] = edges.get(i).getNormal();
         }
         return axes;
+    }
+
+    @Override
+    public Line2F[] getVertices() {
+        return new Line2F[0];
     }
 }

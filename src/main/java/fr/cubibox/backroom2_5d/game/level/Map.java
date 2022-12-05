@@ -3,10 +3,12 @@ package fr.cubibox.backroom2_5d.game.level;
 import fr.cubibox.backroom2_5d.game.entities.Entity;
 import fr.cubibox.backroom2_5d.game.entities.Player;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Map {
     private final Chunk[][] chunks;
+
     private final Player player;
     private final HashSet<Entity> entities;
     private final String levelID;

@@ -2,7 +2,7 @@ package fr.cubibox.backroom2_5d.engine.maths.shapes;
 
 import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
-public class Circle2F extends Shape {
+public class Circle2F {
     private final Vector2F position;
     private float radius;
 

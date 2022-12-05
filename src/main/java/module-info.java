@@ -18,6 +18,9 @@ module fr.cubibox.backroom2_5d {
     opens fr.cubibox.backroom2_5d.engine.maths.shapes to javafx.fxml;
     exports fr.cubibox.backroom2_5d.engine.maths.shapes;
 
+    opens fr.cubibox.backroom2_5d.engine.maths to javafx.fxml;
+    exports fr.cubibox.backroom2_5d.engine.maths;
+
     exports fr.cubibox.backroom2_5d.engine.graphics;
     opens fr.cubibox.backroom2_5d.engine.graphics to javafx.fxml;
 
@@ -26,4 +29,6 @@ module fr.cubibox.backroom2_5d {
 
     exports fr.cubibox.backroom2_5d.game.events;
     opens fr.cubibox.backroom2_5d.game.events to javafx.fxml;
+    exports fr.cubibox.backroom2_5d.io;
+    opens fr.cubibox.backroom2_5d.io to javafx.fxml;
 }

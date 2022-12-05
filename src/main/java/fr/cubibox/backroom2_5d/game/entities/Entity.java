@@ -69,4 +69,8 @@ public abstract class Entity {
     public void setDirection(Vector2F direction) {
         this.direction = direction;
     }
+
+    public Entity cloneEntity() throws CloneNotSupportedException {
+        return (Entity) (super.clone());
+    }
 }

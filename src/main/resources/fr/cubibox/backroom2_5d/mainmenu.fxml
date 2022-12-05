@@ -3,13 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cubibox.backroom2_5d.controllers.MainMenu">
-   <children>
-      <VBox prefHeight="400.0" prefWidth="100.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#launch2Dview" text="2D" />
-            <Button mnemonicParsing="false" onAction="#launch3Dview" text="3D" />
-         </children>
-      </VBox>
-   </children>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cubibox.backroom2_5d.controllers.MainMenu">
+   <VBox prefHeight="400.0" prefWidth="100.0">
+      <Button mnemonicParsing="false" onAction="#launch2Dview" text="2D"/>
+      <Button mnemonicParsing="false" onAction="#launch3Dview" text="3D"/>
+   </VBox>
 </AnchorPane>

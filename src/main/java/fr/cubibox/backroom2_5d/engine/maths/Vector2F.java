@@ -1,5 +1,9 @@
 package fr.cubibox.backroom2_5d.engine.maths;
 
+import static fr.cubibox.backroom2_5d.engine.maths.MathUtils.RADIAN_PI_2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class Vector2F {
     private float x;
     private float y;
@@ -7,6 +11,15 @@ public class Vector2F {
     public Vector2F(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Vector2F rotate(float angle) {
+        angle *= RADIAN_PI_2;
+
+        return new Vector2F(
+                (float) (this.x * cos(angle) - this.y * sin(angle)),
+                (float) (this.x * sin(angle) + this.y * cos(angle))
+        );
     }
 
     public float getX() {

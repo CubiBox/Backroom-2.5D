@@ -4,14 +4,15 @@ import fr.cubibox.backroom2_5d.game.Backroom2D;
 
 public class GameEngine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE_THREAD");
-    public static final long ONE_SECOND_IN_NANO = (long) 1E9;
-    public static final long ONE_SECOND_IN_MILLIS = (long) 1E3;
+
+    public static final float ONE_SECOND_IN_NANO = 1E9F;
+    public static final double ONE_SECOND_IN_MILLIS = 1E3;
 
     private static GameEngine instance = null;
 
     private final GameScene gameScene = new Backroom2D("map1.map");
 
-    private final float TARGET_UPS = 30F;
+    private final long targetUps = 30L;
     private boolean running = false;
 
     private GameEngine() {
@@ -26,7 +27,7 @@ public class GameEngine implements Runnable {
 
     public void start() {
         running = true;
-        this.engineThread.start();
+        engineThread.start();
     }
 
     public void stop() {
@@ -36,35 +37,41 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         long startTime = System.currentTimeMillis();
-
-        float timeU = ONE_SECOND_IN_MILLIS / TARGET_UPS;
-        float deltaU = 0f;
-
+        long targetUpdateTime = (long) (ONE_SECOND_IN_MILLIS / targetUps);
         long updateTime = startTime;
+
+        float time = 0;
+        int update = 0;
 
         while (running) {
             long now = System.currentTimeMillis();
-            deltaU += (now - startTime) / timeU;
 
-            if (deltaU >= 1) {
-                long dt = now - updateTime;
-                gameScene.update(dt);
-                updateTime = now;
-                deltaU--;
+            float dt = (float) ((now - updateTime) / ONE_SECOND_IN_MILLIS);
+            gameScene.update(dt);
+
+            if (time >= 1) {
+                update = 0;
+                time--;
             }
 
             try {
-                long sleepTime = (long) (now + timeU - System.currentTimeMillis());
+                long currentTime = System.currentTimeMillis();
+                float sleepTime = (now + targetUpdateTime) - currentTime;
+
+                time += dt;
+                update++;
 
                 if (sleepTime > 0) {
-                    Thread.sleep(sleepTime);
+                    Thread.sleep((long) sleepTime);
                 }
             } catch (Exception e) {
                 throw new RuntimeException();
             }
 
-            startTime = now;
+            updateTime = now;
         }
+
+        System.out.println("Bye byee !");
     }
 
     public GameScene getGameScene() {

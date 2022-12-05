@@ -1,19 +1,21 @@
 package fr.cubibox.backroom2_5d.engine.maths.shapes;
 
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
 
-public class Rectangle2F extends Shape {
+import javax.sound.sampled.Line;
+
+public class Rectangle2F implements Shape {
     private final Vector2F origin;
     private final Vector2F size;
 
     public Rectangle2F(float x, float y, float width, float height) {
         this.origin = new Vector2F(x, y);
-        this.size = new Vector2F(width, height);
+        this.size = new Vector2F(width / 2f, height / 2f);
     }
 
-    public Rectangle2F(Vector2F min, Vector2F max) {
-        this.origin = new Vector2F(min.getX(), min.getY());
-        this.size = new Vector2F(max.getX() - min.getX(), max.getY() - min.getY());
+    public Vector2F getOrigin() {
+        return this.origin;
     }
 
     public float getX() {
@@ -37,7 +39,7 @@ public class Rectangle2F extends Shape {
     }
 
     public void setWidth(float width) {
-        this.size.setX(width);
+        this.size.setX(width / 2F);
     }
 
     public float getHeight() {
@@ -45,20 +47,46 @@ public class Rectangle2F extends Shape {
     }
 
     public void setHeight(float height) {
-        this.size.setY(height);
+        this.size.setY(height / 2F);
     }
 
     public Vector2F getMin() {
-        Vector2F p1 = new Vector2F(this.origin.getX(), this.origin.getY());
-        Vector2F p2 = new Vector2F(this.origin.getX() + this.size.getX(), this.origin.getY() + this.size.getY());
-
-        return new Vector2F(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(), p2.getY()));
+        return this.origin.sub(this.size);
     }
 
     public Vector2F getMax() {
-        Vector2F p1 = new Vector2F(this.origin.getX(), this.origin.getY());
-        Vector2F p2 = new Vector2F(this.origin.getX() + this.size.getX(), this.origin.getY() + this.size.getY());
+        return this.origin.add(this.size);
+    }
 
-        return new Vector2F(Math.max(p1.getX(), p2.getX()), Math.max(p1.getY(), p2.getY()));
+    @Override
+    public Line2F[] getVertices() {
+        Vector2F min = this.getMin();
+        Vector2F max = this.getMax();
+
+        Vector2F nw = new Vector2F(min.getX(), max.getY());
+        Vector2F ne = new Vector2F(max.getX(), max.getY());
+        Vector2F sw = new Vector2F(min.getX(), min.getY());
+        Vector2F se = new Vector2F(max.getX(), min.getY());
+
+        return new Line2F[] {
+                new Line2F(nw, ne),
+                new Line2F(ne, se),
+                new Line2F(se, sw),
+                new Line2F(sw, nw)
+        };
+    }
+
+    public boolean intersects(Vector2F vector) {
+        Vector2F min = getMin();
+        Vector2F max = getMax();
+
+        return vector.getX() >= min.getX() && vector.getX() <= max.getX()
+                && vector.getY() >= min.getY() && vector.getY() <= max.getY();
+    }
+
+    public boolean intersects(Rectangle2F rectangle) {
+        // TODO
+
+        return false;
     }
 }

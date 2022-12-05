@@ -2,14 +2,10 @@ package fr.cubibox.backroom2_5d.controllers;
 
 import fr.cubibox.backroom2_5d.engine.GameScene;
 import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
-import fr.cubibox.backroom2_5d.game.Backroom2D;
-import fr.cubibox.backroom2_5d.game.entities.Player;
 import javafx.animation.AnimationTimer;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelBuffer;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
@@ -20,57 +16,55 @@ import java.nio.IntBuffer;
 import java.util.ResourceBundle;
 
 import static fr.cubibox.backroom2_5d.BackroomsMain.*;
-import static fr.cubibox.backroom2_5d.engine.GameEngine.ONE_SECOND_IN_MILLIS;
-import static fr.cubibox.backroom2_5d.engine.GameEngine.getInstance;
+import static fr.cubibox.backroom2_5d.engine.GameEngine.*;
 
 public class MapDebug extends AnimationTimer implements Initializable {
 
-    private final long timeForRender = ONE_SECOND_IN_MILLIS / 30L;
-    public Label ppos;
-    public Label pdir;
-    public Label pvel;
-    private float deltaR = 0f;
-    private long lastTime;
+    public ImageView imgView;
+    public Label fpsTag;
+
     private long renderTime = System.currentTimeMillis();
 
-    public Slider mapScale;
-    public CheckBox drawPlayerRays;
-    public CheckBox drawPlayerDirection;
-    public CheckBox drawPlayerCollision;
+    private final long targetRenderTime = (long) (ONE_SECOND_IN_MILLIS / 120L);
 
-    @FXML
-    private javafx.scene.canvas.Canvas fxCanvas;
+    private int update = 0;
+    private float time = 0F;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lastTime = System.currentTimeMillis();
         this.start();
     }
 
     @Override
-    public void handle(long currentTime) {
+    public void handle(long ct) {
         long now = System.currentTimeMillis();
-        deltaR += (now - lastTime) / timeForRender;
 
+        float dt = (float) ((now - renderTime) / ONE_SECOND_IN_MILLIS);
         getInstance().getGameScene().input();
+        this.render(dt);
 
-        if (deltaR >= 1) {
-            this.render(now - renderTime);
-            deltaR--;
-            renderTime = now;
+
+        if (time >= 1) {
+            System.out.println("fps : " + update);
+            update = 0;
+            time--;
         }
-        
+
         try {
-            long sleepTime = now + timeForRender - System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
+            float sleepTime = (now + targetRenderTime) - currentTime;
+
+            time += dt;
+            update++;
 
             if (sleepTime > 0) {
-                Thread.sleep(sleepTime);
+                Thread.sleep((long) sleepTime);
             }
         } catch (Exception e) {
             throw new RuntimeException();
         }
 
-        lastTime = now;
+        renderTime = now;
     }
 
     /*
@@ -213,20 +207,9 @@ public class MapDebug extends AnimationTimer implements Initializable {
 
         gameScene.render(canvas, dt);
 
-        if (gameScene instanceof Backroom2D bscene) {
-            Player p = bscene.getPlayer();
-            ppos.setText(p.getPos().toString());
-            pdir.setText(p.getDirection().toString());
-            pvel.setText(p.getVelocity().toString());
-        }
-
         PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
         pixelBuffer.updateBuffer(b -> null);
         WritableImage image = new WritableImage(pixelBuffer);
-
-        fxCanvas.setWidth(canvas.width);
-        fxCanvas.setHeight(canvas.height);
-        fxCanvas.getGraphicsContext2D().clearRect(0, 0, canvas.width, canvas.height);
-        fxCanvas.getGraphicsContext2D().drawImage(image, 0, 0);
+        imgView.setImage(image);
     }
 }

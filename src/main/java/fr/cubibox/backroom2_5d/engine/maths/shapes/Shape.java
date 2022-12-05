@@ -1,5 +1,7 @@
 package fr.cubibox.backroom2_5d.engine.maths.shapes;
 
-public abstract class Shape {
+import fr.cubibox.backroom2_5d.engine.maths.Line2F;
 
+public interface Shape {
+    Line2F[] getVertices();
 }
