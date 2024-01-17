@@ -3,7 +3,6 @@ package fr.cubibox.backroom2_5d;
 import fr.cubibox.backroom2_5d.engine.Engine;
 import fr.cubibox.backroom2_5d.engine.Point2F;
 import fr.cubibox.backroom2_5d.game.*;
-import fr.cubibox.backroom2_5d.game.Polygon;
 import fr.cubibox.backroom2_5d.io.View2D;
 
 import java.util.ArrayList;
