@@ -1,9 +1,9 @@
-package fr.cubibox.backroom2_5d;
+package fr.cubibox.backroom;
 
-import fr.cubibox.backroom2_5d.engine.Engine;
-import fr.cubibox.backroom2_5d.engine.Point2F;
-import fr.cubibox.backroom2_5d.game.*;
-import fr.cubibox.backroom2_5d.io.View2D;
+import fr.cubibox.backroom.engine.Engine;
+import fr.cubibox.backroom.engine.Point2F;
+import fr.cubibox.backroom.game.*;
+import fr.cubibox.backroom.io.View2D;
 
 import java.util.ArrayList;
 

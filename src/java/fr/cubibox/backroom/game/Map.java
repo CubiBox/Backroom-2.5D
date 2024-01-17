@@ -1,4 +1,4 @@
-package fr.cubibox.backroom2_5d.game;
+package fr.cubibox.backroom.game;
 
 public class Map {
     private String idLevel;

@@ -1,15 +1,8 @@
-package fr.cubibox.backroom2_5d.engine;
+package fr.cubibox.backroom.engine;
 
-import fr.cubibox.backroom2_5d.Game;
-import fr.cubibox.backroom2_5d.game.*;
-import fr.cubibox.backroom2_5d.game.Polygon;
-import fr.cubibox.backroom2_5d.io.View2D;
+import fr.cubibox.backroom.game.*;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 public class Engine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");

@@ -1,4 +1,4 @@
-package fr.cubibox.backroom2_5d.io;
+package fr.cubibox.backroom.io;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

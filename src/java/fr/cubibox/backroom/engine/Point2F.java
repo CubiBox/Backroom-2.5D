@@ -1,4 +1,4 @@
-package fr.cubibox.backroom2_5d.engine;
+package fr.cubibox.backroom.engine;
 
 public class Point2F {
 	private float x;
@@ -25,6 +25,6 @@ public class Point2F {
 	}
 
 	public String toString() {
-		return "[" + (int)this.x + ";" + (int)this.y + "]";
+		return "[" + this.x + ";" + this.y + "]";
 	}
 }

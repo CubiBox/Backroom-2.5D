@@ -1,4 +1,4 @@
-package fr.cubibox.backroom2_5d.game;
+package fr.cubibox.backroom.game;
 
 import java.util.ArrayList;
 

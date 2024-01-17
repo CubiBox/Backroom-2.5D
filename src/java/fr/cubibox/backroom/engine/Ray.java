@@ -1,9 +1,7 @@
-package fr.cubibox.backroom2_5d.engine;
+package fr.cubibox.backroom.engine;
 
-import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.game.Player;
-
-import java.util.ArrayList;
+import fr.cubibox.backroom.game.Map;
+import fr.cubibox.backroom.game.Player;
 
 public class Ray {
     public static final float PI_2_RADIAN = 0.01745f;
@@ -24,8 +22,7 @@ public class Ray {
         this.intersectPoint = new Point2F(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
     }
 
-    /*
-    public float calcDRay(float A, Player p, Map map){
+    public float getDRay(float A, Player p, Map map){
         float pX= p.getX(); //0
         float pY= p.getY(); //0
 
@@ -86,7 +83,7 @@ public class Ray {
     public boolean isColision(float x, float y, Map map){
         int postX = (int)(1000*(x));
         int postY = (int)(1000*(y));
-        if (postY > 7000 || postX > 7000 || postY < 0 || postX < 0 || map.getMapContent()[postY/1000][postX/1000] == 1) {
+        if (postY > 7000 || postX > 7000 || postY < 0 || postX < 0) { //|| map.getMapContent()[postY/1000][postX/1000] == 1
             return true;
         }
         return false;
@@ -95,11 +92,11 @@ public class Ray {
     public boolean isColision2(float x, float y, Map map){
         int postX = (int)(1000*(x));
         int postY = (int)(1000*(y));
-        if (postY > 7000 || postX > 7000 || postY < 0 || postX < 0 || map.getMapContent()[postX/1000][postY/1000] == 1) {
+        if (postY > 7000 || postX > 7000 || postY < 0 || postX < 0) { // || map.getMapContent()[postX/1000][postY/1000] == 1) {
             return true;
         }
         return false;
-    }*/
+    }
 
     public String toString(){
         return "angle : " + this.angle +"; "+ this.intersectPoint;

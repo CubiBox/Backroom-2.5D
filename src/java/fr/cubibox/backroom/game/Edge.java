@@ -1,6 +1,6 @@
-package fr.cubibox.backroom2_5d.game;
+package fr.cubibox.backroom.game;
 
-import fr.cubibox.backroom2_5d.engine.Point2F;
+import fr.cubibox.backroom.engine.Point2F;
 
 public class Edge {
     private Point2F p1;

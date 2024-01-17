@@ -1,6 +1,6 @@
-package fr.cubibox.backroom2_5d.io;
+package fr.cubibox.backroom.io;
 
-import fr.cubibox.backroom2_5d.engine.OldEngine;
+import fr.cubibox.backroom.engine.OldEngine;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
