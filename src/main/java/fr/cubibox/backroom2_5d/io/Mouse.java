@@ -1,9 +1,8 @@
 package fr.cubibox.backroom2_5d.io;
 
-import javafx.scene.input.MouseEvent;
-
+// TODO: implements mouse events
 public class Mouse {
-    public void mouseMoved(MouseEvent e) {
+    /* public void mouseMoved(MouseEvent e) {
         
-    }
+    } */
 }

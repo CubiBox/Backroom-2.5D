@@ -1,72 +1,4 @@
-package fr.cubibox.backroom2_5d.controllers;
-
-import fr.cubibox.backroom2_5d.engine.GameScene;
-import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
-import javafx.animation.AnimationTimer;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelBuffer;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.image.WritableImage;
-
-import java.net.URL;
-import java.nio.IntBuffer;
-
-import java.util.ResourceBundle;
-
-import static fr.cubibox.backroom2_5d.BackroomsMain.*;
-import static fr.cubibox.backroom2_5d.engine.GameEngine.*;
-
-public class MapDebug extends AnimationTimer implements Initializable {
-
-    public ImageView imgView;
-    public Label fpsTag;
-
-    private long renderTime = System.currentTimeMillis();
-
-    private final long targetRenderTime = (long) (ONE_SECOND_IN_MILLIS / 120L);
-
-    private int update = 0;
-    private float time = 0F;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.start();
-    }
-
-    @Override
-    public void handle(long ct) {
-        long now = System.currentTimeMillis();
-
-        float dt = (float) ((now - renderTime) / ONE_SECOND_IN_MILLIS);
-        getInstance().getGameScene().input();
-        this.render(dt);
-
-
-        if (time >= 1) {
-            fpsTag.setText(String.valueOf(update));
-            update = 0;
-            time--;
-        }
-
-        try {
-            long currentTime = System.currentTimeMillis();
-            float sleepTime = (now + targetRenderTime) - currentTime;
-
-            time += dt;
-            update++;
-
-            if (sleepTime > 0) {
-                Thread.sleep((long) sleepTime);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-
-        renderTime = now;
-    }
-
+public class MapDebug {
     /*
 
     private void update(Canvas canvas) {
@@ -200,16 +132,4 @@ public class MapDebug extends AnimationTimer implements Initializable {
 
         getIntersectEdge(r, chunksFound);
     }*/
-
-    public void render(float dt) {
-        Canvas canvas = new Canvas(windowWidth, windowHeight);
-        GameScene gameScene = getInstance().getGameScene();
-
-        gameScene.render(canvas, dt);
-
-        PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(canvas.width, canvas.height, canvas.getBuffer(), PixelFormat.getIntArgbPreInstance());
-        pixelBuffer.updateBuffer(b -> null);
-        WritableImage image = new WritableImage(pixelBuffer);
-        imgView.setImage(image);
-    }
 }
