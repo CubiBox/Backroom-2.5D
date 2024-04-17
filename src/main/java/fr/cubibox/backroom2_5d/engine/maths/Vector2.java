@@ -60,7 +60,11 @@ public class Vector2 {
     }
 
     public float length() {
-        return (float) Math.sqrt(x * x + y * y);
+        return (float) Math.sqrt(this.squareLength());
+    }
+
+    public float squareLength() {
+        return x * x + y * y;
     }
 
     public float dot(Vector2 v) {
