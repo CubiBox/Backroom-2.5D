@@ -17,7 +17,7 @@ public class Map {
         this.levelID = levelID;
         this.size = (int) mapSize;
         this.chunks = chunks;
-        this.player = new Player(0, 0, 45);
+        this.player = new Player(0, 0);
         this.entities = new HashSet<>();
     }
 

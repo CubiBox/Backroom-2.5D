@@ -4,17 +4,19 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.engine.maths.shapes.Circle;
 
 public abstract class Entity {
-    protected Circle collisionArea;
     protected Vector2 position;
+
     protected Vector2 velocity;
+
     protected Vector2 direction;
-    protected String id;
+
+    protected Circle collisionArea;
 
     public Entity(float x, float y, float radius) {
-        this.collisionArea = new Circle(radius);
         this.position = new Vector2(x, y);
-        this.direction = new Vector2(0f, 0f);
-        this.velocity = new Vector2(0f, 0f);
+        this.direction = new Vector2();
+        this.velocity = new Vector2();
+        this.collisionArea = new Circle(radius);
     }
 
     public Vector2 getPosition() {
@@ -23,14 +25,6 @@ public abstract class Entity {
 
     public void setPosition(Vector2 position) {
         this.position = position;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Circle getCollisionArea() {
@@ -45,10 +39,6 @@ public abstract class Entity {
         this.velocity = velocity;
     }
 
-    /**
-     * The direction of an entity is also the max speed value for that entity
-     * @return Vector2F
-     */
     public Vector2 getDirection() {
         return direction;
     }

@@ -5,7 +5,7 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 public class Player extends Entity {
     private float eyesHeight = 0.5f;
 
-    public Player(float x, float y, float angle) {
+    public Player(float x, float y) {
         super(x, y, 1);
     }
 
