@@ -1,7 +1,7 @@
 package fr.cubibox.backroom2_5d.game.level;
 
-import fr.cubibox.backroom2_5d.engine.maths.Line2F;
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.backroom2_5d.engine.maths.Line;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,15 +26,15 @@ public class MapUtils {
 
         //Initialize Polygons
         String poly = "";
-        ArrayList<Line2F> currentEdges = new ArrayList<>();
+        ArrayList<Line> currentEdges = new ArrayList<>();
         ArrayList<MapObject> currentPolys = new ArrayList<>();
         float height;
 
         //Initialize Edges
         int tempX = 0;
         int tempY = 0;
-        Vector2F tempP;
-        Vector2F tempP2;
+        Vector2 tempP;
+        Vector2 tempP2;
 
         String temp = "";
 
@@ -130,7 +130,7 @@ public class MapUtils {
                             temp = "";
                             r = fis.read();
                         }
-                        tempP = new Vector2F(tempX, tempY);
+                        tempP = new Vector2(tempX, tempY);
                         r = fis.read();
                         r = fis.read();
 
@@ -151,8 +151,8 @@ public class MapUtils {
                             r = fis.read();
                         }
                         if ((char) r == '\n') r = fis.read();
-                        tempP2 = new Vector2F(tempX, tempY);
-                        currentEdges.add(new Line2F(tempP, tempP2));
+                        tempP2 = new Vector2(tempX, tempY);
+                        currentEdges.add(new Line(tempP, tempP2));
                     }
 
                     //Height polygon / finish it
@@ -165,8 +165,8 @@ public class MapUtils {
                         }
                         if ((char) r == '\n') r = fis.read();
                         height = Float.parseFloat(temp);
-                        ArrayList<Vector2F> tempPointsArray = new ArrayList<>();
-                        for (Line2F e : currentEdges) {
+                        ArrayList<Vector2> tempPointsArray = new ArrayList<>();
+                        for (Line e : currentEdges) {
                             tempPointsArray.add(e.getA());
                         }
                         boolean isLine = false;

@@ -1,8 +1,5 @@
 package fr.cubibox.backroom2_5d.engine.graphics;
 
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle2F;
-
 import java.nio.IntBuffer;
 
 import static java.lang.Math.abs;

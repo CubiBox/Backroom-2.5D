@@ -2,7 +2,7 @@ package fr.cubibox.backroom2_5d.game;
 
 import fr.cubibox.backroom2_5d.engine.GameScene;
 import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2;
 import fr.cubibox.backroom2_5d.engine.observers.Event;
 import fr.cubibox.backroom2_5d.game.entities.Entity;
 import fr.cubibox.backroom2_5d.game.entities.Player;
@@ -87,12 +87,12 @@ public class Backroom2D implements GameScene {
         }
 
         if (!keyboard.isKeyPressed(KeyEvent.VK_Z) && !keyboard.isKeyPressed(KeyEvent.VK_S)) {
-            this.player.setVelocity(new Vector2F(0f, 0f));
+            this.player.setVelocity(new Vector2(0f, 0f));
         }
     }
 
     private void updateEntity(Entity entity, float dt) {
-        Vector2F nextEntityPosition = entity.getPosition().add(entity.getVelocity().mul(dt));
+        Vector2 nextEntityPosition = entity.getPosition().add(entity.getVelocity().mul(dt));
         entity.setPosition(nextEntityPosition);
     }
 }

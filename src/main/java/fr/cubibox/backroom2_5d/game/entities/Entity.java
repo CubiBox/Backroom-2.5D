@@ -1,31 +1,29 @@
 package fr.cubibox.backroom2_5d.game.entities;
 
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Shape;
-
-import java.util.HashSet;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Circle;
 
 import static fr.cubibox.backroom2_5d.engine.maths.MathUtils.RADIAN_PI_2;
 
 public abstract class Entity {
-    protected HashSet<Shape> collisionBox;
-    protected Vector2F position;
-    protected Vector2F velocity;
-    protected Vector2F direction;
+    protected Circle collisionArea;
+    protected Vector2 position;
+    protected Vector2 velocity;
+    protected Vector2 direction;
     protected String id;
 
-    public Entity(float x, float y, float width, float height) {
-        this.collisionBox = new HashSet<>();
-        this.position = new Vector2F(x, y);
-        this.direction = new Vector2F(0f, 0f);
-        this.velocity = new Vector2F(0f, 0f);
+    public Entity(float x, float y, float radius) {
+        this.collisionArea = new Circle(radius);
+        this.position = new Vector2(x, y);
+        this.direction = new Vector2(0f, 0f);
+        this.velocity = new Vector2(0f, 0f);
     }
 
-    public Vector2F getPosition() {
+    public Vector2 getPosition() {
         return position;
     }
 
-    public void setPosition(Vector2F position) {
+    public void setPosition(Vector2 position) {
         this.position = position;
     }
 
@@ -46,15 +44,15 @@ public abstract class Entity {
         this.id = id;
     }
 
-    public HashSet<Shape> getCollisionBox() {
-        return collisionBox;
+    public Circle getCollisionArea() {
+        return collisionArea;
     }
 
-    public Vector2F getVelocity() {
+    public Vector2 getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(Vector2F velocity) {
+    public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
     }
 
@@ -62,11 +60,11 @@ public abstract class Entity {
      * The direction of an entity is also the max speed value for that entity
      * @return Vector2F
      */
-    public Vector2F getDirection() {
+    public Vector2 getDirection() {
         return direction;
     }
 
-    public void setDirection(Vector2F direction) {
+    public void setDirection(Vector2 direction) {
         this.direction = direction;
     }
 

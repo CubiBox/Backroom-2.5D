@@ -1,6 +1,6 @@
 package fr.cubibox.backroom2_5d.game.events;
 
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2;
 import fr.cubibox.backroom2_5d.engine.observers.Event;
 import fr.cubibox.backroom2_5d.game.entities.Entity;
 
@@ -15,7 +15,7 @@ public class CollisionEvent implements Event, Comparable<CollisionEvent> {
 
     @Override
     public void execute() {
-        clonedEntity.setVelocity(new Vector2F(0f, 0f));
+        clonedEntity.setVelocity(new Vector2(0f, 0f));
     }
 
     public Entity getClonedEntity() {

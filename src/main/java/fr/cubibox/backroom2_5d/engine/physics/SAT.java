@@ -1,25 +1,25 @@
 package fr.cubibox.backroom2_5d.engine.physics;
 
-import fr.cubibox.backroom2_5d.engine.maths.Interval2F;
-import fr.cubibox.backroom2_5d.engine.maths.Line2F;
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Circle2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Polygon2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle2F;
+import fr.cubibox.backroom2_5d.engine.maths.Interval;
+import fr.cubibox.backroom2_5d.engine.maths.Line;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Circle;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Polygon;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle;
 import fr.cubibox.backroom2_5d.engine.maths.shapes.Shape;
 
 public class SAT {
-    public static Interval2F getInterval(Rectangle2F rectangle, Vector2F axis) {
-        Interval2F result = new Interval2F(0, 0);
+    public static Interval getInterval(Rectangle rectangle, Vector2 axis) {
+        Interval result = new Interval(0, 0);
 
-        Vector2F min = rectangle.getMin();
-        Vector2F max = rectangle.getMax();
+        Vector2 min = rectangle.getMin();
+        Vector2 max = rectangle.getMax();
 
-        Vector2F[] verts = {
-                new Vector2F(min.getX(), min.getY()),
-                new Vector2F(max.getX(), min.getY()),
-                new Vector2F(max.getX(), max.getY()),
-                new Vector2F(min.getX(), max.getY())
+        Vector2[] verts = {
+                new Vector2(min.getX(), min.getY()),
+                new Vector2(max.getX(), min.getY()),
+                new Vector2(max.getX(), max.getY()),
+                new Vector2(min.getX(), max.getY())
         };
 
         result.setMax(axis.dot(verts[0]));
@@ -37,14 +37,14 @@ public class SAT {
         return result;
     }
 
-    public static Interval2F getInterval(Polygon2F polygon, Vector2F axis) {
-        Interval2F result = new Interval2F(0, 0);
+    public static Interval getInterval(Polygon polygon, Vector2 axis) {
+        Interval result = new Interval(0, 0);
 
-        Vector2F[] verts = new Vector2F[polygon.getEdges().size()];
+        Vector2[] verts = new Vector2[polygon.getEdges().size()];
 
         int index = 0;
-        for (Line2F line : polygon.getEdges()) {
-            verts[index] = new Vector2F(
+        for (Line line : polygon.getEdges()) {
+            verts[index] = new Vector2(
                     line.getB().getX() - line.getA().getX(),
                     line.getB().getY() - line.getA().getY()
             );
@@ -66,38 +66,38 @@ public class SAT {
         return result;
     }
 
-    public static boolean overlapOnAxis(Rectangle2F rectangleA, Rectangle2F rectangleB, Vector2F axis) {
-        Interval2F intervalA = getInterval(rectangleA, axis);
-        Interval2F intervalB = getInterval(rectangleB, axis);
+    public static boolean overlapOnAxis(Rectangle rectangleA, Rectangle rectangleB, Vector2 axis) {
+        Interval intervalA = getInterval(rectangleA, axis);
+        Interval intervalB = getInterval(rectangleB, axis);
 
         return intervalA.getMax() < intervalB.getMin() || intervalB.getMax() < intervalA.getMin();
     }
 
-    public static boolean overlapOnAxis(Polygon2F rectangleA, Polygon2F rectangleB, Vector2F axis) {
-        Interval2F intervalA = getInterval(rectangleA, axis);
-        Interval2F intervalB = getInterval(rectangleB, axis);
+    public static boolean overlapOnAxis(Polygon rectangleA, Polygon rectangleB, Vector2 axis) {
+        Interval intervalA = getInterval(rectangleA, axis);
+        Interval intervalB = getInterval(rectangleB, axis);
 
         return !(intervalA.getMax() < intervalB.getMin() || intervalB.getMax() < intervalA.getMin());
     }
 
-    public static boolean GenericSAT(Circle2F circle, Shape shapeB) {
+    public static boolean GenericSAT(Circle circle, Shape shapeB) {
 
 
         return false;
     }
 
-    public static boolean GenericSAT(Polygon2F polyA, Polygon2F polyB) {
-        Vector2F[] axesA = polyA.getAxes();
-        Vector2F[] axesB = polyB.getAxes();
+    public static boolean GenericSAT(Polygon polyA, Polygon polyB) {
+        Vector2[] axesA = polyA.getAxes();
+        Vector2[] axesB = polyB.getAxes();
 
-        for (Vector2F vector2F : axesA) {
-            if (overlapOnAxis(polyA, polyB, vector2F)) {
+        for (Vector2 vector2 : axesA) {
+            if (overlapOnAxis(polyA, polyB, vector2)) {
                 return false;
             }
         }
 
-        for (Vector2F vector2F : axesB) {
-            if (overlapOnAxis(polyA, polyB, vector2F)) {
+        for (Vector2 vector2 : axesB) {
+            if (overlapOnAxis(polyA, polyB, vector2)) {
                 return false;
             }
         }

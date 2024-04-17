@@ -1,10 +1,9 @@
 package fr.cubibox.backroom2_5d.game.renderer;
 
 import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
-import fr.cubibox.backroom2_5d.engine.maths.Line2F;
-import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle2F;
+import fr.cubibox.backroom2_5d.engine.maths.Line;
+import fr.cubibox.backroom2_5d.engine.maths.shapes.Rectangle;
 import fr.cubibox.backroom2_5d.game.Camera;
-import fr.cubibox.backroom2_5d.game.entities.Player;
 import fr.cubibox.backroom2_5d.game.level.Chunk;
 import fr.cubibox.backroom2_5d.game.level.Map;
 import fr.cubibox.backroom2_5d.game.level.MapObject;
@@ -27,12 +26,12 @@ public class Backroom2DRenderer {
     private void drawMap(Canvas canvas, float dt) {
         canvas.fillRect(0, 0, canvas.width, canvas.height, new Color(0, 0, 0, 255).getRGB());
 
-        Rectangle2F canvasZone = new Rectangle2F(canvas.width/2F, canvas.height/2F, canvas.width, canvas.height);
+        Rectangle canvasZone = new Rectangle(canvas.width/2F, canvas.height/2F, canvas.width, canvas.height);
 
         for (Chunk[] chunksL : map.getChunks()) {
             for (Chunk chunk : chunksL) {
                 for (MapObject object : chunk.getMapObjects()) {
-                    for (Line2F edge : object.getEdges()) {
+                    for (Line edge : object.getEdges()) {
                         if (canvasZone.intersects(edge.getA().add(camera.getPosition()).mul(camera.getScale()))
                                 || canvasZone.intersects(edge.getB().add(camera.getPosition()).mul(camera.getScale()))) {
                             float scale = camera.getScale();

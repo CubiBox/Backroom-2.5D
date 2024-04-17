@@ -1,16 +1,16 @@
 package fr.cubibox.backroom2_5d.game;
 
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.backroom2_5d.engine.maths.Vector2;
 
 public class Camera {
-    private final Vector2F position;
+    private final Vector2 position;
     private float scale = 1F;
 
     public Camera(float x, float y) {
-        this.position = new Vector2F(x, y);
+        this.position = new Vector2(x, y);
     }
 
-    public Vector2F getPosition() {
+    public Vector2 getPosition() {
         return position;
     }
 
