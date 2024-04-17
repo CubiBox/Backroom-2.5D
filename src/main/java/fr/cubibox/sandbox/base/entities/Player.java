@@ -25,14 +25,6 @@ public class Player extends Entity {
         super.getPosition().setY(y);
     }
 
-    public float getAngle() {
-        return super.getAngle();
-    }
-
-    public void setAngle(float angle) {
-        super.setAngle(angle);
-    }
-
     public void setPos(float x, float y) {
         super.getPosition().setX(x);
         super.getPosition().setY(y);

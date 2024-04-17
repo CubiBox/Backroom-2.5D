@@ -1,6 +1,5 @@
 package fr.cubibox.sandbox.engine.maths.vectors;
 
-import static fr.cubibox.sandbox.Main.RADIAN_PI_2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -94,9 +93,12 @@ public class Vector2 {
         return new Vector2(this.x / length, this.y / length);
     }
 
+    /**
+     * Rotates vector with the given angle.
+     * @param angle Rotation angle, in Radians.
+     * @return Rotated vector
+     */
     public Vector2 rotate(float angle) {
-        angle *= RADIAN_PI_2;
-
         return new Vector2(
                 (float) (this.x * cos(angle) - this.y * sin(angle)),
                 (float) (this.x * sin(angle) + this.y * cos(angle))

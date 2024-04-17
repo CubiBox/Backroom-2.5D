@@ -3,8 +3,6 @@ package fr.cubibox.sandbox.base.entities;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.engine.maths.shapes.Circle;
 
-import static fr.cubibox.sandbox.Main.RADIAN_PI_2;
-
 public abstract class Entity {
     protected Circle collisionArea;
     protected Vector2 position;
@@ -25,15 +23,6 @@ public abstract class Entity {
 
     public void setPosition(Vector2 position) {
         this.position = position;
-    }
-
-    public float getAngle() {
-        return (float) Math.atan2(direction.getY(), direction.getX()) / RADIAN_PI_2;
-    }
-
-    public void setAngle(float angle) {
-        this.direction.setX((float) Math.cos(angle * RADIAN_PI_2));
-        this.direction.setY((float) Math.sin(angle * RADIAN_PI_2));
     }
 
     public String getId() {
