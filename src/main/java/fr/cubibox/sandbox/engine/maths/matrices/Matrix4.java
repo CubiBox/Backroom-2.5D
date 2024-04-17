@@ -4,6 +4,8 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector4;
 
 // TODO: Implement determinant and inverse
 public class Matrix4 {
+    public static final int DIMENSIONS = 4;
+
     private final float[] matrix;
 
     /**
@@ -31,6 +33,18 @@ public class Matrix4 {
         this.matrix = matrix;
     }
 
+    public Matrix4 transpose() {
+        Matrix4 transposed = new Matrix4();
+
+        for (int i = 0; i < DIMENSIONS; i++) {
+            for (int j = 0; j < DIMENSIONS; j++) {
+                transposed.setValue(i, j, getValue(j, i));
+            }
+        }
+
+        return transposed;
+    }
+
     public Matrix4 multiply(float v) {
         Matrix4 m = new Matrix4(asArray());
 
@@ -56,10 +70,10 @@ public class Matrix4 {
     }
 
     public float getValue(int x, int y) {
-        return matrix[y * 4 + x];
+        return matrix[y * DIMENSIONS + x];
     }
 
     public void setValue(int x, int y, float value) {
-        matrix[y * 4 + x] = value;
+        matrix[y * DIMENSIONS + x] = value;
     }
 }

@@ -4,6 +4,8 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 // TODO: Implement determinant and inverse
 public class Matrix2 {
+    private static final int DIMENSIONS = 2;
+
     private final float[] matrix;
 
     /**
@@ -25,6 +27,18 @@ public class Matrix2 {
 
     public Matrix2(final float[] matrix) {
         this.matrix = matrix;
+    }
+
+    public Matrix2 transpose() {
+        Matrix2 transposed = new Matrix2();
+
+        for (int i = 0; i < DIMENSIONS; i++) {
+            for (int j = 0; j < DIMENSIONS; j++) {
+                transposed.setValue(i, j, getValue(j, i));
+            }
+        }
+
+        return transposed;
     }
 
     public Matrix2 multiply(float v) {
@@ -52,10 +66,10 @@ public class Matrix2 {
     }
 
     public float getValue(int x, int y) {
-        return matrix[y * 2 + x];
+        return matrix[y * DIMENSIONS + x];
     }
 
     public void setValue(int x, int y, float value) {
-        matrix[y * 2 + x] = value;
+        matrix[y * DIMENSIONS + x] = value;
     }
 }
