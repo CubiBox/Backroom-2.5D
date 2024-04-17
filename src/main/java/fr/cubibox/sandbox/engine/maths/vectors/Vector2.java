@@ -105,6 +105,14 @@ public class Vector2 {
         );
     }
 
+    public Vector2 reflection(Vector2 normal) {
+        return this.subtract(
+                normal.multiply(
+                        2 * this.dot(normal)
+                )
+        );
+    }
+
     public float[] asArray() {
         return new float[]{x, y};
     }

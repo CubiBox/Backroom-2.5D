@@ -112,6 +112,14 @@ public class Vector4 {
         return new Vector4(this.x / length, this.y / length, this.z / length, this.w / length);
     }
 
+    public Vector4 reflection(Vector4 normal) {
+        return this.subtract(
+                normal.multiply(
+                        2 * this.dot(normal)
+                )
+        );
+    }
+
     public float[] asArray() {
         return new float[]{x, y, z};
     }

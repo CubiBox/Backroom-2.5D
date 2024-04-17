@@ -101,6 +101,14 @@ public class Vector3 {
         return new Vector3(this.x / length, this.y / length, this.z / length);
     }
 
+    public Vector3 reflection(Vector3 normal) {
+        return this.subtract(
+                normal.multiply(
+                        2 * this.dot(normal)
+                )
+        );
+    }
+
     public float[] asArray() {
         return new float[]{x, y, z};
     }
