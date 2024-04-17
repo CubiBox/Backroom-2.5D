@@ -32,8 +32,8 @@ public class MinimapRenderer {
             for (Chunk chunk : chunksL) {
                 for (MapObject object : chunk.getMapObjects()) {
                     for (Line edge : object.getEdges()) {
-                        if (canvasZone.intersects(edge.getA().add(camera.getPosition()).mul(camera.getScale()))
-                                || canvasZone.intersects(edge.getB().add(camera.getPosition()).mul(camera.getScale()))) {
+                        if (canvasZone.intersects(edge.getA().add(camera.getPosition()).multiply(camera.getScale()))
+                                || canvasZone.intersects(edge.getB().add(camera.getPosition()).multiply(camera.getScale()))) {
                             float scale = camera.getScale();
 
                             int aX = (int) (edge.getA().getX() * scale + camera.getPosX() * scale);

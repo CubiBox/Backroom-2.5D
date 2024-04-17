@@ -4,7 +4,7 @@ import fr.cubibox.sandbox.base.renderer.MinimapRenderer;
 import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
 import fr.cubibox.sandbox.engine.GameScene;
 import fr.cubibox.sandbox.engine.graphics.Canvas;
-import fr.cubibox.sandbox.engine.maths.Vector2;
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.base.entities.Entity;
 import fr.cubibox.sandbox.base.entities.Player;
 import fr.cubibox.sandbox.level.Map;
@@ -55,7 +55,7 @@ public class SandboxScene implements GameScene {
             this.player.setAngle(this.player.getAngle() - 5f);
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_S)) {
-            this.player.setVelocity(this.player.getDirection().normalize().mul(-1f));
+            this.player.setVelocity(this.player.getDirection().normalize().multiply(-1f));
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_D)) {
             this.player.setAngle(this.player.getAngle() + 5f);
@@ -85,7 +85,7 @@ public class SandboxScene implements GameScene {
     }
 
     private void updateEntity(Entity entity, float dt) {
-        Vector2 nextEntityPosition = entity.getPosition().add(entity.getVelocity().mul(dt));
+        Vector2 nextEntityPosition = entity.getPosition().add(entity.getVelocity().multiply(dt));
         entity.setPosition(nextEntityPosition);
     }
 }

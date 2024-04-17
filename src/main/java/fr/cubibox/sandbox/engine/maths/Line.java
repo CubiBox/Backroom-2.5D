@@ -1,5 +1,7 @@
 package fr.cubibox.sandbox.engine.maths;
 
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
+
 public class Line {
     private Vector2 a;
     private Vector2 b;

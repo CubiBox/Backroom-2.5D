@@ -1,7 +1,7 @@
 package fr.cubibox.sandbox.engine.maths.shapes;
 
 import fr.cubibox.sandbox.engine.maths.Line;
-import fr.cubibox.sandbox.engine.maths.Vector2;
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 public class Circle {
     private final Vector2 origin;
@@ -50,7 +50,7 @@ public class Circle {
     }
 
     public boolean intersects(Vector2 vector) {
-        Vector2 difference = this.origin.sub(vector);
+        Vector2 difference = this.origin.subtract(vector);
         return difference.squareLength() <= getSquareRadius();
     }
 

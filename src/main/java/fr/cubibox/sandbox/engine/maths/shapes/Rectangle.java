@@ -1,7 +1,7 @@
 package fr.cubibox.sandbox.engine.maths.shapes;
 
 import fr.cubibox.sandbox.engine.maths.Line;
-import fr.cubibox.sandbox.engine.maths.Vector2;
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 public class Rectangle implements Shape {
     private final Vector2 origin;
@@ -49,7 +49,7 @@ public class Rectangle implements Shape {
     }
 
     public Vector2 getMin() {
-        return this.origin.sub(this.size);
+        return this.origin.subtract(this.size);
     }
 
     public Vector2 getMax() {

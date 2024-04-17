@@ -1,6 +1,6 @@
 package fr.cubibox.sandbox.base;
 
-import fr.cubibox.sandbox.engine.maths.Vector2;
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 public class Camera {
     private final Vector2 position;

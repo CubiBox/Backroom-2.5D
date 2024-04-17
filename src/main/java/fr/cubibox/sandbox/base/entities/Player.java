@@ -1,6 +1,6 @@
 package fr.cubibox.sandbox.base.entities;
 
-import fr.cubibox.sandbox.engine.maths.Vector2;
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 public class Player extends Entity {
     private float eyesHeight = 0.5f;
