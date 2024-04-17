@@ -1,12 +1,13 @@
 package fr.cubibox.sandbox.base;
 
+import fr.cubibox.sandbox.base.renderer.MinimapRenderer;
+import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
 import fr.cubibox.sandbox.engine.GameScene;
 import fr.cubibox.sandbox.engine.graphics.Canvas;
 import fr.cubibox.sandbox.engine.maths.Vector2;
 import fr.cubibox.sandbox.base.entities.Entity;
 import fr.cubibox.sandbox.base.entities.Player;
 import fr.cubibox.sandbox.level.Map;
-import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -18,6 +19,7 @@ public class SandboxScene implements GameScene {
     private final Player player;
     private final Camera camera;
 
+    private final MinimapRenderer minimapRenderer;
     private final SandboxRenderer renderer;
 
     public SandboxScene(String mapPath) {
@@ -25,7 +27,8 @@ public class SandboxScene implements GameScene {
         this.player = map.getPlayer();
         this.camera = new Camera(0F, 0F);
 
-        this.renderer = new SandboxRenderer(map, camera);
+        this.minimapRenderer = new MinimapRenderer(map, camera);
+        this.renderer = new SandboxRenderer();
     }
 
     @Override
@@ -35,7 +38,7 @@ public class SandboxScene implements GameScene {
 
     @Override
     public void render(Canvas canvas, float dt) {
-        renderer.render(canvas, dt);
+        minimapRenderer.render(canvas, dt);
     }
 
     @Override
