@@ -3,7 +3,6 @@ package fr.cubibox.backroom2_5d.game;
 import fr.cubibox.backroom2_5d.engine.GameScene;
 import fr.cubibox.backroom2_5d.engine.graphics.Canvas;
 import fr.cubibox.backroom2_5d.engine.maths.Vector2;
-import fr.cubibox.backroom2_5d.engine.observers.Event;
 import fr.cubibox.backroom2_5d.game.entities.Entity;
 import fr.cubibox.backroom2_5d.game.entities.Player;
 import fr.cubibox.backroom2_5d.game.level.Map;
@@ -11,7 +10,6 @@ import fr.cubibox.backroom2_5d.game.renderer.Backroom2DRenderer;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.ArrayDeque;
 import static fr.cubibox.backroom2_5d.BackroomsMain.keyboard;
 import static fr.cubibox.backroom2_5d.game.level.MapUtils.importMap;
 
@@ -20,12 +18,9 @@ public class Backroom2D implements GameScene {
     private final Player player;
     private final Camera camera;
 
-    private final ArrayDeque<Event> events;
-
     private final Backroom2DRenderer renderer;
 
     public Backroom2D(String mapPath) {
-        this.events = new ArrayDeque<>();
         this.map = importMap(new File(mapPath));
         this.player = map.getPlayer();
         this.camera = new Camera(0F, 0F);
@@ -45,11 +40,6 @@ public class Backroom2D implements GameScene {
 
     @Override
     public void update(float dt) {
-        Event event;
-        while ((event = events.poll()) != null) {
-            event.execute();
-        }
-
         updateEntity(this.player, dt);
     }
 

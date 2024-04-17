@@ -81,10 +81,4 @@ public class Rectangle implements Shape {
         return vector.getX() >= min.getX() && vector.getX() <= max.getX()
                 && vector.getY() >= min.getY() && vector.getY() <= max.getY();
     }
-
-    public boolean intersects(Rectangle rectangle) {
-        // TODO
-
-        return false;
-    }
 }
