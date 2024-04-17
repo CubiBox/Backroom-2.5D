@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.base.level;
+package fr.cubibox.sandbox.level;
 
 import java.util.ArrayList;
 

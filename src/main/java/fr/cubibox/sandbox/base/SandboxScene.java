@@ -5,13 +5,13 @@ import fr.cubibox.sandbox.engine.graphics.Canvas;
 import fr.cubibox.sandbox.engine.maths.Vector2;
 import fr.cubibox.sandbox.base.entities.Entity;
 import fr.cubibox.sandbox.base.entities.Player;
-import fr.cubibox.sandbox.base.level.Map;
+import fr.cubibox.sandbox.level.Map;
 import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
 import static fr.cubibox.sandbox.Main.keyboard;
-import static fr.cubibox.sandbox.base.level.MapUtils.importMap;
+import static fr.cubibox.sandbox.level.MapUtils.importMap;
 
 public class SandboxScene implements GameScene {
     private final Map map;

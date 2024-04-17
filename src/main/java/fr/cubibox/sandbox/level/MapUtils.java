@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.base.level;
+package fr.cubibox.sandbox.level;
 
 import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.Vector2;

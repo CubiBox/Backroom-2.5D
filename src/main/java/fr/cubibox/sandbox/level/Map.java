@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.base.level;
+package fr.cubibox.sandbox.level;
 
 import fr.cubibox.sandbox.base.entities.Entity;
 import fr.cubibox.sandbox.base.entities.Player;

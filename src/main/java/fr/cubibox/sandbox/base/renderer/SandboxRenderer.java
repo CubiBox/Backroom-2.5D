@@ -4,9 +4,9 @@ import fr.cubibox.sandbox.engine.graphics.Canvas;
 import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.shapes.Rectangle;
 import fr.cubibox.sandbox.base.Camera;
-import fr.cubibox.sandbox.base.level.Chunk;
-import fr.cubibox.sandbox.base.level.Map;
-import fr.cubibox.sandbox.base.level.MapObject;
+import fr.cubibox.sandbox.level.Chunk;
+import fr.cubibox.sandbox.level.Map;
+import fr.cubibox.sandbox.level.MapObject;
 
 import java.awt.*;
 
