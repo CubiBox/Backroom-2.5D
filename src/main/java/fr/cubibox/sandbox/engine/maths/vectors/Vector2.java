@@ -1,6 +1,6 @@
 package fr.cubibox.sandbox.engine.maths.vectors;
 
-import static fr.cubibox.sandbox.engine.maths.MathUtils.RADIAN_PI_2;
+import static fr.cubibox.sandbox.Main.RADIAN_PI_2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 

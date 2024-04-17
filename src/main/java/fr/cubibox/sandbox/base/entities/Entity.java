@@ -3,7 +3,7 @@ package fr.cubibox.sandbox.base.entities;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.engine.maths.shapes.Circle;
 
-import static fr.cubibox.sandbox.engine.maths.MathUtils.RADIAN_PI_2;
+import static fr.cubibox.sandbox.Main.RADIAN_PI_2;
 
 public abstract class Entity {
     protected Circle collisionArea;
