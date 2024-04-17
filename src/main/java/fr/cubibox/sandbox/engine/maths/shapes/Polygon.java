@@ -39,7 +39,7 @@ public class Polygon implements Shape {
     public Vector2[] getAxes() {
         Vector2[] axes = new Vector2[edges.size()];
         for (int i = 0; i < edges.size(); i++) {
-            axes[i] = edges.get(i).getNormal();
+            axes[i] = edges.get(i).normal();
         }
         return axes;
     }

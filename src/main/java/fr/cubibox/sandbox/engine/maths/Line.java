@@ -31,25 +31,22 @@ public class Line {
         this.b = b;
     }
 
-    public Vector2 getNormal() {
+    public Vector2 normal() {
         return new Vector2(b.getY() - a.getY(), a.getX() - b.getX());
     }
 
-    public float getLength() {
-        Vector2 length = new Vector2(
+    public Vector2 vector() {
+        return  new Vector2(
                 this.getB().getX() - this.getA().getX(),
                 this.getB().getY() - this.getA().getY()
         );
-
-        return (float) (Math.sqrt(length.dot(length)));
     }
 
-    public float getSqLength() {
-        Vector2 length = new Vector2(
-                this.getB().getX() - this.getA().getX(),
-                this.getB().getY() - this.getA().getY()
-        );
+    public float length() {
+        return vector().length();
+    }
 
-        return length.dot(length);
+    public float lengthSquared() {
+        return vector().lengthSquared();
     }
 }
