@@ -1,4 +1,4 @@
-package fr.cubibox.backroom2_5d.old;
+package fr.cubibox.sandbox.old;
 
 public class Gameplay {
     /*

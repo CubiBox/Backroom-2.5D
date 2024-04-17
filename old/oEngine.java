@@ -1,17 +1,17 @@
-package fr.cubibox.backroom2_5d.old;
+package fr.cubibox.sandbox.old;
 
-import fr.cubibox.backroom2_5d.engine.observers.EngineObserver;
-import fr.cubibox.backroom2_5d.engine.observers.events.Event;
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
-import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.game.entities.Player;
-import fr.cubibox.backroom2_5d.io.Keyboard;
+import fr.cubibox.sandbox.engine.observers.EngineObserver;
+import fr.cubibox.sandbox.engine.observers.events.Event;
+import fr.cubibox.sandbox.engine.maths.Vector2F;
+import fr.cubibox.sandbox.base.Map;
+import fr.cubibox.sandbox.base.entities.Player;
+import fr.cubibox.sandbox.io.Keyboard;
 
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 
-import static fr.cubibox.backroom2_5d.engine.Ray.RADIAN_PI_2;
-import static fr.cubibox.backroom2_5d.engine.PhyzEngine.ONE_SECOND_IN_NANO;
+import static fr.cubibox.sandbox.engine.Ray.RADIAN_PI_2;
+import static fr.cubibox.sandbox.engine.PhyzEngine.ONE_SECOND_IN_NANO;
 
 public class oEngine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");

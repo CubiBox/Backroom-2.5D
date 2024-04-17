@@ -1,13 +1,13 @@
-package fr.cubibox.backroom2_5d.old;
+package fr.cubibox.sandbox.old;
 
-import fr.cubibox.backroom2_5d.engine.observers.EngineObserver;
-import fr.cubibox.backroom2_5d.engine.observers.events.Event;
-import fr.cubibox.backroom2_5d.game.Map;
-import fr.cubibox.backroom2_5d.game.entities.Player;
+import fr.cubibox.sandbox.engine.observers.EngineObserver;
+import fr.cubibox.sandbox.engine.observers.events.Event;
+import fr.cubibox.sandbox.base.Map;
+import fr.cubibox.sandbox.base.entities.Player;
 
 import java.util.HashSet;
 
-import static fr.cubibox.backroom2_5d.engine.PhyzEngine.ONE_SECOND_IN_NANO;
+import static fr.cubibox.sandbox.engine.PhyzEngine.ONE_SECOND_IN_NANO;
 
 public class Engine implements Runnable {
     private final Thread engineThread = new Thread(this, "ENGINE");

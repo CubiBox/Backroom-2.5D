@@ -1,7 +1,7 @@
-package fr.cubibox.backroom2_5d.game;
+package fr.cubibox.sandbox.base;
 
-import fr.cubibox.backroom2_5d.engine.maths.Line2F;
-import fr.cubibox.backroom2_5d.engine.maths.Vector2F;
+import fr.cubibox.sandbox.engine.maths.Line2F;
+import fr.cubibox.sandbox.engine.maths.Vector2F;
 
 import java.util.ArrayList;
 
