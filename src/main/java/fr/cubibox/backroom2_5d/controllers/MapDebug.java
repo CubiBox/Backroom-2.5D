@@ -45,7 +45,7 @@ public class MapDebug extends AnimationTimer implements Initializable {
 
 
         if (time >= 1) {
-            System.out.println("fps : " + update);
+            fpsTag.setText(String.valueOf(update));
             update = 0;
             time--;
         }
