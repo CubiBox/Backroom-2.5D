@@ -5,7 +5,7 @@ import fr.cubibox.sandbox.engine.observers.events.Event;
 import fr.cubibox.sandbox.engine.maths.Vector2F;
 import fr.cubibox.sandbox.base.Map;
 import fr.cubibox.sandbox.base.entities.Player;
-import fr.cubibox.sandbox.io.Keyboard;
+import fr.cubibox.sandbox.engine.io.Keyboard;
 
 import java.awt.event.KeyEvent;
 import java.util.HashSet;

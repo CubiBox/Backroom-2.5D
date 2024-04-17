@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.io;
+package fr.cubibox.sandbox.engine.io;
 
 // TODO: implements mouse events
 public class Mouse {

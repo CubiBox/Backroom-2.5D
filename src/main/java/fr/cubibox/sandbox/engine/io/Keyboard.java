@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.io;
+package fr.cubibox.sandbox.engine.io;
 
 public class Keyboard {
     private final boolean[] keys = new boolean[256];

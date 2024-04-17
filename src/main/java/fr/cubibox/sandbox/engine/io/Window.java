@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.io;
+package fr.cubibox.sandbox.engine.io;
 
 import javax.swing.*;
 
