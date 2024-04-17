@@ -35,7 +35,7 @@ public class Vector2 {
     }
 
     public Vector2 add(Vector2 v) {
-        return new Vector2(x + v.getX(), y + v.getY());
+        return new Vector2(x + v.x, y + v.y);
     }
 
     public Vector2 add(float scalar) {
@@ -43,7 +43,7 @@ public class Vector2 {
     }
 
     public Vector2 subtract(Vector2 v) {
-        return new Vector2(x - v.getX(), y - v.getY());
+        return new Vector2(x - v.x, y - v.y);
     }
 
     public Vector2 subtract(float scalar) {
@@ -66,16 +66,27 @@ public class Vector2 {
         return new Vector2(x / scalar, y / scalar);
     }
 
-    public float dot(Vector2 v) {
-        return x * v.getX() + y * v.getY();
-    }
-
     public float length() {
-        return (float) Math.sqrt(this.squareLength());
+        return (float) Math.sqrt(this.lengthSquared());
     }
 
-    public float squareLength() {
-        return x * x + y * y;
+    public float lengthSquared() {
+        return dot(this);
+    }
+
+    /**
+     * The dot product, commonly named scalar product or inner product. <br>
+     * <br>
+     * <ul>
+     * <li>If the result is <strong>positive</strong>, the vectors are pointing in the same directions</li>
+     * <li>If the result is <strong>negative</strong>, the vectors are pointing in opposite directions</li>
+     * <li>If the result is <strong>0</strong>, vectors are perpendicular</li>
+     * </ul>
+     * @param v The vector to test
+     * @return The directional relation of the vectors
+     */
+    public float dot(Vector2 v) {
+        return x * v.x + y * v.y;
     }
 
     public Vector2 normalize() {
@@ -98,6 +109,6 @@ public class Vector2 {
 
     @Override
     public String toString() {
-        return "(" + this.x + ";" + this.y + ")";
+        return "(" + this.x + "; " + this.y + ")";
     }
 }

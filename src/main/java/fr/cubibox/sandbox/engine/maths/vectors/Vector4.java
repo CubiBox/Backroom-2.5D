@@ -1,20 +1,23 @@
 package fr.cubibox.sandbox.engine.maths.vectors;
 
-public class Vector3 {
+public class Vector4 {
     private float x;
     private float y;
     private float z;
+    private float w;
 
-    public Vector3() {
+    public Vector4() {
         this.x = 0f;
         this.y = 0f;
         this.z = 0f;
+        this.w = 0f;
     }
 
-    public Vector3(float x, float y, float z) {
+    public Vector4(float x, float y, float z, float w) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.w = w;
     }
 
     public float getX() {
@@ -41,36 +44,44 @@ public class Vector3 {
         this.z = z;
     }
 
-    public Vector3 add(Vector3 v) {
-        return new Vector3(x + v.x, y + v.y, z + v.z);
+    public float getW() {
+        return w;
     }
 
-    public Vector3 add(float scalar) {
-        return new Vector3(x + scalar, y + scalar, z + scalar);
+    public void setW(float w) {
+        this.w = w;
     }
 
-    public Vector3 subtract(Vector3 v) {
-        return new Vector3(x - v.x, y - v.y, z - v.z);
+    public Vector4 add(Vector4 v) {
+        return new Vector4(x + v.x, y + v.y, z + v.z, w + v.w);
     }
 
-    public Vector3 subtract(float scalar) {
-        return new Vector3(x - scalar, y - scalar, z - scalar);
+    public Vector4 add(float scalar) {
+        return new Vector4(x + scalar, y + scalar, z + scalar, w + scalar);
     }
 
-    public Vector3 multiply(Vector3 v) {
-        return new Vector3(x * v.x, y * v.y, z * v.z);
+    public Vector4 subtract(Vector4 v) {
+        return new Vector4(x - v.x, y - v.y, z - v.z, w - v.w);
     }
 
-    public Vector3 multiply(float scalar) {
-        return new Vector3(x * scalar, y * scalar, z * scalar);
+    public Vector4 subtract(float scalar) {
+        return new Vector4(x - scalar, y - scalar, z - scalar, w - scalar);
     }
 
-    public Vector3 divide(Vector3 v) {
-        return new Vector3(x / v.x, y / v.y, z / v.z);
+    public Vector4 multiply(Vector4 v) {
+        return new Vector4(x * v.x, y * v.y, z * v.z, w * v.w);
     }
 
-    public Vector3 divide(float scalar) {
-        return new Vector3(x / scalar, y / scalar, z / scalar);
+    public Vector4 multiply(float scalar) {
+        return new Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+    }
+
+    public Vector4 divide(Vector4 v) {
+        return new Vector4(x / v.x, y / v.y, z / v.z, w / v.w);
+    }
+
+    public Vector4 divide(float scalar) {
+        return new Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
     }
 
     public float length() {
@@ -92,13 +103,13 @@ public class Vector3 {
      * @param v The vector to test
      * @return The directional relation of the vectors
      */
-    public float dot(Vector3 v) {
-        return x * v.x + y * v.y + z * v.z;
+    public float dot(Vector4 v) {
+        return x * v.x + y * v.y + z * v.z + w * v.w;
     }
 
-    public Vector3 normalize() {
+    public Vector4 normalize() {
         float length = this.length();
-        return new Vector3(this.x / length, this.y / length, this.z / length);
+        return new Vector4(this.x / length, this.y / length, this.z / length, this.w / length);
     }
 
     public float[] asArray() {
@@ -107,6 +118,6 @@ public class Vector3 {
 
     @Override
     public String toString() {
-        return "(" + this.x + "; " + this.y + "; " + this.z + ")";
+        return "(" + this.x + "; " + this.y + "; " + this.z + "; " + this.w + ")";
     }
 }

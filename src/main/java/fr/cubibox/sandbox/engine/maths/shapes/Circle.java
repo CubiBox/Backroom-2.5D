@@ -51,7 +51,7 @@ public class Circle {
 
     public boolean intersects(Vector2 vector) {
         Vector2 difference = this.origin.subtract(vector);
-        return difference.squareLength() <= getSquareRadius();
+        return difference.lengthSquared() <= getSquareRadius();
     }
 
     // TODO: Implement this method
