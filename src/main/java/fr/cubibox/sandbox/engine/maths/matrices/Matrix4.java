@@ -6,13 +6,13 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector4;
 public class Matrix4 {
     public static final int DIMENSIONS = 4;
 
-    private final float[] matrix;
+    private final float[] values;
 
     /**
      * Identity matrix constructor
      */
     public Matrix4() {
-        matrix = new float[] {
+        values = new float[] {
                 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
@@ -21,7 +21,7 @@ public class Matrix4 {
     }
 
     public Matrix4(Vector4 a, Vector4 b, Vector4 c, Vector4 d) {
-        matrix = new float[] {
+        values = new float[] {
                 a.getX(), b.getX(), c.getX(), d.getX(),
                 a.getY(), b.getY(), c.getY(), d.getY(),
                 a.getZ(), b.getZ(), c.getZ(), d.getZ(),
@@ -29,8 +29,8 @@ public class Matrix4 {
         };
     }
 
-    public Matrix4(final float[] matrix) {
-        this.matrix = matrix;
+    public Matrix4(final float[] values) {
+        this.values = values;
     }
 
     public Matrix4 transpose() {
@@ -48,8 +48,8 @@ public class Matrix4 {
     public Matrix4 multiply(float v) {
         Matrix4 m = new Matrix4(asArray());
 
-        for (int i = 0; i < matrix.length; i++) {
-            matrix[i] *= v;
+        for (int i = 0; i < values.length; i++) {
+            m.values[i] *= v;
         }
 
         return m;
@@ -66,14 +66,14 @@ public class Matrix4 {
     }
 
     public float[] asArray() {
-        return matrix.clone();
+        return values.clone();
     }
 
     public float getValue(int x, int y) {
-        return matrix[y * DIMENSIONS + x];
+        return values[y * DIMENSIONS + x];
     }
 
     public void setValue(int x, int y, float value) {
-        matrix[y * DIMENSIONS + x] = value;
+        values[y * DIMENSIONS + x] = value;
     }
 }

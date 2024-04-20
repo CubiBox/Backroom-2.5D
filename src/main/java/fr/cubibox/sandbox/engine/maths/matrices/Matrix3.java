@@ -6,13 +6,13 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector3;
 public class Matrix3 {
     public static final int DIMENSIONS = 3;
 
-    private final float[] matrix;
+    private final float[] values;
 
     /**
      * Identity matrix constructor
      */
     public Matrix3() {
-        matrix = new float[] {
+        values = new float[] {
                 1, 0, 0,
                 0, 1, 0,
                 0, 0, 1
@@ -20,15 +20,15 @@ public class Matrix3 {
     }
 
     public Matrix3(Vector3 a, Vector3 b, Vector3 c) {
-        matrix = new float[] {
+        values = new float[] {
                 a.getX(), b.getX(), c.getX(),
                 a.getY(), b.getY(), c.getY(),
                 a.getZ(), b.getZ(), c.getZ()
         };
     }
 
-    public Matrix3(final float[] matrix) {
-        this.matrix = matrix;
+    public Matrix3(final float[] values) {
+        this.values = values;
     }
 
     public Matrix3 transpose() {
@@ -46,8 +46,8 @@ public class Matrix3 {
     public Matrix3 multiply(float v) {
         Matrix3 m = new Matrix3(asArray());
 
-        for (int i = 0; i < matrix.length; i++) {
-            matrix[i] *= v;
+        for (int i = 0; i < values.length; i++) {
+            m.values[i] *= v;
         }
 
         return m;
@@ -64,14 +64,14 @@ public class Matrix3 {
     }
 
     public float[] asArray() {
-        return matrix.clone();
+        return values.clone();
     }
 
     public float getValue(int x, int y) {
-        return matrix[y * DIMENSIONS + x];
+        return values[y * DIMENSIONS + x];
     }
 
     public void setValue(int x, int y, float value) {
-        matrix[y * DIMENSIONS + x] = value;
+        values[y * DIMENSIONS + x] = value;
     }
 }
