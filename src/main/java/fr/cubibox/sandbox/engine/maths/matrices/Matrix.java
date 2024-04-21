@@ -94,7 +94,8 @@ public class Matrix {
             throw new IllegalArgumentException("determinant == 0");
         }
 
-        return this.multiply(determinant);
+        // TODO: implement inverse
+        return null;
     }
 
     public int getRows() {
