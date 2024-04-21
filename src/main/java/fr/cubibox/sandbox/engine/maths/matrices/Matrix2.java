@@ -21,8 +21,12 @@ public class Matrix2 extends Matrix {
         });
     }
 
-    public Matrix2(final float[] values) {
+    public Matrix2(float... values) {
         super(2, 2, values);
+    }
+
+    public Matrix2(Matrix matrix) {
+        super(2, 2, matrix.values);
     }
 
     public Vector2 multiply(Vector2 v) {

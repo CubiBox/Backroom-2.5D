@@ -24,8 +24,12 @@ public class Matrix4 extends Matrix {
         });
     }
 
-    public Matrix4(final float[] values) {
+    public Matrix4(float... values) {
         super(4, 4, values);
+    }
+
+    public Matrix4(Matrix matrix) {
+        super(4, 4, matrix.values);
     }
 
     public Vector4 multiply(Vector4 v) {

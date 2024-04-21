@@ -16,7 +16,7 @@ public class Matrix {
         values = new float[rows * cols];
     }
 
-    public Matrix(int rows, int cols, float[] values) {
+    public Matrix(int rows, int cols, float... values) {
         if (rows == 0) {
             throw new IllegalArgumentException("rows = 0");
         } else if (cols == 0) {

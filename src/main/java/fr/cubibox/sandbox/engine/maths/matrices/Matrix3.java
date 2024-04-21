@@ -22,8 +22,12 @@ public class Matrix3 extends Matrix {
         });
     }
 
-    public Matrix3(final float[] values) {
+    public Matrix3(float... values) {
         super(3, 3, values);
+    }
+
+    public Matrix3(Matrix matrix) {
+        super(3, 3, matrix.values);
     }
 
     public Vector3 multiply(Vector3 v) {
