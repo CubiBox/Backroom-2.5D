@@ -3,15 +3,14 @@ package fr.cubibox.sandbox.base;
 import fr.cubibox.sandbox.base.renderer.MinimapRenderer;
 import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
 import fr.cubibox.sandbox.engine.GameScene;
-import fr.cubibox.sandbox.engine.graphics.Canvas;
+import fr.cubibox.sandbox.base.renderer.PixelDrawer;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.base.entities.Entity;
 import fr.cubibox.sandbox.base.entities.Player;
 import fr.cubibox.sandbox.level.Map;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
-import static fr.cubibox.sandbox.Main.keyboard;
+
 import static fr.cubibox.sandbox.level.MapUtils.importMap;
 
 public class SandboxScene implements GameScene {
@@ -37,8 +36,8 @@ public class SandboxScene implements GameScene {
     }
 
     @Override
-    public void render(Canvas canvas, float dt) {
-        minimapRenderer.render(canvas, dt);
+    public void render(PixelDrawer pixelDrawer, float dt) {
+        minimapRenderer.render(pixelDrawer, dt);
     }
 
     @Override

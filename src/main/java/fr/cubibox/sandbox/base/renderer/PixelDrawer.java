@@ -1,23 +1,15 @@
-package fr.cubibox.sandbox.engine.graphics;
-
-import java.nio.IntBuffer;
+package fr.cubibox.sandbox.base.renderer;
 
 import static java.lang.Math.abs;
 
-public class Canvas {
+public class PixelDrawer {
     public final int width, height;
     private final int[] pixels;
-    private final IntBuffer buffer;
 
-    public Canvas(int width, int height) {
+    public PixelDrawer(int width, int height) {
         this.width = width;
         this.height = height;
-        this.buffer = IntBuffer.allocate(width * height);
-        this.pixels = buffer.array();
-    }
-
-    public IntBuffer getBuffer() {
-        return buffer;
+        this.pixels = new int[width * height];
     }
 
     public int[] getPixels() {
@@ -59,21 +51,6 @@ public class Canvas {
         pixels[x + y * width] = color;
     }
 
-    public void fillRect(int x, int y, int width, int height, int color) {
-        int endY = y + height;
-        int endX = x + width;
-
-        for (int j = y; j < endY; j++) {
-            if (j >= 0 && j < this.height) {
-                for (int i = x; i < endX; i++) {
-                    if (i >= 0 && i < this.width) {
-                        pixels[i + j * this.width] = color;
-                    }
-                }
-            }
-        }
-    }
-
     public void drawRect(int startX, int startY, int width, int height, int color) {
         int endY = startY + height;
         int endX = startX + width;
@@ -85,6 +62,21 @@ public class Canvas {
                         if (x == startX || x == endX - 1 || y == startY || y == endY - 1) {
                             pixels[x + y * width] = color;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public void fillRect(int x, int y, int width, int height, int color) {
+        int endY = y + height;
+        int endX = x + width;
+
+        for (int j = y; j < endY; j++) {
+            if (j >= 0 && j < this.height) {
+                for (int i = x; i < endX; i++) {
+                    if (i >= 0 && i < this.width) {
+                        pixels[i + j * this.width] = color;
                     }
                 }
             }

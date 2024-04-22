@@ -1,7 +1,6 @@
 package fr.cubibox.sandbox.base.renderer;
 
 import fr.cubibox.sandbox.base.Camera;
-import fr.cubibox.sandbox.engine.graphics.Canvas;
 import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.shapes.Rectangle;
 import fr.cubibox.sandbox.level.Chunk;
@@ -19,14 +18,14 @@ public class MinimapRenderer {
         this.camera = camera;
     }
 
-    public void render(Canvas canvas, float dt) {
-        drawMap(canvas, dt);
+    public void render(PixelDrawer pixelDrawer, float dt) {
+        drawMap(pixelDrawer, dt);
     }
 
-    private void drawMap(Canvas canvas, float dt) {
-        canvas.fillRect(0, 0, canvas.width, canvas.height, new Color(0, 0, 0, 255).getRGB());
+    private void drawMap(PixelDrawer pixelDrawer, float dt) {
+        pixelDrawer.fillRect(0, 0, pixelDrawer.width, pixelDrawer.height, new Color(0, 0, 0).getRGB());
 
-        Rectangle canvasZone = new Rectangle(canvas.width/2F, canvas.height/2F, canvas.width, canvas.height);
+        Rectangle canvasZone = new Rectangle(pixelDrawer.width/2F, pixelDrawer.height/2F, pixelDrawer.width, pixelDrawer.height);
 
         for (Chunk[] chunksL : map.getChunks()) {
             for (Chunk chunk : chunksL) {
@@ -41,7 +40,7 @@ public class MinimapRenderer {
                             int bX = (int) (edge.getB().getX() * scale + camera.getPosX() * scale);
                             int bY = (int) (edge.getB().getY() * scale + camera.getPosY() * scale);
 
-                            canvas.drawLine(aX, aY, bX, bY, new Color(0, 255, 255).getRGB());
+                            pixelDrawer.drawLine(aX, aY, bX, bY, new Color(0, 255, 255).getRGB());
                         }
                     }
                 }

@@ -1,19 +1,23 @@
 package fr.cubibox.sandbox.engine;
 
 import fr.cubibox.sandbox.base.SandboxScene;
+import fr.cubibox.sandbox.engine.io.Window;
+
+import static java.lang.Thread.sleep;
 
 public class GameEngine implements Runnable {
-    private final Thread engineThread = new Thread(this, "ENGINE_THREAD");
-
-    public static final double ONE_SECOND_IN_MILLIS = 1E3;
-
     private static GameEngine instance = null;
 
-    private final GameScene gameScene = new SandboxScene("map1.map");
+    private final Thread engineThread = new Thread(this, "ENGINE_THREAD");
 
     private boolean running = false;
 
+    private final GameScene gameScene = new SandboxScene("map1.map");
+
+    private Window window = null;
+
     private GameEngine() {
+        window = new Window("Sandbox", 600, 400);
     }
 
     public static GameEngine getInstance() {
@@ -34,9 +38,12 @@ public class GameEngine implements Runnable {
 
     @Override
     public void run() {
+        window.init();
+        window.initTexture();
+
         long startTime = System.currentTimeMillis();
-        long targetUps = 30L;
-        long targetUpdateTime = (long) (ONE_SECOND_IN_MILLIS / targetUps);
+        long targetUps = 60L;
+        long targetUpdateTime = (long) (1E3 / targetUps);
         long updateTime = startTime;
 
         float time = 0;
@@ -44,8 +51,10 @@ public class GameEngine implements Runnable {
         while (running) {
             long now = System.currentTimeMillis();
 
-            float dt = (float) ((now - updateTime) / ONE_SECOND_IN_MILLIS);
+            float dt = (float) ((now - updateTime) / 1E3);
             gameScene.update(dt);
+            gameScene.render(window.getCanvas(), dt);
+            window.render();
 
             if (time >= 1) {
                 time--;
@@ -58,13 +67,15 @@ public class GameEngine implements Runnable {
                 time += dt;
 
                 if (sleepTime > 0) {
-                    wait((long) sleepTime);
+                    sleep((long) sleepTime);
                 }
             } catch (Exception e) {
-                throw new RuntimeException();
+                e.printStackTrace();
             }
 
             updateTime = now;
+
+            running = !window.shouldClose();
         }
 
         System.out.println("Bye byee !");
