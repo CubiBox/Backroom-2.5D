@@ -1,6 +1,7 @@
 package fr.cubibox.sandbox.base.renderer;
 
 import fr.cubibox.sandbox.base.Camera;
+import fr.cubibox.sandbox.engine.PixelDrawer;
 import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.shapes.Rectangle;
 import fr.cubibox.sandbox.level.Chunk;
@@ -18,12 +19,12 @@ public class MinimapRenderer {
         this.camera = camera;
     }
 
-    public void render(PixelDrawer pixelDrawer, float dt) {
-        drawMap(pixelDrawer, dt);
+    public void render(PixelDrawer pixelDrawer) {
+        drawMap(pixelDrawer);
     }
 
-    private void drawMap(PixelDrawer pixelDrawer, float dt) {
-        pixelDrawer.fillRect(0, 0, pixelDrawer.width, pixelDrawer.height, new Color(0, 0, 0).getRGB());
+    private void drawMap(PixelDrawer pixelDrawer) {
+        pixelDrawer.fillRectangle(0, 0, pixelDrawer.width, pixelDrawer.height, new Color(0, 0, 0).getRGB());
 
         Rectangle canvasZone = new Rectangle(pixelDrawer.width/2F, pixelDrawer.height/2F, pixelDrawer.width, pixelDrawer.height);
 

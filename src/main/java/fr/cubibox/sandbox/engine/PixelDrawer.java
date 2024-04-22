@@ -1,4 +1,6 @@
-package fr.cubibox.sandbox.base.renderer;
+package fr.cubibox.sandbox.engine;
+
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 import static java.lang.Math.abs;
 
@@ -14,6 +16,11 @@ public class PixelDrawer {
 
     public int[] getPixels() {
         return pixels;
+    }
+
+    public void drawPixel(int x, int y, int color) {
+        if (x < 0 || x >= width || y < 0 || y >= height) return;
+        pixels[x + y * width] = color;
     }
 
     public void drawLine(int startX, int startY, int endX, int endY, int color) {
@@ -46,12 +53,23 @@ public class PixelDrawer {
         }
     }
 
-    public void drawPixel(int x, int y, int color) {
-        if (x < 0 || x >= width || y < 0 || y >= height) return;
-        pixels[x + y * width] = color;
+    public void drawCircle(Vector2 o, int radius, int color) {
+
     }
 
-    public void drawRect(int startX, int startY, int width, int height, int color) {
+    public void fillCircle(Vector2 o, int radius, int color) {
+
+    }
+
+    public void drawTriangle(Vector2 a, Vector2 b, Vector2 c, int color) {
+
+    }
+
+    public void fillTriangle(Vector2 a, Vector2 b, Vector2 c, int color) {
+
+    }
+
+    public void drawRectangle(int startX, int startY, int width, int height, int color) {
         int endY = startY + height;
         int endX = startX + width;
 
@@ -68,7 +86,7 @@ public class PixelDrawer {
         }
     }
 
-    public void fillRect(int x, int y, int width, int height, int color) {
+    public void fillRectangle(int x, int y, int width, int height, int color) {
         int endY = y + height;
         int endX = x + width;
 
@@ -81,5 +99,13 @@ public class PixelDrawer {
                 }
             }
         }
+    }
+
+    public void drawTrapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
+
+    }
+
+    public void fillTrapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
+
     }
 }

@@ -1,6 +1,6 @@
 package fr.cubibox.sandbox.engine.io;
 
-import fr.cubibox.sandbox.base.renderer.PixelDrawer;
+import fr.cubibox.sandbox.engine.PixelDrawer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 

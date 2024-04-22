@@ -5,24 +5,24 @@ import fr.cubibox.sandbox.engine.io.Window;
 
 import static java.lang.Thread.sleep;
 
-public class GameEngine implements Runnable {
-    private static GameEngine instance = null;
+public class Engine implements Runnable {
+    private static Engine instance = null;
 
     private final Thread engineThread = new Thread(this, "ENGINE_THREAD");
 
     private boolean running = false;
 
-    private final GameScene gameScene = new SandboxScene("map1.map");
+    private final Scene scene = new SandboxScene("map1.map");
 
     private Window window = null;
 
-    private GameEngine() {
+    private Engine() {
         window = new Window("Sandbox", 600, 400);
     }
 
-    public static GameEngine getInstance() {
+    public static Engine getInstance() {
         if (instance == null) {
-            instance = new GameEngine();
+            instance = new Engine();
         }
         return instance;
     }
@@ -52,8 +52,8 @@ public class GameEngine implements Runnable {
             long now = System.currentTimeMillis();
 
             float dt = (float) ((now - updateTime) / 1E3);
-            gameScene.update(dt);
-            gameScene.render(window.getCanvas(), dt);
+            scene.update(dt);
+            scene.render(window.getCanvas());
             window.render();
 
             if (time >= 1) {
@@ -81,7 +81,7 @@ public class GameEngine implements Runnable {
         System.out.println("Bye byee !");
     }
 
-    public GameScene getGameScene() {
-        return gameScene;
+    public Scene getGameScene() {
+        return scene;
     }
 }
