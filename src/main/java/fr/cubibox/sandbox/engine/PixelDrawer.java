@@ -5,8 +5,17 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import static java.lang.Math.abs;
 
 public class PixelDrawer {
-    public final int width, height;
+    private final int width, height;
     private final int[] pixels;
+
+    public static final int BLACK   = 0x000000;
+    public static final int WHITE   = 0xFFFFFF;
+    public static final int RED     = 0xFF0000;
+    public static final int GREEN   = 0x00FF00;
+    public static final int BLUE    = 0x0000FF;
+    public static final int MAGENTA = 0xFF00FF;
+    public static final int YELLOW  = 0xFFFF00;
+    public static final int CYAN    = 0x00FFFF;
 
     public PixelDrawer(int width, int height) {
         this.width = width;
@@ -14,16 +23,24 @@ public class PixelDrawer {
         this.pixels = new int[width * height];
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public int[] getPixels() {
         return pixels;
     }
 
-    public void drawPixel(int x, int y, int color) {
+    public void pixel(int x, int y, int color) {
         if (x < 0 || x >= width || y < 0 || y >= height) return;
         pixels[x + y * width] = color;
     }
 
-    public void drawLine(int startX, int startY, int endX, int endY, int color) {
+    public void line(int startX, int startY, int endX, int endY, int color) {
         int dx = abs(endX - startX);
         int dy = abs(endY - startY);
         int sx = startX < endX ? 1 : -1;
@@ -33,7 +50,7 @@ public class PixelDrawer {
         int e2;
 
         while (true) {
-            drawPixel(startX, startY, color);
+            pixel(startX, startY, color);
 
             if (startX == endX && startY == endY) {
                 break;
@@ -53,40 +70,15 @@ public class PixelDrawer {
         }
     }
 
-    public void drawCircle(Vector2 o, int radius, int color) {
+    public void circle(Vector2 o, int radius, int color) {
 
     }
 
-    public void fillCircle(Vector2 o, int radius, int color) {
+    public void triangle(Vector2 a, Vector2 b, Vector2 c, int color) {
 
     }
 
-    public void drawTriangle(Vector2 a, Vector2 b, Vector2 c, int color) {
-
-    }
-
-    public void fillTriangle(Vector2 a, Vector2 b, Vector2 c, int color) {
-
-    }
-
-    public void drawRectangle(int startX, int startY, int width, int height, int color) {
-        int endY = startY + height;
-        int endX = startX + width;
-
-        for (int y = startY; y < endY; y++) {
-            if (y >= 0 && y < height) {
-                for (int x = startX; x < endX; x++) {
-                    if (x >= 0 && x < width) {
-                        if (x == startX || x == endX - 1 || y == startY || y == endY - 1) {
-                            pixels[x + y * width] = color;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void fillRectangle(int x, int y, int width, int height, int color) {
+    public void rectangle(int x, int y, int width, int height, int color) {
         int endY = y + height;
         int endX = x + width;
 
@@ -101,11 +93,7 @@ public class PixelDrawer {
         }
     }
 
-    public void drawTrapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
-
-    }
-
-    public void fillTrapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
+    public void trapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
 
     }
 }

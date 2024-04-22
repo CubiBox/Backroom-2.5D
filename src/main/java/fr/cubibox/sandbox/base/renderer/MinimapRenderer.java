@@ -24,9 +24,11 @@ public class MinimapRenderer {
     }
 
     private void drawMap(PixelDrawer pixelDrawer) {
-        pixelDrawer.fillRectangle(0, 0, pixelDrawer.width, pixelDrawer.height, new Color(0, 0, 0).getRGB());
+        int width = pixelDrawer.getWidth();
+        int height = pixelDrawer.getHeight();
+        pixelDrawer.rectangle(0, 0, width, height, PixelDrawer.BLACK);
 
-        Rectangle canvasZone = new Rectangle(pixelDrawer.width/2F, pixelDrawer.height/2F, pixelDrawer.width, pixelDrawer.height);
+        Rectangle canvasZone = new Rectangle(width / 2F, height / 2F, width, height);
 
         for (Chunk[] chunksL : map.getChunks()) {
             for (Chunk chunk : chunksL) {
@@ -41,7 +43,7 @@ public class MinimapRenderer {
                             int bX = (int) (edge.getB().getX() * scale + camera.getPosX() * scale);
                             int bY = (int) (edge.getB().getY() * scale + camera.getPosY() * scale);
 
-                            pixelDrawer.drawLine(aX, aY, bX, bY, new Color(0, 255, 255).getRGB());
+                            pixelDrawer.line(aX, aY, bX, bY, PixelDrawer.CYAN);
                         }
                     }
                 }
