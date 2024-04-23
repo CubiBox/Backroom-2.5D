@@ -1,35 +1,29 @@
 package fr.cubibox.sandbox.engine.io;
 
+import org.lwjgl.glfw.GLFWKeyCallback;
+
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+
 public class Keyboard {
-    private final boolean[] keys = new boolean[256];
+    private static final int KEYBOARD_SIZE = 512;
 
-    public void keyPressed(KeyEvent e) {
-        if (e.getCode() >= 0 && e.getCode() <= 255) {
-            keys[e.getCode()] = true;
-        } else {
-            System.err.println("Key not supported");
+    private static final boolean[] keys = new boolean[KEYBOARD_SIZE];
+
+    protected static GLFWKeyCallback keyboard = new GLFWKeyCallback()
+    {
+        @Override
+        public void invoke(long window, int key, int scancode, int action, int mods)
+        {
+            keys[key] = action != GLFW_RELEASE;
         }
-    }
+    };
 
-    public void keyReleased(KeyEvent e) {
-        if (e.getCode() >= 0 && e.getCode() <= 255) {
-            keys[e.getCode()] = false;
-        } else {
-            System.err.println("Key not supported");
-        }
-    }
-
-    public boolean isKeyPressed(int keyCode) {
-        if (keyCode >= 0 && keyCode <= 255) {
+    public static boolean isKeyPressed(int keyCode) {
+        if (keyCode >= 0 && keyCode < KEYBOARD_SIZE) {
             return keys[keyCode];
         } else {
             System.err.println("Key not supported");
             return false;
         }
-    }
-
-    // TODO: This is a temporary class
-    public interface KeyEvent {
-        int getCode();
     }
 }

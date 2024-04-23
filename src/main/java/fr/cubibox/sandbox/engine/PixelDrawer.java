@@ -1,5 +1,6 @@
 package fr.cubibox.sandbox.engine;
 
+import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 import static java.lang.Math.abs;
@@ -40,38 +41,78 @@ public class PixelDrawer {
         pixels[x + y * width] = color;
     }
 
-    public void line(int startX, int startY, int endX, int endY, int color) {
-        int dx = abs(endX - startX);
-        int dy = abs(endY - startY);
-        int sx = startX < endX ? 1 : -1;
-        int sy = startY < endY ? 1 : -1;
+    public void line(int xA, int yA, int xB, int yB, int color) {
+        int dx = abs(xB - xA);
+        int sx = xA < xB ? 1 : -1;
+        int dy = -abs(yB - yA);
+        int sy = yA < yB ? 1 : -1;
 
-        int err = dx - dy;
-        int e2;
+        int error = dx + dy;
 
         while (true) {
-            pixel(startX, startY, color);
+            pixel(xA, yA, color);
 
-            if (startX == endX && startY == endY) {
+            if (xA == xB && yA == yB) {
                 break;
             }
 
-            e2 = 2 * err;
+            int e2 = 2 * error;
 
-            if (e2 > -dy) {
-                err = err - dy;
-                startX = startX + sx;
+            if (e2 >= dy) {
+                if (xA == xB) {
+                    break;
+                }
+                error = error + dy;
+                xA = xA + sx;
             }
 
-            if (e2 < dx) {
-                err = err + dx;
-                startY = startY + sy;
+            if (e2 <= dx) {
+                if (yA == yB) {
+                    break;
+                }
+
+                error = error + dx;
+                yA = yA + sy;
             }
         }
     }
 
-    public void circle(Vector2 o, int radius, int color) {
+    public void line(Line line, int color) {
+        line(
+                (int) line.getA().getX(),
+                (int) line.getA().getY(),
+                (int) line.getB().getX(),
+                (int) line.getB().getY(),
+                color
+        );
+    }
 
+    public void circle(Vector2 o, int radius, int color) {
+        int x = (int) (o.getX());
+        int y = (int) (o.getY());
+
+        int xi = 0;
+        int yi = radius;
+        int m = 5 - 4 * radius;
+
+        while (xi <= yi) {
+            pixel( xi + x,  yi + y, color);
+            pixel( yi + x,  xi + y, color);
+            pixel(-xi + x,  yi + y, color);
+            pixel(-yi + x,  xi + y, color);
+            pixel( xi + x, -yi + y, color);
+            pixel( yi + x, -xi + y, color);
+            pixel(-xi + x, -yi + y, color);
+            pixel(-yi + x, -xi + y, color);
+
+            if (m > 0) {
+                yi -= 1;
+                m -= 8 * yi;
+            }
+
+            xi += 1;
+            m += 8 * xi + 4;
+        }
     }
 
     public void triangle(Vector2 a, Vector2 b, Vector2 c, int color) {
@@ -86,7 +127,7 @@ public class PixelDrawer {
             if (j >= 0 && j < this.height) {
                 for (int i = x; i < endX; i++) {
                     if (i >= 0 && i < this.width) {
-                        pixels[i + j * this.width] = color;
+                        pixel(i, j, color);
                     }
                 }
             }
@@ -94,6 +135,20 @@ public class PixelDrawer {
     }
 
     public void trapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
+        int xGap = xB - xA;
 
+        if (xGap > 0) {
+            // TODO: fix this.
+            /*for (int x = xA; x < xB; x++) {
+                double xp = (x - xA) / (double) xGap;
+
+                int yTop = (int) ((yTopGap * xp) + yTopA);
+                int yBottom = (int) ((yBottomGap * xp) + yBottomA);
+
+                if (!isPortal) {
+                    g2.fillRect(x, yTop, 1, yBottom - yTop);
+                }
+            }*/
+        }
     }
 }

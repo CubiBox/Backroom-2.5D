@@ -1,7 +1,6 @@
 package fr.cubibox.sandbox.engine.maths.vectors;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.*;
 
 public class Vector2 {
     private float x;
@@ -111,6 +110,14 @@ public class Vector2 {
                         2 * this.dot(normal)
                 )
         );
+    }
+
+    public float angle() {
+        return (float) atan2(y, getX());
+    }
+
+    public float cross(Vector2 vector) {
+        return x * vector.getY() - y * vector.getX();
     }
 
     public float[] asArray() {

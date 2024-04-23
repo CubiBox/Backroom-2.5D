@@ -3,38 +3,33 @@ package fr.cubibox.sandbox.base;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 public class Camera {
-    private final Vector2 position;
-    private float scale = 1F;
+    private final Vector2 screenOffset;
+    private Vector2 position;
+    private Vector2 orientation;
 
-    public Camera(float x, float y) {
-        this.position = new Vector2(x, y);
+    public Camera(int width, int height) {
+        this.screenOffset = new Vector2(width / 2f, height / 2f);
+        this.position = new Vector2();
+        this.orientation = new Vector2(1f, 0f);
     }
 
     public Vector2 getPosition() {
         return position;
     }
 
-    public float getPosX() {
-        return position.getX();
+    public Vector2 getOrientation() {
+        return orientation;
     }
 
-    public void setPosX(float posX) {
-        this.position.setX(posX);
+    public Vector2 getScreenOffset() {
+        return screenOffset;
     }
 
-    public float getPosY() {
-        return position.getY();
+    public void move(Vector2 delta) {
+        this.position = position.add(delta);
     }
 
-    public void setPosY(float posY) {
-        this.position.setY(posY);
-    }
-
-    public float getScale() {
-        return scale;
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
+    public void rotate(float angle) {
+        orientation = (orientation.rotate(angle));
     }
 }
