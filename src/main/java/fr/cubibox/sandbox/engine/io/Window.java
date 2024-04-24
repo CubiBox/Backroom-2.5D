@@ -19,11 +19,13 @@ public class Window {
     private int textureID;
 
     private long window;
+    ByteBuffer buffer;
 
     public Window(String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
+        this.buffer = BufferUtils.createByteBuffer(width * height * 3);
 
         pixelDrawer = new PixelDrawer(width, height);
     }
@@ -74,7 +76,6 @@ public class Window {
 
     public void render() {
         glfwPollEvents();
-        ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 3);
 
         int[] pixels = pixelDrawer.getPixels();
         for (int pixel : pixels) {
@@ -106,6 +107,7 @@ public class Window {
         glEnd();
 
         glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         glfwSwapBuffers(window);
     }
