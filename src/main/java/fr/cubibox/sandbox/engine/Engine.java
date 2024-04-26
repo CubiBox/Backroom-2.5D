@@ -5,26 +5,22 @@ import fr.cubibox.sandbox.engine.io.Window;
 
 import static java.lang.Thread.sleep;
 
-public class Engine implements Runnable {
+public class Engine {
     private static Engine instance = null;
 
-    private final Thread engineThread = new Thread(this, "ENGINE_THREAD");
+    private final Thread engineThread;
 
-    private boolean running = false;
+    private Scene scene;
 
-    private final Scene scene = new SandboxScene("map1.map");
+    private Window window;
 
-    private Window window = null;
+    private boolean running;
 
     private Engine() {
-        window = new Window("Sandbox", 600, 400);
-    }
-
-    public static Engine getInstance() {
-        if (instance == null) {
-            instance = new Engine();
-        }
-        return instance;
+        this.engineThread = new Thread(this::run, "Sandbox Engine Thread");
+        this.window = new Window("Sandbox", 600, 400);
+        this.scene = new SandboxScene("map1.map");
+        this.running = false;
     }
 
     public void start() {
@@ -32,11 +28,6 @@ public class Engine implements Runnable {
         engineThread.start();
     }
 
-    public void stop() {
-        running = false;
-    }
-
-    @Override
     public void run() {
         window.init();
         window.initTexture();
@@ -53,7 +44,7 @@ public class Engine implements Runnable {
 
             float dt = (float) ((now - updateTime) / 1E3);
             scene.update(dt);
-            scene.render(window.getCanvas());
+            scene.render(window.getPixelDrawer());
             window.render();
 
             if (time >= 1) {
@@ -70,7 +61,7 @@ public class Engine implements Runnable {
                     sleep((long) sleepTime);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println(e);
             }
 
             updateTime = now;
@@ -78,10 +69,30 @@ public class Engine implements Runnable {
             running = !window.shouldClose();
         }
 
-        System.out.println("Bye byee !");
+        System.out.println("Bye bye !");
     }
 
-    public Scene getGameScene() {
+    public void stop() {
+        this.running = false;
+        this.engineThread.interrupt();
+    }
+
+    public Scene getScene() {
         return scene;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
+    public Window getWindow() {
+        return window;
+    }
+
+    public static Engine getInstance() {
+        if (instance == null) {
+            instance = new Engine();
+        }
+        return instance;
     }
 }

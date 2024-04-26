@@ -4,12 +4,13 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+// TODO: Refactor this class.......
 public class Keyboard {
     private static final int KEYBOARD_SIZE = 512;
 
     private static final boolean[] keys = new boolean[KEYBOARD_SIZE];
 
-    protected static GLFWKeyCallback keyboard = new GLFWKeyCallback()
+    protected static final GLFWKeyCallback keyboard = new GLFWKeyCallback()
     {
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods)

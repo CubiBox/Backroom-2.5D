@@ -10,16 +10,18 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static java.sql.Types.NULL;
 
+// TODO: Refactor this class.......
 public class Window {
     private final String title;
     private final int width, height;
 
     private final PixelDrawer pixelDrawer;
+    private Mouse mouse;
 
     private int textureID;
 
     private long window;
-    ByteBuffer buffer;
+    private final ByteBuffer buffer;
 
     public Window(String title, int width, int height) {
         this.title = title;
@@ -43,7 +45,11 @@ public class Window {
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
+
+        mouse = new Mouse(window);
+
         glfwSetKeyCallback(window, Keyboard.keyboard);
+        glfwSetMouseButtonCallback(window, mouse);
 
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
@@ -112,11 +118,15 @@ public class Window {
         glfwSwapBuffers(window);
     }
 
-    public PixelDrawer getCanvas() {
+    public boolean shouldClose() {
+        return glfwWindowShouldClose(window);
+    }
+
+    public PixelDrawer getPixelDrawer() {
         return pixelDrawer;
     }
 
-    public boolean shouldClose() {
-        return glfwWindowShouldClose(window);
+    public Mouse getMouse() {
+        return mouse;
     }
 }
