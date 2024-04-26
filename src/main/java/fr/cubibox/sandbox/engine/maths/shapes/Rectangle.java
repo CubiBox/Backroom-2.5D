@@ -56,7 +56,6 @@ public class Rectangle implements Shape {
         return this.origin.add(this.size);
     }
 
-    @Override
     public Line[] getVertices() {
         Vector2 min = this.getMin();
         Vector2 max = this.getMax();
@@ -72,6 +71,11 @@ public class Rectangle implements Shape {
                 new Line(se, sw),
                 new Line(sw, nw)
         };
+    }
+
+    @Override
+    public float signedDistanceFunction(Vector2 position) {
+        return 0f;
     }
 
     public boolean intersects(Vector2 vector) {

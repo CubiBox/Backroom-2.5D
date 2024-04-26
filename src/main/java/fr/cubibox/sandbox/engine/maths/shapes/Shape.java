@@ -1,7 +1,7 @@
 package fr.cubibox.sandbox.engine.maths.shapes;
 
-import fr.cubibox.sandbox.engine.maths.Line;
+import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 public interface Shape {
-    Line[] getVertices();
+    float signedDistanceFunction(Vector2 position);
 }

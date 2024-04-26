@@ -45,7 +45,7 @@ public class Polygon implements Shape {
     }
 
     @Override
-    public Line[] getVertices() {
-        return new Line[0];
+    public float signedDistanceFunction(Vector2 position) {
+        return 0f;
     }
 }

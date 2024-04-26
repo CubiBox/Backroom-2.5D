@@ -3,7 +3,9 @@ package fr.cubibox.sandbox.engine.maths.shapes;
 import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
-public class Circle {
+import static java.lang.Math.pow;
+
+public class Circle implements Shape {
     private final Vector2 origin;
     private float radius;
 
@@ -62,5 +64,10 @@ public class Circle {
     // TODO: Implement this method
     public boolean intersects(Line line) {
         return false;
+    }
+
+    @Override
+    public float signedDistanceFunction(Vector2 position) {
+        return origin.subtract(position).length() - (radius);
     }
 }
