@@ -1,6 +1,5 @@
 package fr.cubibox.sandbox.engine;
 
-import fr.cubibox.sandbox.base.SandboxScene;
 import fr.cubibox.sandbox.engine.io.Window;
 
 import static java.lang.Thread.sleep;
@@ -43,7 +42,7 @@ public class Engine {
 
             float dt = (float) ((now - updateTime) / 1E3);
             scene.update(dt);
-            scene.render(window.getPixelDrawer());
+            scene.render();
             window.render();
 
             if (time >= 1) {

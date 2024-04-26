@@ -7,7 +7,7 @@ public interface Scene {
      */
     void init();
 
-    void render(PixelDrawer pixelDrawer);
+    void render();
 
     void update(float dt);
 

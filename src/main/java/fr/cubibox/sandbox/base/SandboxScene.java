@@ -3,7 +3,6 @@ package fr.cubibox.sandbox.base;
 import fr.cubibox.sandbox.base.renderer.MinimapRenderer;
 import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
 import fr.cubibox.sandbox.engine.Scene;
-import fr.cubibox.sandbox.engine.PixelDrawer;
 import fr.cubibox.sandbox.engine.io.Keyboard;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.base.entities.Entity;
@@ -24,7 +23,7 @@ public class SandboxScene implements Scene {
         this.player = new Player(0f, 0f);
         this.camera = new Camera();
 
-        this.minimapRenderer = new MinimapRenderer(map, camera);
+        this.minimapRenderer = new MinimapRenderer(camera);
         this.renderer = new SandboxRenderer();
     }
 
@@ -34,8 +33,8 @@ public class SandboxScene implements Scene {
     }
 
     @Override
-    public void render(PixelDrawer pixelDrawer) {
-        minimapRenderer.render(pixelDrawer);
+    public void render() {
+        minimapRenderer.render();
     }
 
     @Override
@@ -85,5 +84,13 @@ public class SandboxScene implements Scene {
     private void updateEntity(Entity entity, float dt) {
         Vector2 nextEntityPosition = entity.getPosition().add(entity.getVelocity().multiply(dt));
         entity.setPosition(nextEntityPosition);
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 }

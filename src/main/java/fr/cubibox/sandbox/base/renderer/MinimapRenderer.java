@@ -1,7 +1,10 @@
 package fr.cubibox.sandbox.base.renderer;
 
 import fr.cubibox.sandbox.base.Camera;
+import fr.cubibox.sandbox.base.SandboxScene;
+import fr.cubibox.sandbox.engine.Engine;
 import fr.cubibox.sandbox.engine.PixelDrawer;
+import fr.cubibox.sandbox.engine.Renderer;
 import fr.cubibox.sandbox.engine.maths.shapes.Line;
 import fr.cubibox.sandbox.engine.maths.shapes.Rectangle;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
@@ -12,14 +15,12 @@ import fr.cubibox.sandbox.level.MapObject;
 import static fr.cubibox.sandbox.engine.Engine.HEIGHT;
 import static fr.cubibox.sandbox.engine.Engine.WIDTH;
 
-public class MinimapRenderer {
-    private final Map map;
+public class MinimapRenderer implements Renderer {
     private final Camera camera;
 
     private float scale = 10f;
 
-    public MinimapRenderer(Map map, Camera camera) {
-        this.map = map;
+    public MinimapRenderer(Camera camera) {
         this.camera = camera;
     }
 
@@ -31,8 +32,8 @@ public class MinimapRenderer {
         this.scale = scale;
     }
 
-    public void render(PixelDrawer pixelDrawer) {
-        drawMap(pixelDrawer);
+    public void render() {
+        drawMap(Engine.getInstance().getWindow().getPixelDrawer());
     }
 
     private Vector2 worldVectorToCameraVector(Vector2 vector) {
@@ -47,6 +48,11 @@ public class MinimapRenderer {
     }
 
     private void drawMap(PixelDrawer pixelDrawer) {
+        Map map = ((SandboxScene) Engine.getInstance().getScene()).getMap();
+
+        if (map == null)
+            return;
+
         pixelDrawer.rectangle(0, 0, WIDTH, HEIGHT, PixelDrawer.BLACK);
 
         Rectangle canvasZone = new Rectangle(WIDTH / 2F, HEIGHT / 2F, WIDTH, HEIGHT);
