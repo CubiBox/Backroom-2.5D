@@ -6,6 +6,9 @@ import fr.cubibox.sandbox.engine.io.Window;
 import static java.lang.Thread.sleep;
 
 public class Engine {
+    public static final int WIDTH  = 600;
+    public static final int HEIGHT = 400;
+
     private static Engine instance = null;
 
     private final Thread engineThread;
@@ -18,7 +21,7 @@ public class Engine {
 
     private Engine() {
         this.engineThread = new Thread(this::run, "Sandbox Engine Thread");
-        this.window = new Window("Sandbox", 600, 400);
+        this.window = new Window("Sandbox");
         this.scene = new SandboxScene("map1.map");
         this.running = false;
     }

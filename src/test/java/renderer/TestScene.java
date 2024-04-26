@@ -14,6 +14,8 @@ import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.cubibox.sandbox.engine.Engine.HEIGHT;
+import static fr.cubibox.sandbox.engine.Engine.WIDTH;
 import static java.lang.Math.abs;
 
 public class TestScene implements Scene {
@@ -35,7 +37,7 @@ public class TestScene implements Scene {
 
     @Override
     public void render(PixelDrawer pixelDrawer) {
-        pixelDrawer.rectangle(0, 0, 600, 400, PixelDrawer.BLACK);
+        pixelDrawer.rectangle(0, 0, WIDTH, HEIGHT, PixelDrawer.BLACK);
 
         for (Shape shape : shapes) {
             if (shape instanceof Circle c) {

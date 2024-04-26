@@ -4,11 +4,12 @@ import fr.cubibox.sandbox.engine.maths.shapes.Circle;
 import fr.cubibox.sandbox.engine.maths.shapes.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
+import static fr.cubibox.sandbox.engine.Engine.HEIGHT;
+import static fr.cubibox.sandbox.engine.Engine.WIDTH;
 import static java.lang.Math.*;
 
 // TODO: Set offset in this class IO computing it when calling drawing functions.
 public class PixelDrawer {
-    private final int width, height;
     private final int[] pixels;
 
     public static final int BLACK   = 0x000000;
@@ -20,18 +21,8 @@ public class PixelDrawer {
     public static final int YELLOW  = 0xFFFF00;
     public static final int CYAN    = 0x00FFFF;
 
-    public PixelDrawer(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.pixels = new int[width * height];
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public PixelDrawer() {
+        this.pixels = new int[WIDTH * HEIGHT];
     }
 
     public int[] getPixels() {
@@ -39,8 +30,8 @@ public class PixelDrawer {
     }
 
     public void pixel(int x, int y, int color) {
-        if (x < 0 || x >= width || y < 0 || y >= height) return;
-        pixels[x + y * width] = color;
+        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) return;
+        pixels[x + y * WIDTH] = color;
     }
 
     public void line(int xA, int yA, int xB, int yB, int color) {
@@ -130,9 +121,9 @@ public class PixelDrawer {
         int endX = x + width;
 
         for (int j = y; j < endY; j++) {
-            if (j >= 0 && j < this.height) {
+            if (j >= 0 && j < HEIGHT) {
                 for (int i = x; i < endX; i++) {
-                    if (i >= 0 && i < this.width) {
+                    if (i >= 0 && i < WIDTH) {
                         pixel(i, j, color);
                     }
                 }
@@ -151,8 +142,8 @@ public class PixelDrawer {
 
         int xTS = xA;
 
-        xA = clamp(xA, 0, width - 1);
-        xB = clamp(xB, 0, width - 1);
+        xA = clamp(xA, 0, WIDTH - 1);
+        xB = clamp(xB, 0, WIDTH - 1);
 
         for (int x = xA; x < xB; x++) {
             double xtp = (double) (x - xTS) / dx;

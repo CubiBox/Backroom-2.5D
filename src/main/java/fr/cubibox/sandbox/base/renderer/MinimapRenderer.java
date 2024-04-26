@@ -9,6 +9,9 @@ import fr.cubibox.sandbox.level.Chunk;
 import fr.cubibox.sandbox.level.Map;
 import fr.cubibox.sandbox.level.MapObject;
 
+import static fr.cubibox.sandbox.engine.Engine.HEIGHT;
+import static fr.cubibox.sandbox.engine.Engine.WIDTH;
+
 public class MinimapRenderer {
     private final Map map;
     private final Camera camera;
@@ -44,11 +47,9 @@ public class MinimapRenderer {
     }
 
     private void drawMap(PixelDrawer pixelDrawer) {
-        int width = pixelDrawer.getWidth();
-        int height = pixelDrawer.getHeight();
-        pixelDrawer.rectangle(0, 0, width, height, PixelDrawer.BLACK);
+        pixelDrawer.rectangle(0, 0, WIDTH, HEIGHT, PixelDrawer.BLACK);
 
-        Rectangle canvasZone = new Rectangle(width / 2F, height / 2F, width, height);
+        Rectangle canvasZone = new Rectangle(WIDTH / 2F, HEIGHT / 2F, WIDTH, HEIGHT);
 
         for (Chunk[] chunksL : map.getChunks()) {
             for (Chunk chunk : chunksL) {
