@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.base.renderer;
+package fr.cubibox.sandbox.renderers;
 
 import fr.cubibox.sandbox.engine.Renderer;
 

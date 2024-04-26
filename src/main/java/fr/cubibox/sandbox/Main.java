@@ -1,8 +1,6 @@
 package fr.cubibox.sandbox;
 
-import fr.cubibox.sandbox.base.SandboxScene;
 import fr.cubibox.sandbox.engine.Engine;
-import fr.cubibox.sandbox.engine.Scene;
 import fr.cubibox.sandbox.level.Chunk;
 import fr.cubibox.sandbox.level.Map;
 

@@ -1,12 +1,13 @@
-package fr.cubibox.sandbox.base;
+package fr.cubibox.sandbox;
 
-import fr.cubibox.sandbox.base.renderer.MinimapRenderer;
-import fr.cubibox.sandbox.base.renderer.SandboxRenderer;
+import fr.cubibox.sandbox.engine.Camera;
+import fr.cubibox.sandbox.renderers.MinimapRenderer;
+import fr.cubibox.sandbox.renderers.SandboxRenderer;
 import fr.cubibox.sandbox.engine.Scene;
 import fr.cubibox.sandbox.engine.io.Keyboard;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
-import fr.cubibox.sandbox.base.entities.Entity;
-import fr.cubibox.sandbox.base.entities.Player;
+import fr.cubibox.sandbox.engine.entities.Entity;
+import fr.cubibox.sandbox.engine.entities.Player;
 import fr.cubibox.sandbox.level.Map;
 import org.lwjgl.glfw.GLFW;
 

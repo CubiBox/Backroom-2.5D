@@ -1,7 +1,7 @@
-package fr.cubibox.sandbox.base.renderer;
+package fr.cubibox.sandbox.renderers;
 
-import fr.cubibox.sandbox.base.Camera;
-import fr.cubibox.sandbox.base.SandboxScene;
+import fr.cubibox.sandbox.engine.Camera;
+import fr.cubibox.sandbox.SandboxScene;
 import fr.cubibox.sandbox.engine.Engine;
 import fr.cubibox.sandbox.engine.PixelDrawer;
 import fr.cubibox.sandbox.engine.Renderer;

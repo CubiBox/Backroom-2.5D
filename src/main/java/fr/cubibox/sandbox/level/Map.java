@@ -1,7 +1,7 @@
 package fr.cubibox.sandbox.level;
 
-import fr.cubibox.sandbox.base.entities.Entity;
-import fr.cubibox.sandbox.base.entities.Player;
+import fr.cubibox.sandbox.engine.entities.Entity;
+import fr.cubibox.sandbox.engine.entities.Player;
 
 import java.util.HashSet;
 

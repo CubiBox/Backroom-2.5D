@@ -1,4 +1,4 @@
-package fr.cubibox.sandbox.base;
+package fr.cubibox.sandbox.engine;
 
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
