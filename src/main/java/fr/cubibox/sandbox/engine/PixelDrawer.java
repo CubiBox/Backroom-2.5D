@@ -4,8 +4,9 @@ import fr.cubibox.sandbox.engine.maths.shapes.Circle;
 import fr.cubibox.sandbox.engine.maths.shapes.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
 
+// TODO: Set offset in this class IO computing it when calling drawing functions.
 public class PixelDrawer {
     private final int width, height;
     private final int[] pixels;
@@ -121,7 +122,7 @@ public class PixelDrawer {
     }
 
     public void triangle(Vector2 a, Vector2 b, Vector2 c, int color) {
-
+        // TODO: implements Triangle drawing
     }
 
     public void rectangle(int x, int y, int width, int height, int color) {
@@ -140,20 +141,32 @@ public class PixelDrawer {
     }
 
     public void trapezoid(int xA, int xB, int yA1, int yB1, int yA2, int yB2, int color) {
-        int xGap = xB - xA;
+        int dt = yB1 - yA1;
+        int db = yB2 - yA2;
+        int dx = xB - xA;
 
-        if (xGap > 0) {
-            // TODO: fix this.
-            /*for (int x = xA; x < xB; x++) {
-                double xp = (x - xA) / (double) xGap;
+        if (dx == 0) {
+            dx = 1;
+        }
 
-                int yTop = (int) ((yTopGap * xp) + yTopA);
-                int yBottom = (int) ((yBottomGap * xp) + yBottomA);
+        int xTS = xA;
 
-                if (!isPortal) {
-                    g2.fillRect(x, yTop, 1, yBottom - yTop);
-                }
-            }*/
+        xA = clamp(xA, 0, width - 1);
+        xB = clamp(xB, 0, width - 1);
+
+        for (int x = xA; x < xB; x++) {
+            double xtp = (double) (x - xTS) / dx;
+
+            int yT = (int) ((dt * xtp) + yA1);
+            int yB = (int) ((db * xtp) + yA2);
+
+            // THIS IS USED TO PREVENT FROM OVERDRAWING
+            // yT = clamp(yT, minY[x], maxY[x]);
+            // yB = clamp(yB, minY[x], maxY[x]);
+
+            for (int y = yT; y < yB; y++) {
+                pixel(x, y, color);
+            }
         }
     }
 }
