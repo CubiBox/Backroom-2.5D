@@ -1,6 +1,5 @@
 import fr.cubibox.sandbox.engine.Engine;
 import fr.cubibox.sandbox.engine.Scene;
-import org.junit.Test;
 import renderer.TestScene;
 
 public class MainTest {

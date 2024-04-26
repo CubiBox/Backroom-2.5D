@@ -89,4 +89,9 @@ public class TestScene implements Scene {
         x = (float) (mouse.getX() - screenOffset.getX());
         y = (float) (mouse.getY() - screenOffset.getY());
     }
+
+    @Override
+    public void destroy() {
+
+    }
 }

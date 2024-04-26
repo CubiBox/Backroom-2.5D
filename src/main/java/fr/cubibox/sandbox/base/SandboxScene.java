@@ -12,15 +12,16 @@ import fr.cubibox.sandbox.level.Map;
 import org.lwjgl.glfw.GLFW;
 
 public class SandboxScene implements Scene {
-    private Map map;
-    private final Player player;
-    private final Camera camera;
-
     private final MinimapRenderer minimapRenderer;
     private final SandboxRenderer renderer;
 
+    private final Player player;
+    private final Camera camera;
+
+    private Map map;
+
     public SandboxScene() {
-        this.player = map.getPlayer();
+        this.player = new Player(0f, 0f);
         this.camera = new Camera();
 
         this.minimapRenderer = new MinimapRenderer(map, camera);
@@ -74,6 +75,11 @@ public class SandboxScene implements Scene {
             minimapRenderer.setScale(minimapRenderer.getScale() - 0.25f);
             System.out.println("Minimap scale : " + minimapRenderer.getScale());
         }
+    }
+
+    @Override
+    public void destroy() {
+        // TODO: nothing to do.
     }
 
     private void updateEntity(Entity entity, float dt) {
