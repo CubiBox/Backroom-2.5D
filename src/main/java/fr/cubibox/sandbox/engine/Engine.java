@@ -6,23 +6,19 @@ import fr.cubibox.sandbox.engine.io.Window;
 import static java.lang.Thread.sleep;
 
 public class Engine {
+    private static final Engine instance = new Engine();
     public static final int WIDTH  = 600;
     public static final int HEIGHT = 400;
 
-    private static Engine instance = null;
-
     private final Thread engineThread;
+    private final Window window;
 
     private Scene scene;
-
-    private Window window;
-
     private boolean running;
 
     private Engine() {
         this.engineThread = new Thread(this::run, "Sandbox Engine Thread");
         this.window = new Window("Sandbox");
-        this.scene = new SandboxScene("map1.map");
         this.running = false;
     }
 
@@ -84,8 +80,17 @@ public class Engine {
         return scene;
     }
 
+    /**
+     * Destroys the previous scene if exists, sets the new scene and init it.
+     * @param scene The scene to add
+     */
     public void setScene(Scene scene) {
+        if (this.scene != null) {
+            this.scene.destroy();
+        }
+
         this.scene = scene;
+        this.scene.init();
     }
 
     public Window getWindow() {
@@ -93,9 +98,6 @@ public class Engine {
     }
 
     public static Engine getInstance() {
-        if (instance == null) {
-            instance = new Engine();
-        }
         return instance;
     }
 }

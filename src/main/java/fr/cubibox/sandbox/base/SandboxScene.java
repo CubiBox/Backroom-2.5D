@@ -11,22 +11,17 @@ import fr.cubibox.sandbox.base.entities.Player;
 import fr.cubibox.sandbox.level.Map;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.File;
-
-import static fr.cubibox.sandbox.level.MapUtils.importMap;
-
 public class SandboxScene implements Scene {
-    private final Map map;
+    private Map map;
     private final Player player;
     private final Camera camera;
 
     private final MinimapRenderer minimapRenderer;
     private final SandboxRenderer renderer;
 
-    public SandboxScene(String mapPath) {
-        this.map = importMap(new File(mapPath));
+    public SandboxScene() {
         this.player = map.getPlayer();
-        this.camera = new Camera(600, 400);
+        this.camera = new Camera();
 
         this.minimapRenderer = new MinimapRenderer(map, camera);
         this.renderer = new SandboxRenderer();
