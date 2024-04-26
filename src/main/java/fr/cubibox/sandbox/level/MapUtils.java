@@ -1,6 +1,6 @@
 package fr.cubibox.sandbox.level;
 
-import fr.cubibox.sandbox.engine.maths.Line;
+import fr.cubibox.sandbox.engine.maths.shapes.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 import java.io.File;

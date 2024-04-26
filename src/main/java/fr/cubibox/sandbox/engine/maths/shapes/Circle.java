@@ -1,9 +1,6 @@
 package fr.cubibox.sandbox.engine.maths.shapes;
 
-import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
-
-import static java.lang.Math.pow;
 
 public class Circle implements Shape {
     private final Vector2 origin;

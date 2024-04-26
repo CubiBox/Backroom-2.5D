@@ -112,6 +112,10 @@ public class Vector4 {
         return new Vector4(this.x / length, this.y / length, this.z / length, this.w / length);
     }
 
+    public Vector4 abs() {
+        return new Vector4(Math.abs(x), Math.abs(y), Math.abs(z), Math.abs(w));
+    }
+
     public Vector4 reflection(Vector4 normal) {
         return this.subtract(
                 normal.multiply(

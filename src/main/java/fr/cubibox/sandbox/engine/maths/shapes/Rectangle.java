@@ -1,7 +1,9 @@
 package fr.cubibox.sandbox.engine.maths.shapes;
 
-import fr.cubibox.sandbox.engine.maths.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class Rectangle implements Shape {
     private final Vector2 origin;
@@ -75,7 +77,9 @@ public class Rectangle implements Shape {
 
     @Override
     public float signedDistanceFunction(Vector2 position) {
-        return 0f;
+        Vector2 d = origin.subtract(position).abs().subtract(this.size);
+        float dLength = d.length();
+        return max(dLength, 0f) + min(max(d.getX(), d.getY()), 0f);
     }
 
     public boolean intersects(Vector2 vector) {

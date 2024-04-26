@@ -1,11 +1,14 @@
 import fr.cubibox.sandbox.engine.Engine;
+import fr.cubibox.sandbox.engine.Scene;
 import org.junit.Test;
 import renderer.TestScene;
 
 public class MainTest {
     public static void main(String[] args) {
         Engine engine = Engine.getInstance();
-        engine.setScene(new TestScene());
+        Scene scene = new TestScene();
+        engine.setScene(scene);
+        scene.init();
         engine.start();
     }
 }

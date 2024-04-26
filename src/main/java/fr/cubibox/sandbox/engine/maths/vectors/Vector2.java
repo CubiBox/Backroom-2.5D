@@ -92,6 +92,10 @@ public class Vector2 {
         return new Vector2(this.x / length, this.y / length);
     }
 
+    public Vector2 abs() {
+        return new Vector2(Math.abs(x), Math.abs(y));
+    }
+
     /**
      * Rotates vector with the given angle.
      * @param angle Rotation angle, in Radians.

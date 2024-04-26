@@ -2,7 +2,7 @@ package fr.cubibox.sandbox.base.renderer;
 
 import fr.cubibox.sandbox.base.Camera;
 import fr.cubibox.sandbox.engine.PixelDrawer;
-import fr.cubibox.sandbox.engine.maths.Line;
+import fr.cubibox.sandbox.engine.maths.shapes.Line;
 import fr.cubibox.sandbox.engine.maths.shapes.Rectangle;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 import fr.cubibox.sandbox.level.Chunk;

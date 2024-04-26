@@ -1,8 +1,10 @@
-package fr.cubibox.sandbox.engine.maths;
+package fr.cubibox.sandbox.engine.maths.shapes;
 
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
-public class Line {
+import static java.lang.Math.clamp;
+
+public class Line implements Shape {
     private Vector2 a;
     private Vector2 b;
 
@@ -12,7 +14,7 @@ public class Line {
     }
 
     public String toString() {
-        return "\t\t@[" + (int) a.getX() + ";" + (int) a.getY() + "]-[" + (int) b.getX() + ";" + (int) b.getY() + "]\n";
+        return "(" + a + ";" + b + ")";
     }
 
     public Vector2 getA() {
@@ -48,5 +50,13 @@ public class Line {
 
     public float lengthSquared() {
         return vector().lengthSquared();
+    }
+
+    @Override
+    public float signedDistanceFunction(Vector2 position) {
+        Vector2 pa = position.subtract(a);
+        Vector2 ba = b.subtract(a);
+        float h = clamp(pa.dot(ba) / ba.dot(ba) , 0f, 1f);
+        return pa.subtract(ba.multiply(h)).length();
     }
 }

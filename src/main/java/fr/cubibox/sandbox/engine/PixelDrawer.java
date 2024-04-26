@@ -1,6 +1,7 @@
 package fr.cubibox.sandbox.engine;
 
-import fr.cubibox.sandbox.engine.maths.Line;
+import fr.cubibox.sandbox.engine.maths.shapes.Circle;
+import fr.cubibox.sandbox.engine.maths.shapes.Line;
 import fr.cubibox.sandbox.engine.maths.vectors.Vector2;
 
 import static java.lang.Math.abs;
@@ -113,6 +114,10 @@ public class PixelDrawer {
             xi += 1;
             m += 8 * xi + 4;
         }
+    }
+
+    public void circle(Circle circle, int color) {
+        circle(circle.getOrigin(), (int) circle.getRadius(), color);
     }
 
     public void triangle(Vector2 a, Vector2 b, Vector2 c, int color) {
